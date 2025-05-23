@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is(.dark *)); 
 * {
   box-sizing: border-box;
 }
@@ -123,6 +123,7 @@ body {
 @theme {
   --font-rice: "Spicy Rice", cursive;
   --font-roboto: "Roboto", sans-serif;
+  --font-cursive:"Pacifico","cursive";
   --color-first: oklch(83.89% 0.184 77.63);
   --color-body: oklch(28.09% 0 0);
   --color-head: oklch(49.52% 0.139 45.27);

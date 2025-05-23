@@ -1,6 +1,8 @@
+'use client'
 import Image from "next/image";
 import React from "react";
 import Button from "../_components/Button";
+import { motion } from "framer-motion";
 
 interface Category {
   category: string;
@@ -13,6 +15,8 @@ interface CategoryProps {
 }
 
 const ListingCategory: React.FC<CategoryProps> = ({ drxn = false, data }) => {
+
+  console.log('motion',motion)
   return (
     <section className="relative max-w-screen w-full h-screen mx-auto">
       <div
@@ -29,7 +33,12 @@ const ListingCategory: React.FC<CategoryProps> = ({ drxn = false, data }) => {
               className="object-center object-fill"
             />
           </div>
-          <div className="absolute w-full h-full z-20 top-1/2 bg-black/30 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pr-6 ">
+          <motion.div
+            initial={{ backgroundColor: "rgba(0,0,0,0.3)" }}
+            whileHover={{ backgroundColor: "rgba(0,0,0,0.6)"}}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="absolute w-full h-full z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pr-6"
+          >
             <div className="w-full h-full relative flex items-start justify-start ">
               <article className="flex items-start p-8 flex-col gap-2 bg-black h-[40%] w-[100%] ">
                 <h3 className="text-white">{data?.[0]?.category}</h3>
@@ -38,7 +47,7 @@ const ListingCategory: React.FC<CategoryProps> = ({ drxn = false, data }) => {
                 </Button>
               </article>
             </div>
-          </div>
+          </motion.div>
         </div>
         <div className="relative w-[70%] h-full">
           <div className="relative w-full h-full grid grid-cols-2 grid-rows-2 gap-6">

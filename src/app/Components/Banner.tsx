@@ -94,7 +94,7 @@ const path = usePathname();
         <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white p-2 rounded-full shadow-md" />
       </Carousel>
     </section>
-    <section className={` max-w-[100vw] w-full relative h-[60vh] -mt-42 mx-auto`}>
+    <section className={`${path === '/' ? 'hidden' : 'visible'} max-w-[100vw] w-full relative h-[60vh] -mt-42 mx-auto`}>
       <div className="relative w-full h-full">
         <div className="relative w-full h-full bg-black/30">
         <Image
@@ -105,9 +105,14 @@ const path = usePathname();
         className="object-center object-cover"
         />
           </div>
-          <article className="w-full h-full top-0 left-0 transform -translate-x-1/2 -translate-y-1/2 border-2 border-blue-700">
-          <h1 className="text-white">The Full Cardamom</h1> 
-          <p>Home / News</p>
+          <article className="absolute w-full h-full
+           top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  z-40 bg-black/20
+           ">
+            <div className="w-full relative top-[74%] place-items-center">
+          <h2 className="text-white">The Full Cardamom</h2> 
+          <p className="text-white">Home / News</p>
+            </div>
+
           </article>
       </div>
     </section>

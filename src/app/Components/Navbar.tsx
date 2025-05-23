@@ -41,7 +41,7 @@ const Navbar = () => {
               {["Home", "Products", "About Us", "Contact Us"].map((item, index) => (
                 <li key={index}>
                   <Link
-                    href={`/${item.toLowerCase().replace(/\s+/g, "")}`}
+                    href={item === 'Home' ? '/' : `/${item.toLowerCase().replace(/\s+/g, "")}`}
                     className="text-sm font-roboto hover:text-[color:var(--color-first)] transition"
                   >
                     {item}

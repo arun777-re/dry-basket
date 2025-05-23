@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./styles/globals.css";
-import { Spicy_Rice,Roboto } from "next/font/google";
+import { Spicy_Rice,Roboto,Pacifico } from "next/font/google";
 import AOSInit from "./_components/AOS";
 
 
@@ -15,6 +15,11 @@ export const roboto = Roboto({
   subsets:['latin'] ,
   weight:['400','500','700'],
   variable: "--font-roboto"
+})
+export const pacifico = Pacifico({
+  subsets:['latin'] ,
+  weight:'400',
+  variable: "--font-cursive"
 })
 
 
@@ -33,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${spicyRIce.variable} ${roboto.variable} antialiased`}
+        className={`${spicyRIce.variable} ${roboto.variable} ${roboto.variable} antialiased`}
       >
         <AOSInit/>
         {children}
