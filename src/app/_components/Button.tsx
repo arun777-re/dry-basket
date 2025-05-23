@@ -1,8 +1,8 @@
 import React from "react";
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  onClick?: () => void;
+  onClick?: (e:React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
@@ -10,17 +10,14 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({
   children,
-  onClick,
   className,
-  disabled,
-  type,
+  ...props
+ 
 }) => {
   return (
     <button
-      type={type}
       className={`rounded-full cursor-pointer px-6 py-3 ${className}`}
-      onClick={onClick}
-      disabled={disabled}
+      {...props}
     >
       {children}
     </button>
@@ -28,3 +25,4 @@ const Button: React.FC<ButtonProps> = ({
 };
 
 export default Button;
+ 

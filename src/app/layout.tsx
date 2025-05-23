@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./styles/globals.css";
 import { Spicy_Rice,Roboto } from "next/font/google";
-import AOSInit from "./Components/AOS";
+import AOSInit from "./_components/AOS";
 
 
 

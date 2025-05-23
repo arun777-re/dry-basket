@@ -1,8 +1,10 @@
+'use client';
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { IoMdCart } from "react-icons/io";
 import { CiHeart } from "react-icons/ci";
+import {Card} from '@radix-ui/themes';
 
 interface ProductCardProps {
   id: number;
@@ -24,8 +26,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const [active, setActive] = React.useState<boolean>(false);
 
   return (
-    <div ref={activeRef} onMouseEnter={() => setActive(true)} onMouseLeave={() => setActive(false)}
-      className="max-w-[200px] w-full shadow-md h-86 relative animated-border 
+    <Card ref={activeRef} onMouseEnter={() => setActive(true)} onMouseLeave={() => setActive(false)}
+      className="w-full  shadow-sm h-86 relative animated-border 
     "
     >
       <span className="border-left"></span>
@@ -57,7 +59,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </figcaption>
       </figure>
      
-    </div>
+    </Card>
   );
 };
 

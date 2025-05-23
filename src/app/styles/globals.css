@@ -127,8 +127,6 @@ body {
   --color-body: oklch(28.09% 0 0);
   --color-head: oklch(49.52% 0.139 45.27);
   --color-border: oklch(57.13% 0.206 54.87);
-
-
 }
 
 .animated-border {
@@ -200,44 +198,36 @@ body {
   height: 100%; /* Expand to 100% height on hover */
 }
 
-
-
 .product-card {
   position: relative;
   display: inline-block;
   overflow: hidden;
 }
 
-.product-card::before,
 .product-card::after {
-  content: '';
+  content: "";
   position: absolute;
-  width: 0;
-  height: 2px; /* Border thickness */
-  background-color: #0d63f8; /* Border color */
-  transition: width 0.5s ease, height 0.5s ease, top 0.5s ease, left 0.5s ease;
-}
-
-.product-card::before {
-  bottom: 0;
-  left: 0;
-}
-
-.product-card::after {
   top: 0;
   left: 0;
-}
-
-.product-card:hover::before {
-  width: 100%;
+  width: 0%;
   height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  transition: width 0.5s ease-in-out;
+  z-index: 1;
 }
 
 .product-card:hover::after {
   width: 100%;
-  height: 100%;
 }
 
+@keyframes removeRadius {
+  from {
+    border-radius: 50px;
+  }
+  to {
+    border-radius: 0px;
+  }
+}
 
 @layer base {
   * {
@@ -264,6 +254,10 @@ body {
     @apply text-2xl text-head font-normal tracking-wider mb-2;
     font-family: var(--font-rice);
     color: var(--color-head);
+  }
+  h5 {
+    @apply text-xl text-body font-normal tracking-wider hover:text-head cursor-pointer;
+    font-family: var(--font-rice);
   }
 
   p {
