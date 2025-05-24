@@ -3,6 +3,8 @@ import Image from "next/image";
 import React from "react";
 import Button from "../_components/Button";
 import { motion } from "framer-motion";
+import { Card } from "@radix-ui/themes";
+import { useRouter } from "next/navigation";
 
 interface Category {
   category: string;
@@ -16,14 +18,23 @@ interface CategoryProps {
 
 const ListingCategory: React.FC<CategoryProps> = ({ drxn = false, data }) => {
 
-  console.log('motion',motion)
+  const router = useRouter();
+
+// redirecting to the category page
+  const handleCard = (e:React.MouseEvent<HTMLButtonElement>)=>{
+     e.preventDefault();
+     alert('Button clicked')
+     router.push(`/products/${data[0]?.category}`)
+
+  }
+
   return (
     <section className="relative max-w-screen w-full h-screen mx-auto">
       <div
         className="px-30 relative w-full h-full flex gap-6 py-20"
         style={{ flexDirection: drxn ? "row-reverse" : "row" }}
       >
-        <div className="relative w-[30%] h-full product-card">
+        <Card  className="relative w-[30%] h-full product-card">
           <div className="h-[100%] w-full relative">
             <Image
               src={data?.[0]?.image ?? "/images/card1-1.jpg"}
@@ -42,13 +53,13 @@ const ListingCategory: React.FC<CategoryProps> = ({ drxn = false, data }) => {
             <div className="w-full h-full relative flex items-start justify-start ">
               <article className="flex items-start p-8 flex-col gap-2 bg-black h-[40%] w-[100%] ">
                 <h3 className="text-white">{data?.[0]?.category}</h3>
-                <Button className="bg-transparent drop-shadow-black/30 drop-shadow-xl border-2 border-head text-white tracking-wide hover:border-first hover:bg-first hover:drop-shadow-xl hover:drop-shadow-black/30 transition-all duration-500 ease-in-out">
+                <Button type="button" onClick={handleCard} className="bg-transparent drop-shadow-black/30 drop-shadow-xl border-2 border-head text-white tracking-wide hover:border-first hover:bg-first hover:drop-shadow-xl hover:drop-shadow-black/30 transition-all duration-500 ease-in-out">
                   Shop Now
                 </Button>
               </article>
             </div>
           </motion.div>
-        </div>
+        </Card>
         <div className="relative w-[70%] h-full">
           <div className="relative w-full h-full grid grid-cols-2 grid-rows-2 gap-6">
             {data && data.length > 0 ? (
@@ -71,7 +82,9 @@ const ListingCategory: React.FC<CategoryProps> = ({ drxn = false, data }) => {
                     <div className="w-full h-full relative flex items-end justify-end">
                       <article className="flex items-center flex-col gap-2 bg-black h-[60%] w-[64%] p-2">
                         <h3 className="text-white">{item.category}</h3>
-                        <Button className="bg-transparent drop-shadow-black/30 drop-shadow-xl border-2 border-head text-white tracking-wide hover:border-first hover:bg-first hover:drop-shadow-xl hover:drop-shadow-black/30 transition-all duration-500 ease-in-out">
+                        <Button type="button"
+                        onClick={()=>router.push(`/products/${item?.category}`)}
+                        className="bg-transparent drop-shadow-black/30 drop-shadow-xl border-2 border-head text-white tracking-wide hover:border-first hover:bg-first hover:drop-shadow-xl hover:drop-shadow-black/30 transition-all duration-500 ease-in-out">
                           Shop Now
                         </Button>
                       </article>

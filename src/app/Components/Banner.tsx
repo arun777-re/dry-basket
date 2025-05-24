@@ -14,6 +14,11 @@ import BannerCard from "../_components/card/BannerCard";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 
+
+interface BannerProps {
+  heading?:string;
+}
+
 // here actual banners are come from backend
 const banners = [
   {
@@ -52,7 +57,9 @@ const banners = [
     coupan: "SPI18",
   },
 ];
-const Banner: React.FC = () => {
+const Banner: React.FC<BannerProps> = ({
+  heading
+}) => {
 
   // autoplay configuration of banner
   const autoplay = Autoplay({
@@ -73,14 +80,14 @@ const path = usePathname();
 
   return (
     <>
-    <section className={`${path === '/' ? 'visible' : 'hidden'} max-w-[100vw] w-full relative min-h-screen h-[106vh] -mt-42 mx-auto`}>
+    <section className={`${path === '/' ? 'visible' : 'hidden'} max-w-[100vw] w-full relative min-h-screen h-[114vh] -mt-42 mx-auto`}>
       <Carousel className="relative w-full " opts={opts} plugins={[autoplay]}>
         <CarouselContent className="w-full relative h-full flex gap-0 !p-0 !m-0">
           {banners.map((item, key) => {
             return (
               <CarouselItem
                 key={key}
-                className="w-full !p-0 !m-0 h-[106vh] relative basis-full flex-shrink-0 flex-grow-0" style={{flex:'0 0 100%'}}
+                className="w-full !p-0 !m-0 h-[114vh] relative basis-full flex-shrink-0 flex-grow-0" style={{flex:'0 0 100%'}}
               >
                 <BannerCard
                 {...item}
@@ -109,8 +116,7 @@ const path = usePathname();
            top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  z-40 bg-black/20
            ">
             <div className="w-full relative top-[74%] place-items-center">
-          <h2 className="text-white">The Full Cardamom</h2> 
-          <p className="text-white">Home / News</p>
+          <h2 className="text-white">{heading}</h2> 
             </div>
 
           </article>

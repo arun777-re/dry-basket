@@ -13,67 +13,65 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import { EmblaOptionsType } from "embla-carousel";
 
-const BestProducts: React.FC = () => {
-  // here actual data comes from api
-  const products = [
+ export const products = [
     {
-      id: 1,
+      _id: 1,
       image1: "/images/card1-1.jpg",
       image2: "/images/card1-2.jpg",
       title: "Almonds",
       price: "1200",
     },
     {
-      id: 2,
+      _id: 2,
       image1: "/images/card2-1.jpg",
       image2: "/images/card2-2.jpg",
       title: "Ceshews",
       price: "1200",
     },
     {
-      id: 3,
+      _id: 3,
       image1: "/images/card3-2.jpg",
       image2: "/images/card3-1.jpg",
       title: "WallNut",
       price: "1200",
     },
     {
-      id: 4,
+      _id: 4,
       image1: "/images/card1-1.jpg",
       image2: "/images/card1-2.jpg",
       title: "Almonds",
       price: "1200",
     },
     {
-      id: 5,
+      _id: 5,
       image1: "/images/card2-1.jpg",
       image2: "/images/card2-2.jpg",
       title: "Ceshews",
       price: "1200",
     },
     {
-      id: 6,
+      _id: 6,
       image1: "/images/card3-2.jpg",
       image2: "/images/card3-1.jpg",
       title: "WallNut",
       price: "1200",
     },
     {
-      id: 7,
+      _id: 7,
       image1: "/images/card3-2.jpg",
       image2: "/images/card3-1.jpg",
       title: "WallNut",
       price: "1200",
     },
     {
-      id: 8,
+      _id: 8,
       image1: "/images/card1-1.jpg",
       image2: "/images/card1-2.jpg",
       title: "Almonds",
       price: "1200",
     },
     {
-      id: 9,
+      _id: 9,
       image1: "/images/card2-1.jpg",
       image2: "/images/card2-2.jpg",
       title: "Ceshews",
@@ -82,6 +80,10 @@ const BestProducts: React.FC = () => {
 
     
   ];
+
+const BestProducts: React.FC = () => {
+  // here actual data comes from api
+
 
   const autoREf = Autoplay({
     delay: 3000,
@@ -133,7 +135,7 @@ const BestProducts: React.FC = () => {
           image2={item.image2}
           title={item.title}
           price={item.price}
-          id={item.id}
+          _id={item._id}
         />
       </CarouselItem>
     ))}

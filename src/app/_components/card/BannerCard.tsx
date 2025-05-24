@@ -19,7 +19,7 @@ const BannerCard: React.FC<BannerProps> = ({
   coupan,
 }) => {
   return (
-    <Card className="w-full relative h-[106vh] top-0 left-0 overflow-hidden">
+    <Card className="w-full relative h-[114vh] top-0 left-0 overflow-hidden">
       <div className="w-full h-full relative z-0">
         <Image
           src={image}

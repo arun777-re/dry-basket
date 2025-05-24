@@ -46,8 +46,8 @@ export default function Home() {
      
      "
      />
-     <ListingCategory data={category1} drxn={false}/>
-     <ListingCategory data={category1} drxn={true}/>
+     <ListingCategory data={category1 as {category:string;image:string}[]} drxn={false}/>
+     <ListingCategory data={category1 as {category:string;image:string}[]} drxn={true}/>
        <BgFixed image={'/images/banner-6.jpg'}
      title="Best Almonds"
      heading="Get 10% off On all Spicy & Herbs"
