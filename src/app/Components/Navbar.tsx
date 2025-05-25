@@ -38,7 +38,7 @@ const Navbar = () => {
         >
           <div className="max-w-screen-xl mx-auto py-6 px-6 flex justify-between items-center">
             <ul className="flex gap-8">
-              {["Home", "Products", "About", "Contact"].map((item, index) => (
+              {["Home", "Products", "About", "Contact","Faq"].map((item, index) => (
                 <li key={index}>
                   <Link
                     href={item === 'Home' ? '/' : `/${item.toLowerCase().replace(/\s+/g, "")}`}
