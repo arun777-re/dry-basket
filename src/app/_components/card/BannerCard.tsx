@@ -12,7 +12,6 @@ interface BannerProps {
 }
 
 const BannerCard: React.FC<BannerProps> = ({
-  _id,
   image,
   title,
   subheading,

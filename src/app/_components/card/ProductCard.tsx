@@ -15,7 +15,6 @@ export interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
-  _id,
   image1,
   image2,
   title,

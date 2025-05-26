@@ -1,8 +1,6 @@
 "use client";
-import Image from "next/image";
 import React from "react";
 
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import Button from "../_components/Button";
 
 interface BgFixedProps {

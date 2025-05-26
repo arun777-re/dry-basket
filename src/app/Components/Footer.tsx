@@ -3,7 +3,7 @@
 import React, { useCallback } from "react";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 import { PiGreaterThanBold } from "react-icons/pi";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter} from "next/navigation";
 import Link from "next/link";
 import { FaHome } from "react-icons/fa";
 import { FaPhone } from "react-icons/fa6";
@@ -38,16 +38,15 @@ const footerData = [
 ];
 
 const Footer = () => {
-  const router = usePathname();
   const redirect = useRouter();
 
-  const Handlecontact = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
-      redirect.push("/contact");
-    },
-    [router]
-  );
+  // const Handlecontact = useCallback(
+  //   (e: React.MouseEvent<HTMLButtonElement>) => {
+  //     e.preventDefault();
+  //     redirect.push("/contact");
+  //   },
+  //   [redirect]
+  // );
   return (
     <section className="relative max-w-screen w-full mx-auto">
       <div className="relative h-auto bg-black px-0 w-full z-0 top-[88%] text-gray-100/90 flex flex-col gap-20">
