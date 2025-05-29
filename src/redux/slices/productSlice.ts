@@ -1,0 +1,68 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ItemProps } from "@/lib/type";
+
+interface productsType {
+  loading: boolean;
+  error: { message: string } | null;
+  products: ItemProps[];
+}
+
+const initialState: productsType = {
+  loading: false,
+  error: null,
+  products: [
+    {
+      _id: "",
+      slug: "",
+      productName: "",
+      description: "",
+      images: [],
+      reviews: [
+        {
+          _id: "",
+          rating: 0,
+          reviewText: "",
+          productId: "",
+          user: {
+            firstName: "",
+          },
+          createdAt: "",
+        },
+      ],
+      variants: [
+        {
+          stock: 0,
+          price: 0,
+          discount: 0,
+          discountExpiry: null,
+          weight: 0,
+        },
+      ],
+      status: "available",
+      tags: [],
+      isFeatured: false,
+    },
+  ],
+};
+
+const productSlice = createSlice({
+  name: "product",
+  initialState: initialState,
+  reducers: {
+    createSuccess:(state,action:PayloadAction<any>)=>{
+        state.products.push(action.payload);
+    },
+
+    createFailure:(state,action:PayloadAction<any>)=>{
+        state.error = action.payload;
+    }
+  },
+  extraReducers: (builder) => {
+    builder
+    // .addCase()
+  },
+});
+
+export const {createFailure,createSuccess} = productSlice.actions;
+
+export default productSlice.reducer;

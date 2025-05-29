@@ -1,28 +1,25 @@
 import type { Metadata } from "next";
 import "./styles/globals.css";
-import { Spicy_Rice,Roboto,Pacifico } from "next/font/google";
+import { Spicy_Rice, Roboto, Pacifico } from "next/font/google";
 import AOSInit from "./_components/AOS";
-
-
+import Providers from "./provider";
 
 export const spicyRIce = Spicy_Rice({
-  subsets:["latin"],
-  weight:["400"],
-  variable: "--font-spicy-rice"
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-spicy-rice",
 });
 
 export const roboto = Roboto({
-  subsets:['latin'] ,
-  weight:['400','500','700'],
-  variable: "--font-roboto"
-})
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-roboto",
+});
 export const pacifico = Pacifico({
-  subsets:['latin'] ,
-  weight:'400',
-  variable: "--font-cursive"
-})
-
-
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-cursive",
+});
 
 export const metadata: Metadata = {
   title: "Dry Basket",
@@ -34,14 +31,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
- 
   return (
     <html lang="en">
       <body
-        className={`${spicyRIce.variable} ${roboto.variable} ${roboto.variable} antialiased`}
+        className={`${spicyRIce.variable} ${roboto.variable} ${pacifico.variable} antialiased`}
       >
-        <AOSInit/>
-        {children}
+        <AOSInit />
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

@@ -101,7 +101,7 @@ const path = usePathname();
         <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white p-2 rounded-full shadow-md" />
       </Carousel>
     </section>
-    <section className={`${path === '/' ? 'hidden' : 'visible'} max-w-[100vw] w-full relative h-[60vh] -mt-42 mx-auto`}>
+    <section className={`${path === '/' ? 'hidden' : 'visible'} max-w-[100vw] w-full relative h-[70vh] -mt-42 mx-auto`}>
       <div className="relative w-full h-full">
         <div className="relative w-full h-full bg-black/30">
         <Image

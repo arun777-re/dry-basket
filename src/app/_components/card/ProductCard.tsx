@@ -5,6 +5,7 @@ import React from "react";
 import { IoMdCart } from "react-icons/io";
 import { CiHeart } from "react-icons/ci";
 import { Card } from "@radix-ui/themes";
+import { useRouter } from "next/navigation";
 
 export interface ProductCardProps {
   _id: number;
@@ -12,6 +13,7 @@ export interface ProductCardProps {
   image2: string;
   title: string;
   price: string;
+  slug: string;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -19,15 +21,18 @@ const ProductCard: React.FC<ProductCardProps> = ({
   image2,
   title,
   price,
+  slug
 }) => {
   const activeRef = React.useRef<HTMLDivElement>(null);
   const [active, setActive] = React.useState<boolean>(false);
+
+  const router = useRouter();
 
   return (
     <Card
       ref={activeRef}
       onMouseEnter={() => setActive(true)}
-      onMouseLeave={() => setActive(false)}
+      onMouseLeave={() => setActive(false)} onClick={()=> router.push(`/product/${slug}`)}
       className="w-full  shadow-sm h-86 relative animated-border 
     "
     >

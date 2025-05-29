@@ -20,6 +20,7 @@ import { EmblaOptionsType } from "embla-carousel";
       image2: "/images/card1-2.jpg",
       title: "Almonds",
       price: "1200",
+      slug:"amonds-5678"
     },
     {
       _id: 2,
@@ -27,6 +28,7 @@ import { EmblaOptionsType } from "embla-carousel";
       image2: "/images/card2-2.jpg",
       title: "Ceshews",
       price: "1200",
+          slug:"amonds-4678"
     },
     {
       _id: 3,
@@ -34,6 +36,7 @@ import { EmblaOptionsType } from "embla-carousel";
       image2: "/images/card3-1.jpg",
       title: "WallNut",
       price: "1200",
+          slug:"amonds-5078"
     },
     {
       _id: 4,
@@ -41,6 +44,7 @@ import { EmblaOptionsType } from "embla-carousel";
       image2: "/images/card1-2.jpg",
       title: "Almonds",
       price: "1200",
+          slug:"amonds-5658"
     },
     {
       _id: 5,
@@ -48,6 +52,7 @@ import { EmblaOptionsType } from "embla-carousel";
       image2: "/images/card2-2.jpg",
       title: "Ceshews",
       price: "1200",
+          slug:"amonds-5638"
     },
     {
       _id: 6,
@@ -55,6 +60,7 @@ import { EmblaOptionsType } from "embla-carousel";
       image2: "/images/card3-1.jpg",
       title: "WallNut",
       price: "1200",
+          slug:"amonds-5628"
     },
     {
       _id: 7,
@@ -62,6 +68,7 @@ import { EmblaOptionsType } from "embla-carousel";
       image2: "/images/card3-1.jpg",
       title: "WallNut",
       price: "1200",
+          slug:"amonds-5618"
     },
     {
       _id: 8,
@@ -69,6 +76,7 @@ import { EmblaOptionsType } from "embla-carousel";
       image2: "/images/card1-2.jpg",
       title: "Almonds",
       price: "1200",
+          slug:"amonds-5648"
     },
     {
       _id: 9,
@@ -76,6 +84,7 @@ import { EmblaOptionsType } from "embla-carousel";
       image2: "/images/card2-2.jpg",
       title: "Ceshews",
       price: "1200",
+          slug:"amonds-5668"
     },
 
     
@@ -136,6 +145,7 @@ const BestProducts: React.FC = () => {
           title={item.title}
           price={item.price}
           _id={item._id}
+          slug={item.slug}
         />
       </CarouselItem>
     ))}

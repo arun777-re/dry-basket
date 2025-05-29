@@ -1,0 +1,168 @@
+"use client";
+import React from "react";
+import Image from "next/image";
+import { FaStar } from "react-icons/fa";
+import Button from "@/app/_components/Button";
+
+interface Props {
+  images: string[];
+  description?: string;
+  price?: number;
+  ratingCount?: number;
+  productName?: string;
+}
+
+const ProductDescription: React.FC<Props> = ({
+  images,
+  productName,
+  description,
+  price,
+  ratingCount,
+}) => {
+  // state to increment and decrement quantity
+  const [qty, setQty] = React.useState<number>(1);
+  // state to change paragraph text on clicking thumbnail
+  const [selectImage, setSelectImage] = React.useState<string>(images[0]);
+  // state to set transform origin for image zoom effect
+  const [transformOrigin, setTransformOrigin] = React.useState("center center");
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { left, top, width, height } =
+      containerRef.current!.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setTransformOrigin(`${x}% ${y}%`);
+  };
+
+  return (
+    <div className=" w-full relative">
+      <div className="w-full  relative flex items-start justify-center gap-8">
+        <div
+          ref={containerRef}
+          onMouseMove={handleMouseMove}
+          className="w-1/2 h-[50vh] relative overflow-hidden group"
+        >
+          <div
+            className="w-full h-full relative transition-transform duration-100 scale-100
+                 group-hover:scale-125"
+            style={{ transformOrigin }}
+          >
+            <Image
+              src={selectImage}
+              alt="product"
+              fill
+              className="object-fill object-center pointer-events-none"
+            />
+          </div>
+        </div>
+        <article className="w-1/2 h-auto relative flex flex-col items-start justify-start">
+          <h2>{productName}</h2>
+          <div className="flex flex-col items-start justify-center gap-1 py-4">
+            <div className="flex gap-1">
+              {[...Array(5)].map((_, index) => (
+                <FaStar key={index} className="text-prdct text-md" />
+              ))}
+            </div>
+            <p>{ratingCount}</p>
+          </div>
+          <p>{description?.slice(0, 100)}...</p>
+
+          <div className="flex items-start justify-center gap-16 py-4">
+            <span className="text-sm font-semibold text-head">Price:</span>
+            <span className="text-sm font-semibold text-head">
+              Rs{price}/pc
+            </span>
+          </div>
+          <div
+            className="flex items-center 
+             justify-center gap-16 py-4"
+          >
+            <span className="text-sm font-semibold text-head">Weight:</span>
+            <select
+              name=""
+              id=""
+              className="px-4 py-1 text-body items-center
+border-1 border-gray-300"
+            >
+              <option value="500gm" className="text-sm text-head">
+                500gm
+              </option>
+              <option value="1kg" className="text-sm text-head">
+                1kg
+              </option>
+            </select>
+          </div>
+          <div
+            className="flex items-center
+            justify-center gap-16 py-4"
+          >
+            <span className="text-sm font-semibold text-head">Quantity:</span>
+            <div className="flex">
+              <button
+                onClick={() => setQty((prev) => prev - 1)}
+                className="px-3 py-1
+               border-1 text-head border-gray-300"
+              >
+                -
+              </button>
+              <input
+                type="number"
+                className="px-1 py-1 
+               border-1 w-12 text-center border-gray-300"
+                value={qty}
+              />
+              <button
+                onClick={() => setQty((prev) => prev + 1)}
+                className="px-2.5
+                     py-1
+                border-1 text-head border-gray-300"
+              >
+                +
+              </button>
+            </div>
+          </div>
+          <div
+            className="flex gap-3 items-start flex-wrap
+             justify-center"
+          >
+            {[
+              { name: "Add to Cart", action: "#" },
+              { name: "Buy it now", action: "#" },
+              { name: "Add to Wishlist", action: "#" },
+            ].map((value, key) => (
+              <Button
+                onClick={() => value.action}
+                className="bg-tansparent text-sm transition-all duration-500 ease-in-out
+                 px-4 py-2 border-1 border-head hover:border-first hover:bg-first"
+              >
+                {value.name}
+              </Button>
+            ))}
+          </div>
+        </article>
+      </div>
+      <div className="flex items-start justify-start gap-4 flex-row w-full h-auto py-8">
+        {images &&
+          images.length > 0 &&
+          images.map((item, key) => (
+            <Button
+              key={key}
+              onClick={() => setSelectImage(item)}
+              className="w-[80] h-[90] active:border-head rounded-none border-2 border-transparent hover:border-head transition-all duration-500 ease-in-out relative"
+            >
+              <Image
+                src={item}
+                alt="product"
+                fill
+                priority
+                className="object-fill object-center pointer-events-none"
+              />
+            </Button>
+          ))}
+      </div>
+    </div>
+  );
+};
+
+export default ProductDescription;
