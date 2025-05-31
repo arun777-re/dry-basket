@@ -15,7 +15,7 @@ export interface ProductVariant {
 export interface ProductDocument extends Document {
     slug:string;
     productName:string;
-    category:string;
+    category:Types.ObjectId;
     status:'available' | 'unavailable';
     description:string;
     images:string[];

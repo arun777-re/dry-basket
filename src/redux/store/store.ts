@@ -3,7 +3,8 @@ import { combineReducers } from "@reduxjs/toolkit";
 import logger from "redux-logger";
 import { persistStore, persistReducer,Persistor } from "redux-persist";
 import storage from "@/lib/storage";
-import {apiMiddleware} from '@/redux/services/middleware'
+import {apiMiddleware} from '@/redux/services/middleware';
+import productReducer from '@/redux/slices/productSlice';
 
 // configuration for the persisted reducer
 const persistConfig = {
@@ -14,7 +15,7 @@ const persistConfig = {
 
 // object of the root reducer
 const rootReducer = {
-
+product:productReducer
 };
 
 // make the persisted reducers

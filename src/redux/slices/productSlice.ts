@@ -49,11 +49,17 @@ const productSlice = createSlice({
   name: "product",
   initialState: initialState,
   reducers: {
+    createStart:(state)=>{
+  state.loading = true;
+  state.error = null;
+    },
     createSuccess:(state,action:PayloadAction<any>)=>{
+      state.loading = false;
         state.products.push(action.payload);
     },
 
     createFailure:(state,action:PayloadAction<any>)=>{
+      state.loading = false;
         state.error = action.payload;
     }
   },
@@ -63,6 +69,6 @@ const productSlice = createSlice({
   },
 });
 
-export const {createFailure,createSuccess} = productSlice.actions;
+export const {createStart,createFailure,createSuccess} = productSlice.actions;
 
 export default productSlice.reducer;

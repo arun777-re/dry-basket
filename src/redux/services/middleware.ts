@@ -1,7 +1,6 @@
 import { Middleware } from "@reduxjs/toolkit";
-
 import axios from "axios";
-import { store } from "../store/store";
+import toast from "react-hot-toast";
 
 type ApiAction = {
   type: "api/request";
@@ -14,8 +13,7 @@ type ApiAction = {
     onError?: string;
     successMessage?: string;
     errorMessage?: string;
-    auth?: boolean;
-    withCredentials?:boolean;
+    withCredentials?: boolean;
   };
 };
 
@@ -29,57 +27,48 @@ function isApiAction(action: any): action is ApiAction {
     typeof action.payload.url === "string"
   );
 }
+
 export const apiMiddleware: Middleware =
   (store) => (next) => async (action) => {
     if (!isApiAction(action)) {
       return next(action);
     }
+
     const {
       method = "GET",
       url,
       data,
+      headers = {},
       onSuccess,
       onError,
-      headers = {},
       successMessage,
       errorMessage,
-      auth = false,
-      withCredentials = false
+      withCredentials = false,
     } = action.payload;
+
     try {
-const config = 
-{
-    method,
-    url,
-    data,
-    headers,
-    withCredentials
-}
+      const response = await axios.request({
+        method,
+        url,
+        headers,
+        data: method !== "GET" ? data : undefined,
+        withCredentials,
+      });
 
-      let response;
-
-      switch (method.toUpperCase()) {
-        case "GET":
-          response = await axios.get(url);
-          break;
-        case "POST":
-          response = await axios.post(url, data);
-          break;
-
-        case "PUT":
-          response = await axios.put(url, data);
-          break;
-        case "DELETE":
-          response = await axios.delete(url);
-          break;
-        default:
-          throw new Error(`Unsupported method: ${method}`);
+      if (successMessage) {
+        toast.success(successMessage);
       }
 
       if (onSuccess) {
         store.dispatch({ type: onSuccess, payload: response.data });
       }
     } catch (error: any) {
+      if (errorMessage) {
+        toast.error(errorMessage);
+      } else {
+        toast.error("Something went wrong");
+      }
+
       if (onError) {
         store.dispatch({ type: onError, payload: error.message });
       }
