@@ -1,12 +1,13 @@
+import { OfferDocument } from '@/types/offer';
 import mongoose from 'mongoose';
 
 
-const offerSchema = new mongoose.Schema({
+const offerSchema = new mongoose.Schema<OfferDocument>({
     code:{
         type:String,
         required:true,
         unique:true,
-        uppaercase:true,
+        uppercase:true,
         trim:true
     },
     description:String,
@@ -33,7 +34,7 @@ const offerSchema = new mongoose.Schema({
     usageLimit:{
         type:Number,
         default:0,
-        required:true,
+        required:false,
     },
     timesUsed:{
         type:Number,

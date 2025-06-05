@@ -7,7 +7,6 @@ import { MdOutlineAddHomeWork } from "react-icons/md";
 import { IoReorderThreeOutline } from "react-icons/io5";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { RiHomeHeartFill } from "react-icons/ri";
-import { TbBrandBooking } from "react-icons/tb";
 import { FcInvite } from "react-icons/fc";
 import { RiHome9Fill } from "react-icons/ri";
 import { FaUserPen } from "react-icons/fa6";
@@ -21,6 +20,8 @@ import Link from "next/link";
 import Dashboard from "@/app/Components/admin/Dashboard";
 import CreateProduct from "@/app/Components/admin/CreateProduct";
 import CreateCategory from "@/app/Components/admin/CreateCategory";
+import CreateOffer from "@/app/Components/admin/CreateOffer";
+import ViewOffer from "@/app/Components/admin/ViewOffer";
 
 const AdminDashboard = () => {
   const [value, setValue] = useState<string>("");
@@ -76,23 +77,23 @@ const AdminDashboard = () => {
               </p>
             </Button>
             <Button
-              onClick={() => setPage("featured")}
+              onClick={() => setPage("create-offer")}
               className="flex flex-row items-center gap-4 cursor-pointer text-gray-300/60
                   active:text-white hover:text-white transition-colors duration-300"
             >
               <RiHomeHeartFill size={18} />
               <p className="text-sm font-medium text-gray-300/60">
-                Featured Properties
+                Create Offer
               </p>
             </Button>
             <Button
-              onClick={() => setPage("favorite")}
+              onClick={() => setPage("view-offer")}
               className="flex flex-row items-center gap-4 cursor-pointer text-gray-300/60
                   active:text-white hover:text-white transition-colors duration-300"
             >
               <RiHome9Fill size={18} />
               <p className="text-sm font-medium text-gray-300/60">
-                Favorite Properties
+                View Offer
               </p>
             </Button>
           
@@ -209,6 +210,8 @@ const AdminDashboard = () => {
             {page === "dashboard" && <Dashboard/>}
             {page === "addProduct" && <CreateProduct/>}
             {page === "create-category" && <CreateCategory/>}
+            {page === "create-offer" && <CreateOffer/>}
+            {page === "view-offer" && <ViewOffer/>}
           </div>
         </section>
       </div>

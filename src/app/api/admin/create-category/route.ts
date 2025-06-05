@@ -1,16 +1,16 @@
 import { dbConnect } from "@/lib/db";
+dbConnect();
+
 import { createResponse } from "@/lib/middleware/response";
 import Category from "@/models/Category";
 import { NextRequest } from "next/server";
 import slugify from "slugify";
 import { v4 as uuid } from "uuid";
 
-dbConnect();
-
 export async function POST(req: NextRequest) {
   try {
+    // getting body as json from frontend
     const body = await req.json();
-    console.log(body);
 
     const { name, parent } = body;
 
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Resolve parentId if parent name is provided 
+    // Resolve parentId if parent name is provided
     let parentId = null;
     if (parent) {
       const parentcat = await Category.findOne({ name: parent });
@@ -37,8 +37,10 @@ export async function POST(req: NextRequest) {
     }
 
     // Check for existing category with same name and resolved parentId
-    const exists = await Category.findOne({ name:{$regex:new RegExp(`^${name}$`,'i')}, 
-        parent: parentId });
+    const exists = await Category.findOne({
+      name: { $regex: new RegExp(`^${name}$`, "i") },
+      parent: parentId,
+    });
     if (exists) {
       return createResponse({
         success: false,
@@ -47,11 +49,13 @@ export async function POST(req: NextRequest) {
       });
     }
 
+    // generate slug for each category
     const slug = slugify(`${name}-${uuid().slice(0, 4)}`, {
       lower: true,
       strict: true,
     });
 
+    // create category
     const category = await Category.create({
       name,
       parent: parentId,

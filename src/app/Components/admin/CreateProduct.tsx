@@ -1,8 +1,12 @@
+"use client";
 import React from "react";
 import { Formik, FieldArray } from "formik";
 import * as Yup from "yup";
 import Dropzone from "react-dropzone";
 import { handleImageUpload } from "@/lib/middleware/cloudinary";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store/store";
+import { createStart } from "@/redux/slices/productSlice";
 
 interface VariantProps {
   weight: number;
@@ -59,6 +63,8 @@ const validationSchema = Yup.object().shape({
 });
 
 const ProductForm = () => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const handleOnSubmit = async (values: ProductType) => {
     const formData = new FormData();
     formData.append("productName", values.productName);
@@ -70,24 +76,23 @@ const ProductForm = () => {
     formData.append("variants", JSON.stringify(values.variants));
 
     try {
+      // save images to cloudinary in parallel before sending request to backend
       const imageUrls = await Promise.all(
         values.images.map((file) => handleImageUpload(file).then((res) => res))
       );
       formData.append("images", JSON.stringify(imageUrls));
-
-      const response = await fetch("/api/admin/create-product", {
-        method: "POST",
-        body: formData,
+      dispatch(createStart());
+      dispatch({
+        type: "api/request",
+        payload: {
+          method: "POST",
+          url: "/api/admin/create-product",
+          data: formData,
+          headers: { "Content-Type": "multipart/form-data" },
+          onSuccess: () => console.log("hello users"),
+          onError: () => console.log("hello users"),
+        },
       });
-
-      if (!response.ok) {
-        const error = await response.text();
-        throw new Error(`Failed: ${error}`);
-      }
-
-      const result = await response.json();
-      console.log("Product created:", result);
-      alert("✅ Product created!");
     } catch (err) {
       console.error("❌ Submission failed:", err);
       alert("Failed to submit product");

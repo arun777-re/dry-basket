@@ -1,6 +1,7 @@
 import Category from "@/models/Category";
-import { Types } from "mongoose";
-import { NextResponse } from "next/server";
+import { Model, Types } from "mongoose";
+import { NextRequest, NextResponse } from "next/server";
+import { verifyUserToken } from "./verifyToken";
 
 export function validateFields(fields: Record<string, any>) {
   // create an array from object recieved using entries method and then filter to check whether fields are provide or not
@@ -26,11 +27,18 @@ export function createResponse({
   status,
   message,
   data,
+  currentPage,
+  hasNextPage,
+  hasPrevPage
+  
 }: {
   success: boolean;
   status: number;
   message: string;
   data?: any;
+  currentPage?:number,
+  hasNextPage?:boolean,
+  hasPrevPage?:boolean
 }) {
   // assigning properties comes to a single object
   const body: Record<string, any> = { success, status, message };
@@ -39,13 +47,18 @@ export function createResponse({
 }
 
 // function for pagination 
-export function pagination ({totalItems,page = 1,limit}:{totalItems:number,page?:number,limit:number}){
+export async function pagination ({searchParams,model}:{searchParams:URLSearchParams,model:Model<any>}){
+
+  const pageparams:any = searchParams.get('page')
+  const limitparams:any = searchParams.get('limit')
+
+  const page = parseInt(pageparams) || 1;
+  const limit = parseInt(limitparams) || 10;
 
   // use safelimit 
   const safelimit = limit > 0 ? limit : 10;
 
-  // count totalPages based on limit provided
-  const totalPages = Math.max(Math.ceil(totalItems / safelimit),1);
+  const totalPages = await model.countDocuments();
 
   // current page
   const currentPage = Math.min(Math.max(page,1),totalPages);
@@ -54,7 +67,6 @@ export function pagination ({totalItems,page = 1,limit}:{totalItems:number,page?
   const skip = (currentPage - 1) * safelimit;
 
   return {
-    totalPages,
     limit:safelimit,
     skip,
     currentPage,
@@ -67,7 +79,6 @@ export function pagination ({totalItems,page = 1,limit}:{totalItems:number,page?
 // function to check whether category exists or is a leaf category means its has no parents
 
 export const getValidLeafCategory = async(category:string)=>{
-  const path:Types.ObjectId[] = [];
 const categoryExist = await Category.findOne({name:category});
 if(!categoryExist){
   throw new Error('No such category exists');
@@ -80,3 +91,28 @@ if(isExistsInParent){
 return categoryExist._id;
 }
 
+
+export const withAuth = (handler:(req:any)=>Promise<NextResponse>)=>{
+return async (req:NextRequest)=>{
+  const authResult = await verifyUserToken(req);
+  if(authResult instanceof NextResponse) return authResult;
+  return handler(req);
+}
+
+}
+
+export const handleError = (error:any):NextResponse=>{
+   if (process.env.NODE_ENV !== "production") {
+      if (error instanceof Error) {
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
+    } else {
+      console.error("Unknown error:", error);
+    }
+    }
+    return createResponse({
+      status: 500,
+      message: "Internal Server Error",
+      success: false,
+    });
+}

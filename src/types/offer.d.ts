@@ -1,17 +1,33 @@
 // types/offer.d.ts
-import { Document } from 'mongoose';
 
-export interface OfferDocument extends Document {
+type DiscountType = 'percentage' | 'flat'; 
+
+export interface OfferDocument {
+  _id:string,
   code: string;
   description?: string;
-  discountType: 'percentage' | 'flat';
+  discountType:DiscountType;
   value: number;
   minOrderAmount?: number;
   appliesToCategories?: string[];
   expiresAt?: Date;
-  usageLimit: number;
-  timesUsed: number;
-  active: boolean;
+  usageLimit:number;
+  timesUsed?: number;
+  active?:boolean;
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+
+// version of form input fields for frontend
+
+export interface OfferFormValues {
+  code:string,
+  description?:string,
+  discountType:DiscountType,
+  value:number,
+  minOrderAmount?:number,
+  appliesToCategories?:string,
+  expiresAt:string;
+  usageLimit:number,
 }

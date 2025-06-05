@@ -1,76 +1,97 @@
-import { Middleware } from "@reduxjs/toolkit";
 import axios from "axios";
-import toast from "react-hot-toast";
+// middleware to handle post request
+export const postRequest = async <T = any>({
+  url,
+  data,
+  reject,
+}: {
+  url: string;
+  data?: any;
+  reject: (value: any) => any;
+}): Promise<T | ReturnType<typeof reject>> => {
+  try {
+    const response = await axios.post(url, data, {
+      headers: {
+        "Content-Type":
+          data instanceof FormData ? "multipart/form-data" : "application/json",
+      },
+    });
 
-type ApiAction = {
-  type: "api/request";
-  payload: {
-    method?: "GET" | "POST" | "PUT" | "DELETE";
-    url: string;
-    data?: any;
-    headers?: Record<string, any>;
-    onSuccess?: string;
-    onError?: string;
-    successMessage?: string;
-    errorMessage?: string;
-    withCredentials?: boolean;
-  };
+    return response.data;
+  } catch (error: any) {
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Something went wrong during Post request";
+    return reject(message);
+  }
 };
 
-function isApiAction(action: any): action is ApiAction {
-  return (
-    typeof action === "object" &&
-    action !== null &&
-    action.type === "api/request" &&
-    typeof action.payload === "object" &&
-    action.payload !== null &&
-    typeof action.payload.url === "string"
-  );
-}
+export const getRequest = async <T = any>({
+  url,
+  reject,
+}: {
+  url: string;
+  reject: (value: any) => any;
+}): Promise<T | ReturnType<typeof reject>> => {
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-export const apiMiddleware: Middleware =
-  (store) => (next) => async (action) => {
-    if (!isApiAction(action)) {
-      return next(action);
-    }
+    return response.data;
+  } catch (error: any) {
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Something went wrong during Post request";
+    return reject(message);
+  }
+};
+export const deleteRequest = async <T = any>({
+  url,
+  reject,
+}: {
+  url: string;
+  reject: (value: any) => any;
+}): Promise<T | ReturnType<typeof reject>> => {
+  try {
+    const response = await axios.delete(url);
 
-    const {
-      method = "GET",
-      url,
-      data,
-      headers = {},
-      onSuccess,
-      onError,
-      successMessage,
-      errorMessage,
-      withCredentials = false,
-    } = action.payload;
+    return response.data;
+  } catch (error: any) {
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Something went wrong during Post request";
+    return reject(message);
+  }
+};
+export const putRequest = async <T = any>({
+  url,
+  reject,
+  data,
+}: {
+  url: string;
+  data?: any;
+  reject: (value: any) => any;
+}): Promise<T | ReturnType<typeof reject>> => {
+  try {
+    const response = await axios.put(url, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: data,
+    });
 
-    try {
-      const response = await axios.request({
-        method,
-        url,
-        headers,
-        data: method !== "GET" ? data : undefined,
-        withCredentials,
-      });
-
-      if (successMessage) {
-        toast.success(successMessage);
-      }
-
-      if (onSuccess) {
-        store.dispatch({ type: onSuccess, payload: response.data });
-      }
-    } catch (error: any) {
-      if (errorMessage) {
-        toast.error(errorMessage);
-      } else {
-        toast.error("Something went wrong");
-      }
-
-      if (onError) {
-        store.dispatch({ type: onError, payload: error.message });
-      }
-    }
-  };
+    return response.data;
+  } catch (error: any) {
+    const message =
+      error.response?.data?.message ||
+      error.message ||
+      "Something went wrong during Post request";
+    return reject(message);
+  }
+};

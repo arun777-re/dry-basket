@@ -1,7 +1,5 @@
 import { CartProps } from "@/types/cart";
-import { acceleratedValues } from "framer-motion";
 import mongoose from "mongoose";
-import { Princess_Sofia } from "next/font/google";
 
 
 
@@ -20,14 +18,14 @@ const cartSchema = new mongoose.Schema<CartProps>({
         variant:{
             weight:{type:Number,required:true},
             price:{type:Number,required:true},
-            discount:{type:Number,required:true},
+            discount:{type:Number,required:false},
             discountExpiry:{type:Date,default:null}
         },
         addedAtPrice:{
             type:Number,
             required:true,
         },
-        subTotal:{
+        subtotal:{
             type:Number,
             required:true,
             default:0,
@@ -58,6 +56,9 @@ const cartSchema = new mongoose.Schema<CartProps>({
 cartSchema.pre('save',function(next){
 
     const cart = this as any;
+    if(cart.coupon.code){
+        
+    }
 
     // calculate subtotal for each item
     cart.items = cart.items.map((item:any)=>{
@@ -75,12 +76,12 @@ cartSchema.pre('save',function(next){
     // apply coupan if any
     let finalTotal = cart.total;
 
-    if(cart.coupan?.discountAmount){
-        finalTotal -= cart.coupan.discountAmount;
+    if(cart.coupon?.discountAmount){
+        finalTotal -= cart.coupon.discountAmount;
     }
 
-    if(cart.coupan?.percentage){
-        finalTotal -= (cart.total * cart.coupan.percentage) / 100;
+    if(cart.coupon?.percentage){
+        finalTotal -= (cart.total * cart.coupon.percentage) / 100;
 
     }
 
@@ -89,5 +90,5 @@ cartSchema.pre('save',function(next){
 });
 
 
-const Cart = mongoose.models.Cart || mongoose.model('Cart',cartSchema);
+const Cart = mongoose.models.Cart || mongoose.model<CartProps>('Cart',cartSchema);
 export default Cart;

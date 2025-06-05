@@ -5,9 +5,12 @@ import { IoSearchOutline } from "react-icons/io5";
 import { MdAddShoppingCart } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { CartDrawer } from "./CartDrawer";
 
 const Navbar = () => {
   const [active, setActive] = useState(false);
+  const router = useRouter();
 
   // Scroll logic to activate navbar
   useEffect(() => {
@@ -51,8 +54,8 @@ const Navbar = () => {
             </ul>
             <div className="flex gap-4">
               <IoSearchOutline className="text-2xl cursor-pointer" />
-              <MdAddShoppingCart className="text-2xl cursor-pointer" />
-              <FaUser className="text-2xl cursor-pointer" />
+              <CartDrawer/>
+              <FaUser onClick={()=>router.push('/user/auth-login')} className="text-2xl cursor-pointer" />
             </div>
           </div>
         </motion.nav>

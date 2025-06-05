@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 
 export interface CartItem {
-  productId: Types.ObjectId;
+  productId: Types.ObjectId | string;
   quantity: number;
   variant: {
     weight: number;
@@ -10,7 +10,7 @@ export interface CartItem {
     discountExpiry?: Date | null;
   };
   addedAtPrice: number;
-  subTotal: number;
+  subTotal?: number;
 }
 
 export interface CouponInfo {
@@ -23,7 +23,7 @@ export interface CartProps {
   items: CartItem[];
   total: number;
   coupon?: CouponInfo;      
-  finalTotal: number;
+  finalTotal?: number;
   userId: Types.ObjectId | string;
   createdAt?: Date;           
 }

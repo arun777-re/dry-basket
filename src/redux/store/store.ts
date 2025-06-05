@@ -1,21 +1,25 @@
+'use client'
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "@reduxjs/toolkit";
 import logger from "redux-logger";
 import { persistStore, persistReducer,Persistor } from "redux-persist";
 import storage from "@/lib/storage";
-import {apiMiddleware} from '@/redux/services/middleware';
 import productReducer from '@/redux/slices/productSlice';
+import categoryReducer from '@/redux/slices/categorySlice';
+import offerReducer from '@/redux/slices/offerSlice';
 
 // configuration for the persisted reducer
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user", "admin", "product", "card"],
+  whitelist: ["user", "admin", "product", "category",'offer'],
 };
 
 // object of the root reducer
 const rootReducer = {
-product:productReducer
+product:productReducer,
+category:categoryReducer,
+offer:offerReducer,
 };
 
 // make the persisted reducers
@@ -31,7 +35,7 @@ const store = configureStore({
     return getDefaultMiddleware({
       serializableCheck: false,
       immutableCheck: false,
-    }).concat(apiMiddleware,logger);
+    }).concat(logger);
   },
 });
 
