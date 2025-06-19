@@ -1,10 +1,10 @@
 import { createResponse, handleError, validateFields } from "@/lib/middleware/response";
 import { dbConnect } from "@/lib/db";
 dbConnect();
-import User from "@/models/User";
 import { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import Agent from "@/models/AgentSchema";
 
 const secret = process.env.JWT_SECRET || "";
 
@@ -18,7 +18,7 @@ export async function PATCH(req: NextRequest) {
     validateFields({ email, password });
 
     // check whether any user exists with this email
-    const user = await User.findOne({ email: email });
+    const user = await Agent.findOne({ email: email });
     if (!user) {
       return createResponse({
         success: false,
@@ -30,12 +30,12 @@ export async function PATCH(req: NextRequest) {
     // update pass
     const salt = await bcrypt.genSalt(12);
     const hashPass = await bcrypt.hash(password, salt);
-    const updatePass = await User.findByIdAndUpdate(user._id, {
+     await Agent.findByIdAndUpdate(user._id, {
       $set: { password: hashPass },
     });
 
-    const accesstoken = jwt.sign({ id: user._id }, secret, { expiresIn: "2h" });
-    const refreshtoken = jwt.sign({ id: user._id }, secret, {
+    const accesstoken = jwt.sign({ id: user._id,isMainAdmin:user.isMainAdmin }, secret, { expiresIn: "2h" });
+    const refreshtoken = jwt.sign({ id: user._id ,isMainAdmin:user.isMainAdmin}, secret, {
       expiresIn: "30d",
     });
     //    sent access token and refresh token in cookies

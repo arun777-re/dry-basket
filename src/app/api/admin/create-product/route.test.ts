@@ -4,7 +4,11 @@ import { getValidLeafCategory, validateFields, createResponse } from "@/lib/midd
 import { dbConnect } from "@/lib/db";
 import { NextRequest } from "next/server";
 
-// Mock dependencies
+
+
+jest.mock("@/lib/utils/categoryUtils", () => ({
+  getValidLeafCategory: jest.fn(),
+}));
 jest.mock("@/lib/db", () => ({
   dbConnect: jest.fn(),
 }));

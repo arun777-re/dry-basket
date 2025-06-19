@@ -59,12 +59,13 @@ export async function pagination ({searchParams,model}:{searchParams:URLSearchPa
   const safelimit = limit > 0 ? limit : 10;
 
   const totalPages = await model.countDocuments();
+  console.log('totalPages:',totalPages)
 
   // current page
   const currentPage = Math.min(Math.max(page,1),totalPages);
 
   // how many items to skip
-  const skip = (currentPage - 1) * safelimit;
+  const skip = (page - 1) * safelimit;
 
   return {
     limit:safelimit,
@@ -92,10 +93,21 @@ return categoryExist._id;
 }
 
 
-export const withAuth = (handler:(req:any)=>Promise<NextResponse>)=>{
+export const withAuth = (handler:(req:any)=>Promise<NextResponse>,required = false)=>{
 return async (req:NextRequest)=>{
-  const authResult = await verifyUserToken(req);
-  if(authResult instanceof NextResponse) return authResult;
+ const authResult = await verifyUserToken(req);
+   if (authResult instanceof NextResponse) {
+      return authResult;
+    }
+ const user = authResult?.user;
+ (req as any).user = user;
+ if(required && !user){
+ return createResponse({
+   message:'Unauthorized',
+   status:401,
+   success:false
+ })
+ }
   return handler(req);
 }
 

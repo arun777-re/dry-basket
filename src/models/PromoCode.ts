@@ -8,7 +8,9 @@ const offerSchema = new mongoose.Schema<OfferDocument>({
         required:true,
         unique:true,
         uppercase:true,
-        trim:true
+        trim:true,
+        minlength:6,
+        maxlength:12
     },
     description:String,
     discountType:{
@@ -20,7 +22,7 @@ const offerSchema = new mongoose.Schema<OfferDocument>({
     value:{
         type:Number,
         required:true,
-
+       
     },
     minOrderAmount:{
         type:Number,

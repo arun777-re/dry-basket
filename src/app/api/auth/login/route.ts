@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import Agent from "@/models/AgentSchema";
 import { dbConnect } from "@/lib/db";
-import { createResponse, handleValidation } from "@/lib/middleware/error";
+import { createResponse,handleError,validateFields } from "@/lib/middleware/response";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 await dbConnect();
@@ -14,33 +14,31 @@ export async function POST(req: NextRequest) {
     const { password } = body;
     const adminEmail = body.email;
     // validate fields
-    handleValidation({ adminEmail, password });
+    validateFields({ adminEmail, password });
 
     // check user exists with the email
 
     const admin = await Agent.findOne({email: adminEmail });
 
     if (!admin) {
-      return createResponse("No Admin available with this email", false, 401);
+      return createResponse({message:"No Admin available with this email", success:false, status:401});
     }
 
     const comparePass = await admin.comparePassword(password);
 
     if (!comparePass) {
-      return createResponse("Invalid credentials", false, 401);
+      return createResponse({message:"Invalid credentials", success:false, status:401});
     }
 
     const token = jwt.sign({ id: admin._id }, secret, { expiresIn: "7d" });
 
-    const { _id, name, email, agencyName, agencyAddress, isMainAdmin } = admin;
-    const response =  createResponse("logged in", true, 200, {
+    const { _id, name, email,phone,isMainAdmin} = admin;
+    const response =  createResponse({message:"logged in", success:true, status:200, data:{
       _id,
       name,
       email,
-      agencyName,
-      agencyAddress,
-      isMainAdmin,
-    });
+      phone,isMainAdmin
+    }});
 
     response.cookies.set('adminToken',token,{
       httpOnly: true,
@@ -51,8 +49,10 @@ export async function POST(req: NextRequest) {
     });
 
     return response;
-  } catch (error: any) {
-    console.error("Error during login user", error.message);
-    return createResponse("Internal Server Error", false, 500);
+  } catch (error) {
+   if(error instanceof Error){
+    return handleError(error);
+   }
+   return handleError('Unknown error occured')
   }
 }

@@ -3,21 +3,26 @@ import { dbConnect } from "@/lib/db";
 import {
   createResponse,
   handleError,
-  validateFields,
   withAuth,
 } from "@/lib/middleware/response";
 import { NextRequest } from "next/server";
 import Offer from "@/models/PromoCode";
-import { ProductDocument } from "@/types/product";
+import { applyCoupon } from "@/lib/services/cartService";
 dbConnect();
 
-export const POST = withAuth(async (req: NextRequest) => {
+export const PATCH = withAuth(async (req: NextRequest) => {
   try {
     const cartId = req.nextUrl.searchParams.get("cartId");
-    const { code } = await req.json();
-
+    const body = await req.json();
+    const { code } = body;
     // basic validation
-    validateFields({ code, cartId });
+    if (!code || !cartId) {
+      return createResponse({
+        success: false,
+        status: 400,
+        message: "Value of code/id not provided",
+      });
+    }
 
     // find cart
     const cart = await Cart.findById(cartId);
@@ -29,73 +34,51 @@ export const POST = withAuth(async (req: NextRequest) => {
       });
     }
 
-    // populate productId include in cart and get category
-    await cart.populate("items.productId.category");
-    const items = cart.items;
-    const categoriesInCart = items.map((item:any) => item.productId.category);
-
-
     // find that the coupon is exists or not
     const isCoupon = await Offer.findOne({ code });
-    if (!isCoupon) {
+    if (!isCoupon || isCoupon.value <= 0) {
       return createResponse({
         success: false,
         status: 400,
-        message: "Coupon not found",
+        message: "Coupon not found/value must be greater than 0",
       });
     }
-
-    // check whether categories in offer are same as category of products included in cart
-    const isApplicable = categoriesInCart.some((category:any) => isCoupon.appliesToCategories.includes(category));
-
-    const now = Date.now();
-    if (
-      (new Date(isCoupon.expiresAt).getTime() < now) ||
-      !isApplicable ||
-      isCoupon.active === false || isCoupon.minOrderAmount !== cart.total
-    ) {
+    // check if a single coupon is not applied again
+    const alreadyApplied = cart.coupon.find((c: any) => c.code === code);
+    if (alreadyApplied) {
       return createResponse({
         success: false,
         status: 400,
-        message: "Coupon is not valid",
+        message: "Coupon already applied to this cart",
       });
     }
-// "Agar cart me 2 categories hain aur coupon sirf ek category pe applicable hai, to kya hoga?"
 
-// "Agar coupon active hai par value negative hai to?"
-
-// "Agar same cart pe 2 coupons lag jayein to?" 
-
-    //find products on which coupan is applied and then calculate finaltotal of them 
-    const productwithMatchCategories = items.filter((cat:any)=> isCoupon.appliesToCategories.includes(cat.productId.category))    
-    
-    // find products on which coupon is not applicable
-    const notApplicable = items.filter((item:ProductDocument)=> !isCoupon.appliesToCategories.includes(item.productId.category))
-    // total of not applicable products
-    const notApplicableTotal = notApplicable.reduce((acc,item)=>{
-        const discountRate = item.variant.discount ? item.variant.discount / 100 : 0 ;
-        const priceAfterDiscount = item.price *(1- discountRate);
-        return acc + priceAfterDiscount * item.quantity;
-    },0);
-    
-    // total of applicable items 
-    const productwithMatchCategoriesTotal = productwithMatchCategories.reduce((acc,item)=>{
-        return acc + item.productId.price * item.quantity
-    },0);
-
-
-    // apply coupan on applicable items 
-    let finaltotal = 0;
-    if (isCoupon.discountType === "flat") {
-         finaltotal = productwithMatchCategoriesTotal - isCoupon.value
-    } else {
-     const discounted = 1 - isCoupon.value /100
-     finaltotal = (productwithMatchCategoriesTotal * discounted);
+    const result = applyCoupon(isCoupon, cart.items, cart.total);
+    if (!result.success) {
+      return createResponse({
+        success: false,
+        status: 400,
+        message: result.error,
+      });
     }
 
+    // update cart with final total and coupon info
+    await Cart.findByIdAndUpdate(cartId, {
+      $set: {
+        finalTotal: result.total,
+        coupon: {
+          code: code,
+          discountAmount: result.discountAmount,
+          percentage: isCoupon.value,
+        },
+      },
+    });
 
-    cart.coupon.code = code;
-    cart.finalTotal = finaltotal + notApplicableTotal;
+    await Offer.findByIdAndUpdate(isCoupon._id, {
+      $inc: {
+        timesUsed: 1,
+      },
+    });
 
     await cart.save();
     return createResponse({

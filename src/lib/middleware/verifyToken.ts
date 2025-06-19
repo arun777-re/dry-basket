@@ -61,13 +61,21 @@ export async function verifyAdminToken(req: CustomReq) {
 // middleware to verify user access token
 export const verifyUserToken = async (req: CustomReq):Promise<verifyUserResult | NextResponse> => {
   try {
-    const token = req.cookies.get("accessToken")?.value;
+    const token = req.cookies.get("accesstoken")?.value;
 
     // If no access token is provided, try the refresh token
     if (!token) {
-      const refreshToken = req.cookies.get("refreshToken")?.value;
+      const refreshToken = req.cookies.get("refreshtoken")?.value;
       if (!refreshToken) {
-        throw new Error("refresh token is not available login/signup again");
+        return {user:{
+           _id:'',
+    firstName:'',
+    lastName:'',
+    email:'',
+    password:'',
+    isActive:false,
+    phone:0
+        },response:null};
       }
 
       // Verify the refresh token
@@ -94,13 +102,13 @@ export const verifyUserToken = async (req: CustomReq):Promise<verifyUserResult |
         message:'Token Refreshed'
       });
 
-      response.cookies.set('accessToken',newAccessToken,{
+      response.cookies.set('accesstoken',newAccessToken,{
         httpOnly:true,
         secure:true,
         sameSite:'strict',
         maxAge:2 * 60 * 60
       })
-      response.cookies.set('refreshToken',newRefreshToken,{
+      response.cookies.set('refreshtoken',newRefreshToken,{
         httpOnly:true,
         secure:true,
         sameSite:'strict',
@@ -120,7 +128,7 @@ export const verifyUserToken = async (req: CustomReq):Promise<verifyUserResult |
 
     // Update the user's active status
     user.isActive = true;
-    await user.save();
+    await user.save({validateBeforeSave:false});
 
     // Set user in request and proceed
     req.user = user;

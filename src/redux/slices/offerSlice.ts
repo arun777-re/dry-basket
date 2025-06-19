@@ -1,7 +1,7 @@
 "use client";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { deleteRequest, getRequest, postRequest, putRequest } from "../services/middleware";
-import { OfferDocument } from "@/types/offer";
+import { deleteRequest, getRequest, postRequest, patchRequest } from "../services/middleware";
+import { OfferDocument, OfferFormValues } from "@/types/offer";
 export interface ErrorProps {
   status: number;
   message: string;
@@ -49,22 +49,11 @@ const initialValues: valueProps = {
   ],
 };
 
-export const createoffer = createAsyncThunk(
-  "admin/createoffer",
-  async (data: Record<string, any>, { rejectWithValue }) => {
-    try {
-      const res = await postRequest({
-        url: "/api/admin/getall-offer",
-        data: data,
-        reject: rejectWithValue,
-      });
-
-      return res;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
+// thunk to create offer by admin
+export const createOffer = createAsyncThunk('admin/create-offer',async(formData:OfferFormValues,{rejectWithValue})=>{
+const response = await postRequest({url:'/api/admin/create-offer',data:formData,reject:rejectWithValue});
+return response;
+})
 
 // thunk to view offers
 export const viewoffer = createAsyncThunk(
@@ -103,7 +92,7 @@ export const updateoffer = createAsyncThunk(
   "admin/updateoffer",
   async ({offerId,data}:{offerId:string,data:Record<string,any>}, { rejectWithValue }) => {
     try {
-      const res = await putRequest({
+      const res = await patchRequest({
         url: `/api/admin/update-offer?offerId=${offerId}`,
 data:data,
         reject: rejectWithValue,
@@ -121,7 +110,7 @@ const offerSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(createoffer.fulfilled, (state, action) => {
+      .addCase(createOffer.fulfilled, (state, action) => {
         state.error = {
           success: false,
           message: "",

@@ -1,8 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { dbConnect } from "@/lib/db";
-import { createResponse, validateFields } from "@/lib/middleware/response";
+import { createResponse, handleError, validateFields } from "@/lib/middleware/response";
 import jwt from "jsonwebtoken";
-import { cookies } from "next/headers";
 import dotenv from "dotenv";
 import User from "@/models/User";
 dotenv.config();
@@ -13,14 +12,6 @@ export async function POST(req: NextRequest) {
   await dbConnect();
   try {
     const body = await req.json();
-
-    // validation for body
-    if (!body) {
-      return NextResponse.json(
-        { success: false, message: "Provide Data" },
-        { status: 400 }
-      );
-    }
 
     const firstName = body.firstName;
     const lastName = body.lastName;
@@ -37,7 +28,17 @@ export async function POST(req: NextRequest) {
       phone,
     });
 
-    const newUser = new User({
+    // check whether any user with email exists before
+    const existingUser = await User.findOne({email});
+    if(existingUser){
+      return createResponse({
+        success:false,
+        status:400,
+        message:'User already exists with this email'
+      })
+    }
+
+    const newUser = await User.create({
       firstName,
       lastName,
       email,
@@ -45,8 +46,6 @@ export async function POST(req: NextRequest) {
       phone,
     });
 
-    await newUser.save();
-    const cookie = await cookies();
     const accesstoken = jwt.sign({ id: newUser._id }, secret, {
       expiresIn: "7d",
     });
@@ -54,33 +53,33 @@ export async function POST(req: NextRequest) {
       expiresIn: "30d",
     });
 
-    cookie.set({
+    const response = createResponse({message:"Admin created successfully", success:true, status:201,data: []})
+    response.cookies.set({
       name: "accesstoken",
       value: accesstoken,
       httpOnly: true,
       sameSite: "strict",
+      secure:process.env.NODE_ENV === 'production',
       maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
       path: "/",
     });
 
-    cookie.set({
+    response.cookies.set({
       name: "refreshtoken",
       value: refreshtoken,
       httpOnly: true,
       sameSite: "strict",
+      secure:process.env.NODE_ENV === 'production',
       maxAge: 30 * 24 * 60 * 60, // 7 days in seconds
       path: "/",
     });
 
-    return createResponse({message:"Admin created successfully", success:true, status:201,data: []});
+    return response;
   } catch (error: any) {
-        if(process.env.NODE_ENV === 'production'){
-            console.error(error.message)
-        }
-           return createResponse({
-                success:false,
-                status:500,
-                message:process.env.NODE_ENV === 'production' ? `${error.message}` : 'Internal Server Error'
-            })
+     if(error.name === 'ValidationError'){
+      console.error('Validation error during save',error.message);
+      return handleError(error)
+     }
+     throw error;
   }
 }

@@ -1,21 +1,31 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ItemProps } from "@/lib/type";
+import { getRequest, postRequest } from "../services/middleware";
+import { ErrorProps } from "@/types/response";
+
+
+
 
 interface productsType {
   loading: boolean;
-  error: { message: string } | null;
+  error:ErrorProps;
   products: ItemProps[];
 }
 
 const initialState: productsType = {
   loading: false,
-  error: null,
+  error:{
+    success:false,
+    message:'',
+    status:400
+  },
   products: [
     {
       _id: "",
       slug: "",
       productName: "",
       description: "",
+      category:"",
       images: [],
       reviews: [
         {
@@ -45,30 +55,38 @@ const initialState: productsType = {
   ],
 };
 
+// createproduct thunk
+export const createProduct = createAsyncThunk('/admin/create-product',async(data:FormData,{rejectWithValue})=>{
+const response = await postRequest({url:'/api/admin/create-product',reject:rejectWithValue,data:data});
+return response;
+});
+
+export const getProduct = createAsyncThunk('/public/get-product',async(_,{rejectWithValue})=>{
+  const response = await getRequest({url:`/api/public/get-product?limit=10&page=1`,reject:rejectWithValue});
+  return response;
+})
+
 const productSlice = createSlice({
   name: "product",
   initialState: initialState,
   reducers: {
-    createStart:(state)=>{
-  state.loading = true;
-  state.error = null;
-    },
-    createSuccess:(state,action:PayloadAction<any>)=>{
-      state.loading = false;
-        state.products.push(action.payload);
-    },
-
-    createFailure:(state,action:PayloadAction<any>)=>{
-      state.loading = false;
-        state.error = action.payload;
-    }
   },
   extraReducers: (builder) => {
     builder
-    // .addCase()
+    .addCase(createProduct.fulfilled,(state,action)=>{
+      state.error = { success:false,message:'',status:0};
+    state.products = action.payload;
+    state.loading = false;
+  })
+    .addCase(getProduct.fulfilled,(state,action)=>{
+      state.error = { success:false,message:'',status:0};
+    state.products = action.payload;
+    state.loading = false;
+  })
+  
+  }
   },
-});
+);
 
-export const {createStart,createFailure,createSuccess} = productSlice.actions;
 
 export default productSlice.reducer;

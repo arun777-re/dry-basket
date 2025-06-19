@@ -7,12 +7,14 @@ import storage from "@/lib/storage";
 import productReducer from '@/redux/slices/productSlice';
 import categoryReducer from '@/redux/slices/categorySlice';
 import offerReducer from '@/redux/slices/offerSlice';
-
+import cartReducer from '@/redux/slices/cartSlice';
+import adminReducer from "@/redux/slices/adminSlice"
+import userReducer from "@/redux/slices/userSlice"
 // configuration for the persisted reducer
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user", "admin", "product", "category",'offer'],
+  whitelist: ["user", "admin", "product", "category",'offer','usercart'],
 };
 
 // object of the root reducer
@@ -20,6 +22,9 @@ const rootReducer = {
 product:productReducer,
 category:categoryReducer,
 offer:offerReducer,
+usercart:cartReducer,
+user:userReducer,
+admin:adminReducer
 };
 
 // make the persisted reducers

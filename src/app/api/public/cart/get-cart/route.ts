@@ -1,16 +1,16 @@
-import Cart from "@/models/Cart";
 import { dbConnect } from "@/lib/db";
-import { NextRequest, NextResponse } from "next/server";
-import { verifyUserToken } from "@/lib/middleware/verifyToken";
+import '@/models';
+import { NextRequest} from "next/server";
 import {
   createResponse,
   handleError,
   withAuth,
 } from "@/lib/middleware/response";
+import { Cart } from "@/models";
 dbConnect();
 
 interface CustomReq extends NextRequest {
-  user: { _id: string; email: string; firstName: string };
+  user: { _id: string;};
 }
 
 export const GET = withAuth(async (req: CustomReq) => {
@@ -18,7 +18,8 @@ export const GET = withAuth(async (req: CustomReq) => {
     const userId = req.user._id;
 
     // getting cart using users id
-    const cart = await Cart.findOne({ userId }).lean();
+    const cart = await Cart.findOne({ userId })
+    .populate('items.productId','productName images variants');
 
     if (!cart) {
       return createResponse({
@@ -40,4 +41,4 @@ export const GET = withAuth(async (req: CustomReq) => {
     }
     return handleError(new Error("Unknown error occurred"));
   }
-});
+},true);

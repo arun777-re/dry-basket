@@ -62,13 +62,8 @@ const LoginForm = () => {
          
          className="relative w-[40vw] bg-white flex flex-col  z-20
          items-center justify-cente gap-5 py-10 rounded-sm shadow-xl ">
-           <a href="/" className="flex items-center space-x-1 rtl:space-x-reverse">
-               <RiHome8Line className="text-3xl text-green-600  dark:text-gray-700" />
-                <span className="self-center text-xl font-semibold whitespace-nowrap text-gray-800 dark:text-gray-700">Hously</span>
-            </a>
+           <h4>Dry Basket </h4>
            <div className="relative w-full h-auto flex flex-col items-start gap-5 px-10 z-40">
-                 
- 
              <input
                type="email"
                placeholder="Email"

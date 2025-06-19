@@ -10,7 +10,8 @@ export const dbConnect = async () =>{
         return;
     }
     try {
-        await mongoose.connect(mongoUri);
+        await mongoose.connect(mongoUri,{
+        });
         console.log('MongoDB connected');
     } catch (error) {
         console.error('MongoDB connection error:', error);

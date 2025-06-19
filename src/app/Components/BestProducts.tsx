@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import Button from "../_components/Button";
 import ProductCard from "../_components/card/ProductCard";
@@ -12,87 +12,24 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { EmblaOptionsType } from "embla-carousel";
-
- export const products = [
-    {
-      _id: 1,
-      image1: "/images/card1-1.jpg",
-      image2: "/images/card1-2.jpg",
-      title: "Almonds",
-      price: "1200",
-      slug:"amonds-5678"
-    },
-    {
-      _id: 2,
-      image1: "/images/card2-1.jpg",
-      image2: "/images/card2-2.jpg",
-      title: "Ceshews",
-      price: "1200",
-          slug:"amonds-4678"
-    },
-    {
-      _id: 3,
-      image1: "/images/card3-2.jpg",
-      image2: "/images/card3-1.jpg",
-      title: "WallNut",
-      price: "1200",
-          slug:"amonds-5078"
-    },
-    {
-      _id: 4,
-      image1: "/images/card1-1.jpg",
-      image2: "/images/card1-2.jpg",
-      title: "Almonds",
-      price: "1200",
-          slug:"amonds-5658"
-    },
-    {
-      _id: 5,
-      image1: "/images/card2-1.jpg",
-      image2: "/images/card2-2.jpg",
-      title: "Ceshews",
-      price: "1200",
-          slug:"amonds-5638"
-    },
-    {
-      _id: 6,
-      image1: "/images/card3-2.jpg",
-      image2: "/images/card3-1.jpg",
-      title: "WallNut",
-      price: "1200",
-          slug:"amonds-5628"
-    },
-    {
-      _id: 7,
-      image1: "/images/card3-2.jpg",
-      image2: "/images/card3-1.jpg",
-      title: "WallNut",
-      price: "1200",
-          slug:"amonds-5618"
-    },
-    {
-      _id: 8,
-      image1: "/images/card1-1.jpg",
-      image2: "/images/card1-2.jpg",
-      title: "Almonds",
-      price: "1200",
-          slug:"amonds-5648"
-    },
-    {
-      _id: 9,
-      image1: "/images/card2-1.jpg",
-      image2: "/images/card2-2.jpg",
-      title: "Ceshews",
-      price: "1200",
-          slug:"amonds-5668"
-    },
-
-    
-  ];
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store/store";
+import { getProduct } from "@/redux/slices/productSlice";
+import { ItemProps } from "@/lib/type";
+import DummyComponent from "../_components/DummyComponent";
 
 const BestProducts: React.FC = () => {
-  // here actual data comes from api
+  const [product, setProduct] = React.useState<ItemProps[]>([]);
 
+  // here actual data comes from api
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    dispatch(getProduct())
+      .unwrap()
+      .then((res) => {
+        setProduct(res?.data);
+      });
+  }, [dispatch]);
 
   const autoREf = Autoplay({
     delay: 3000,
@@ -100,10 +37,10 @@ const BestProducts: React.FC = () => {
     stopOnMouseEnter: true,
   });
 
-  const opts:Partial<EmblaOptionsType> = {
-    align:'start' as const,
-    containScroll:'trimSnaps' as const,
-  }
+  const opts: Partial<EmblaOptionsType> = {
+    align: "start" as const,
+    containScroll: "trimSnaps" as const,
+  };
   return (
     <section className="max-w-screen w-full relative min-h-screen mx-auto ">
       <div className="relative w-full flex flex-col items-center justify-center px-32 pt-16 pb-10">
@@ -131,33 +68,30 @@ const BestProducts: React.FC = () => {
             </Button>
           </div>
         </header>
-      <section className="w-full max-w-screen relative">
-<Carousel opts={opts} plugins={[autoREf]} className="w-full max-w-full relative flex flex-col">
-  <CarouselContent className="-ml-0 border-box w-full flex flex-row gap-0 pb-10 pt-10">
-    {products.map((item, key) => (
-      <CarouselItem
-  key={key}
-  className="md:pl-1 lg:pl-2 basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/5 px-2"
->
-        <ProductCard
-          image1={item.image1}
-          image2={item.image2}
-          title={item.title}
-          price={item.price}
-          _id={item._id}
-          slug={item.slug}
-        />
-      </CarouselItem>
-    ))}
-  </CarouselContent>
+        <section className="w-full max-w-screen relative">
+          <Carousel
+            opts={opts}
+            plugins={[autoREf]}
+            className="w-full max-w-full relative flex flex-col"
+          >
+            <CarouselContent className="-ml-0 border-box w-full flex flex-row gap-0 pb-10 pt-10">
+              {product && product.length>0 ? (product.map((item, key) => (
+                <CarouselItem
+                  key={key}
+                  className="md:pl-1 lg:pl-2 basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/5 px-2"
+                >
+                  <ProductCard key={item._id} productId={item?._id} {...item}
+                  />
+                </CarouselItem>
+              ))) : (
+                <DummyComponent/>
+              )}
+            </CarouselContent>
 
-    <CarouselPrevious />
-    <CarouselNext />
-</Carousel>
-
-
-</section>
-
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        </section>
       </div>
     </section>
   );

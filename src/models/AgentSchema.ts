@@ -8,9 +8,6 @@ interface AgentProps {
   code:mongoose.Types.ObjectId;
   password:string;
   phone:string;
-  agencyName:string;
-  agencyAddress:string;
-  licenseNumber:string;
   isMainAdmin?:string;
 }
 
@@ -32,15 +29,12 @@ const agentSchema = new mongoose.Schema<AgentDocument>(
       required: true,
       validate: {
         validator: (values: string) => {
-          return /^[A-Za-z0-9@&*!#%$]{8}/.test(values);
+          return /^[A-Za-z0-9@]{8,}$/.test(values);
         },
-        message: `Enter a valid password of 8 characters`,
+        message: `Enter a valid password of minimum 8 characters`,
       },
     },
     phone: { type: String, required: true },
-    agencyName: { type: String, required: true },
-    agencyAddress: { type: String, required: true },
-    licenseNumber: { type: String, required: true },
     isMainAdmin: { type: Boolean, default: "false", required: false },
   },
   { timestamps: true }

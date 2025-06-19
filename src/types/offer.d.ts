@@ -9,7 +9,7 @@ export interface OfferDocument {
   discountType:DiscountType;
   value: number;
   minOrderAmount?: number;
-  appliesToCategories?: string[];
+  appliesToCategories?:string[];
   expiresAt?: Date;
   usageLimit:number;
   timesUsed?: number;

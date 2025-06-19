@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store/store";
 import { OfferFormValues } from "@/types/offer";
-import { createoffer } from "@/redux/slices/offerSlice";
+import { createOffer } from "@/redux/slices/offerSlice";
 import toast from "react-hot-toast";
 
 const initialValues: OfferFormValues = {
@@ -20,7 +20,7 @@ const initialValues: OfferFormValues = {
 };
 
 const validationSchema = Yup.object().shape({
-  code: Yup.string().required("Required"),
+  code: Yup.string().min(6,'Must be 6 characters').max(12,'Length is 6-12 characters').required("Required"),
   description: Yup.string().min(10, "Too short").required("Required"),
   discountType: Yup.string().required("Required"),
   value: Yup.number().required("Required"),
@@ -45,13 +45,11 @@ const CreateOffer = () => {
       expiresAt: values.expiresAt ? new Date(values.expiresAt) : null,
     };
 
-    await dispatch(createoffer(values))
+     dispatch(createOffer(values))
       .unwrap()
       .then((res) => {
-        if (res?.success) {
           toast.success(res?.message);
           resetForm();
-        }
         
       })
       .catch((err) => {
@@ -80,7 +78,7 @@ const CreateOffer = () => {
             <input
               type="text"
               name="code"
-              placeholder="Offer Code"
+              placeholder="Code:ASDF12"
               value={values.code}
               onChange={handleChange}
               onBlur={handleBlur}

@@ -3,14 +3,18 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { MdAddShoppingCart } from "react-icons/md";
-import { FaUser } from "react-icons/fa";
+import { FaLongArrowAltUp, FaUser } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { CartDrawer } from "./CartDrawer";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store/store";
+import { logoutUser} from "@/redux/slices/userSlice";
 
 const Navbar = () => {
   const [active, setActive] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>()
 
   // Scroll logic to activate navbar
   useEffect(() => {
@@ -56,6 +60,7 @@ const Navbar = () => {
               <IoSearchOutline className="text-2xl cursor-pointer" />
               <CartDrawer/>
               <FaUser onClick={()=>router.push('/user/auth-login')} className="text-2xl cursor-pointer" />
+                <FaLongArrowAltUp onClick={()=>dispatch(logoutUser())}/>
             </div>
           </div>
         </motion.nav>

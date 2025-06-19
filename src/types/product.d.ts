@@ -23,7 +23,6 @@ export interface ProductDocument extends Document {
     tags:string[];
     review:(Types.ObjectId | ReviewDocument)[];
     variants:ProductVariant[];
-    offer?:Types.ObjectId | OfferDocument;
     createdAt?:Date;
     updatedAt?:Date;
 }

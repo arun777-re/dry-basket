@@ -14,14 +14,14 @@ interface dataProps {
 }
 
 interface NotificationProps {
-  _id?:string;
+  _id?: string;
   title?: string;
   message?: string;
 }
 
 interface SearchParams {
-  propertyId?:string;
-  type:"liked" | "booking";
+  propertyId?: string;
+  type: "liked" | "booking";
 }
 
 interface userstate {
@@ -61,8 +61,8 @@ const initialState: userstate = {
 
 // thunk to create user
 export const createUser = createAsyncThunk<
-  dataProps, 
-  object, 
+  dataProps,
+  object,
   { rejectValue: ErrorProps }
 >("/user/create", async (formData, { rejectWithValue }) => {
   try {
@@ -101,7 +101,7 @@ export const addFavorate = createAsyncThunk<
       `/api/user/favorate?propertyId=${data.propertyId}&type=${data.type}`,
       {
         method: "POST",
-        credentials:"include"
+        credentials: "include",
       }
     );
 
@@ -318,14 +318,17 @@ export const getNotification = createAsyncThunk<
 // read notification
 export const readNotification = createAsyncThunk<
   any,
-  {id?:string},
+  { id?: string },
   { rejectValue: ErrorProps }
 >("/user/read/notification", async (payload, { rejectWithValue }) => {
   try {
-    const res = await fetch(`/api/user/notify/read-notification?notifyId=${payload.id}`, {
-      method: "PATCH",
-      credentials: "include",
-    });
+    const res = await fetch(
+      `/api/user/notify/read-notification?notifyId=${payload.id}`,
+      {
+        method: "PATCH",
+        credentials: "include",
+      }
+    );
     const data = await res.json();
     if (!res.ok) {
       return rejectWithValue({
@@ -346,16 +349,16 @@ export const readNotification = createAsyncThunk<
 
 export const forgotPass = createAsyncThunk<
   any,
-  {data:Record<string , any>},
+  { data: Record<string, any> },
   { rejectValue: ErrorProps }
 >("/user/forgot-pass", async (payload, { rejectWithValue }) => {
   try {
     const res = await fetch(`/api/auth/forgot-pass`, {
       method: "PATCH",
-      headers:{
-        "Content-Type":"application/json"
+      headers: {
+        "Content-Type": "application/json",
       },
-      body:JSON.stringify(payload.data),
+      body: JSON.stringify(payload.data),
       credentials: "include",
     });
     const data = await res.json();
@@ -376,12 +379,23 @@ export const forgotPass = createAsyncThunk<
   }
 });
 
-
-
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    logoutUser:(state) =>{
+    state.user = {
+          message: "",
+          status: 0,
+          success: false,
+          data: {
+            _id: "",
+            firstName: "",
+            lastName: "",
+          },
+        };
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(createUser.fulfilled, (state, action) => {
@@ -495,7 +509,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = { message: "", status: 0, success: false };
       })
-     
+
       .addCase(getNotification.fulfilled, (state, action) => {
         state.loading = false;
         state.success = true;
@@ -509,5 +523,7 @@ const userSlice = createSlice({
       });
   },
 });
+
+export const {logoutUser} = userSlice.actions;
 
 export default userSlice.reducer;

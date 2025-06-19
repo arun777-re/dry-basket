@@ -68,17 +68,28 @@ const productSchema = new mongoose.Schema<ProductDocument>(
         },
       },
     ],
-    offer: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Offer",
-    },
+   
   },
   { timestamps: true }
 );
 
+productSchema.pre("save", function (next) {
+  if (this.isModified("variants")) {
+    this.variants.forEach((variant) => {
+      if (variant.discount && variant.discount > variant.price) {
+        throw new Error("Discount cannot be greater than price");
+      }
+    });
+  }
+  next();
+});
+
+productSchema.index({productName: 1 });
+productSchema.index({description: 1 });
+productSchema.index({category:1, status: 1});
+
 const Product =
-  mongoose.models.Product ||
-  mongoose.model<ProductDocument, mongoose.Model<ProductDocument>>(
+  mongoose.models.Product || mongoose.model<ProductDocument>(
     "Product",
     productSchema
   );

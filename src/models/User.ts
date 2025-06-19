@@ -1,59 +1,71 @@
-import mongoose, { Model } from 'mongoose';
-import bcrypt from 'bcryptjs';
-import { UserProps } from '@/types/user';
+import mongoose, { Model } from "mongoose";
+import bcrypt from "bcryptjs";
+import { UserProps } from "@/types/user";
 
-const userSchema = new mongoose.Schema({
-    firstName:{
-        type:String,
-        required:true,
-        unique:false
+const userSchema = new mongoose.Schema(
+  {
+    firstName: {
+      type: String,
+      required: true,
+      unique: false,
     },
-    lastName:{
-        type:String,
-        required:true,
-        unique:false
+    lastName: {
+      type: String,
+      required: true,
+      unique: false,
     },
-    email:{
-        type:String,
-        required:true,
-        unique:true
+    email: {
+      type: String,
+      required: true,
+      unique: true,
     },
-    password:{
-        type:String,
-        required:true,
-        min:6,
-        max:10,
-        validate:{
-            validator:(values:string)=>{
-                const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
-                return strongPassword.test(values);
-            },
-            message:
-            'Password must be at least 6 characters long and include an uppercase letter, lowercase letter, number, and special character.',
-        }
+    password: {
+      type: String,
+      required: true,
     },
-    isActive:{
-        type:Boolean,
-        default:"false"
+    isActive: {
+      type: Boolean,
+      default: "false",
     },
-    phone:{
-        type:Number,
-        required:true,
-        unique:false
+    phone: {
+      type: Number,
+      required: true,
+      unique: false,
+    },
+  },
+  { timestamps: true, validateBeforeSave: true }
+);
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  const salt = await bcrypt.genSalt(12);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+userSchema.pre("save", async function (next) {
+  if (this.isModified("password")) {
+    const strongPassword =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&]).{6,}$/;
+    if (!strongPassword.test(this.password)) {
+      return next(
+        new Error(
+          "Password must be at least 6 characters long and include an uppercase letter, lowercase letter, number, and special character."
+        )
+      );
     }
-},{timestamps:true});
+    const salt = await bcrypt.genSalt(12);
+    this.password = await bcrypt.hash(this.password, salt);
+  }
+  next();
+});
 
-    userSchema.pre('save', async function (next) {
-        if (!this.isModified('password')) return next();
-        const salt = await bcrypt.genSalt(12);
-        this.password = await bcrypt.hash(this.password, salt);
-        next();
-    });
+userSchema.methods.comparePassword = async function (
+  candidatePassword: string
+) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
 
-    userSchema.methods.comparePassword = async function (candidatePassword: string) {
-        return bcrypt.compare(candidatePassword, this.password);
-      };
-
-const User:Model<UserProps> = mongoose.models.User || mongoose.model<UserProps>('User',userSchema);
+const User: Model<UserProps> =
+  mongoose.models.User || mongoose.model<UserProps>("User", userSchema);
 
 export default User;

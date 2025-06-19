@@ -10,26 +10,25 @@ export interface ReviewProps{
 }
 
 export interface ProductVariant {
-    weight?: number;
-    price?: number;
-    stock?: number;
+    weight: number;
+    price: number;
+    stock:number;
     discount?:number;
     discountExpiry?:Date | null;
 }
 
 export interface ItemProps{
-_id?:string;
+_id:string;
 slug:string;
-status?:'available' | 'unavailable';
-category?:string;
-productName?:string;
-description?:string;
-isFeatured?:boolean;
+status:'available' | 'unavailable';
+category:string;
+productName:string;
+description:string;
+isFeatured:boolean;
 variants:ProductVariant[];
-discount?:number;
 images:string[];
 reviews?:ReviewProps[];
-tags?:string[];
+tags:string[];
 createdAt?:string | Date;
 updatedAt?:string | Date;
 }

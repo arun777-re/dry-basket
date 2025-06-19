@@ -1,5 +1,6 @@
+'use client'
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getRequest } from "@/redux/services/middleware";
+import { getRequest, postRequest } from "@/redux/services/middleware";
 
 export interface DataProps {
   _id: string;
@@ -83,14 +84,12 @@ export const signupAdmin = createAsyncThunk(
           },
           body: JSON.stringify(formData),
         });
-        if (res.ok) {
-          const data = await res.json();
-          return data.admin;
-        } else {
-          const errorData = await res.json();
-          console.error("Error during signup:", errorData);
-          rejectWithValue(errorData);
+
+        const response = await res.json();
+        if(!res.ok){
+          return rejectWithValue(response);
         }
+        return response;
       } catch (error: any) {
         rejectWithValue({ "Error during signup fetch": error });
       }
@@ -151,6 +150,8 @@ export const createCode = createAsyncThunk(
     }
   }
 );
+
+
 
 // send notification to all active users
 export const sendNotification = createAsyncThunk(

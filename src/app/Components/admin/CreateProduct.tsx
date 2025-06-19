@@ -1,12 +1,13 @@
 "use client";
 import React from "react";
-import { Formik, FieldArray } from "formik";
+import { Formik, FieldArray, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import Dropzone from "react-dropzone";
 import { handleImageUpload } from "@/lib/middleware/cloudinary";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store/store";
-import { createStart } from "@/redux/slices/productSlice";
+import { createProduct } from "@/redux/slices/productSlice";
+import toast from "react-hot-toast";
 
 interface VariantProps {
   weight: number;
@@ -65,7 +66,7 @@ const validationSchema = Yup.object().shape({
 const ProductForm = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleOnSubmit = async (values: ProductType) => {
+  const handleOnSubmit = async (values: ProductType,{resetForm}:FormikHelpers<ProductType>) => {
     const formData = new FormData();
     formData.append("productName", values.productName);
     formData.append("description", values.description);
@@ -81,18 +82,12 @@ const ProductForm = () => {
         values.images.map((file) => handleImageUpload(file).then((res) => res))
       );
       formData.append("images", JSON.stringify(imageUrls));
-      dispatch(createStart());
-      dispatch({
-        type: "api/request",
-        payload: {
-          method: "POST",
-          url: "/api/admin/create-product",
-          data: formData,
-          headers: { "Content-Type": "multipart/form-data" },
-          onSuccess: () => console.log("hello users"),
-          onError: () => console.log("hello users"),
-        },
-      });
+     dispatch(createProduct(formData)).unwrap().then((res)=>{
+      toast.success(res.message);
+resetForm();
+     }).catch((err)=>{
+      toast.error(err.message)
+     })
     } catch (err) {
       console.error("❌ Submission failed:", err);
       alert("Failed to submit product");
