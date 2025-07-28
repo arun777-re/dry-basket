@@ -3,6 +3,7 @@ import "./styles/globals.css";
 import { Spicy_Rice, Roboto, Pacifico } from "next/font/google";
 import AOSInit from "./_components/AOS";
 import Providers from "./provider";
+import Script from "next/script";
 
 export const spicyRIce = Spicy_Rice({
   subsets: ["latin"],
@@ -37,6 +38,7 @@ export default function RootLayout({
         className={`${spicyRIce.variable} ${roboto.variable} ${pacifico.variable} antialiased`}
       >
         <AOSInit />
+        <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="beforeInteractive"/>
         <Providers>{children}</Providers>
       </body>
     </html>

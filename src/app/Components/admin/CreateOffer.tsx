@@ -45,7 +45,7 @@ const CreateOffer = () => {
       expiresAt: values.expiresAt ? new Date(values.expiresAt) : null,
     };
 
-     dispatch(createOffer(values))
+     await dispatch(createOffer(values))
       .unwrap()
       .then((res) => {
           toast.success(res?.message);

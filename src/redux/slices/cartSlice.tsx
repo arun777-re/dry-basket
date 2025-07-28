@@ -96,22 +96,15 @@ export const addItemsToCart = createAsyncThunk(
 
 export const mergeCart = createAsyncThunk(
   "user/merge-cart",
-  async (payload: { items: CartItem[] }, { rejectWithValue }) => {
+  async (payload: { items: CartItem[],userId:string }, { rejectWithValue }) => {
     try {
-      const response = await fetch("/api/public/cart/merge-cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(payload),
-      });
-
-      const res = await response.json();
-      if (!response.ok) {
-        return rejectWithValue(res.message);
-      }
-      return res;
+      const response = await postRequest({
+        url:`${ROUTES.SERVER_BASE_URL}/v1/public/cart/merge-cart/${payload.userId}`,
+        data:payload.items,
+        reject:rejectWithValue
+      })
+      
+      return response;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
@@ -155,6 +148,8 @@ export const applyCoupon = createAsyncThunk(
     return response;
   }
 );
+
+// thunk to create cart
 
 // getting user lat long from open route service api
 export const getUserLatLong = createAsyncThunk(

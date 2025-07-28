@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ErrorProps } from "./adminSlice";
+import { postRequest } from "../services/middleware";
+import { ROUTES } from "@/constants/routes";
 
 export interface UserProps {
   _id: string;
@@ -66,22 +68,14 @@ export const createUser = createAsyncThunk<
   { rejectValue: ErrorProps }
 >("/user/create", async (formData, { rejectWithValue }) => {
   try {
-    const response = await fetch("/api/auth/usersignup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
+    const response = await postRequest({
+      url:`v1/public/auth/signup`,
+      data:formData,
+      reject:rejectWithValue
     });
-    const resData = await response.json();
+    return response;
 
-    if (!response.ok) {
-      return rejectWithValue({
-        message: resData.message,
-        status: response.status,
-        success: false,
-      });
-    }
 
-    return resData;
   } catch (error: any) {
     return rejectWithValue({
       message: `Error during create user: ${error.message}`,
@@ -131,23 +125,12 @@ export const loginUser = createAsyncThunk<
   { rejectValue: ErrorProps }
 >("/user/login", async (data, { rejectWithValue }) => {
   try {
-    const response = await fetch("/api/auth/userlogin", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+  const response = await postRequest({
+      url:`v1/public/auth/signin`,
+      data:data,
+      reject:rejectWithValue
     });
-
-    const resData = await response.json();
-
-    if (!response.ok) {
-      return rejectWithValue({
-        message: resData.message,
-        status: response.status,
-        success: false,
-      });
-    }
-
-    return resData;
+    return response;
   } catch (error: any) {
     return rejectWithValue({
       message: `Error during login user: ${error.message}`,
@@ -159,26 +142,16 @@ export const loginUser = createAsyncThunk<
 // thunk for logout user
 export const logoutuser = createAsyncThunk<
   any,
-  void,
+  string,
   { rejectValue: ErrorProps }
->("user/logout", async (_, { rejectWithValue }) => {
+>("user/logout", async (userId:string, { rejectWithValue }) => {
   try {
-    const res = await fetch("/api/auth/logout", {
-      method: "POST",
-      credentials: "include",
+    console.log('target1')
+ const response = await postRequest({url:`v1/public/auth/logout/${userId}`,
+  reject:rejectWithValue
     });
-
-    const resData = await res.json();
-
-    if (!res.ok) {
-      return rejectWithValue({
-        message: resData.message,
-        status: res.status,
-        success: false,
-      });
-    }
-
-    return resData;
+    console.log("fgsdhgfhdgfdgdhd",response);
+    return response;
   } catch (error: any) {
     return rejectWithValue({
       message: `Error during logout: ${error.message}`,

@@ -28,7 +28,7 @@ interface formProps {
 const UpdateForm:React.FC<formProps> = ({_id}) => {
   
        const dispatch = useDispatch<AppDispatch>();
-  const handleOnSubmit = async(values:ValueProps,resetForm:FormikHelpers<ValueProps>)=>{
+  const handleOnSubmit = async(values:ValueProps,{resetForm}:FormikHelpers<ValueProps>)=>{
 try {
   
   const payload = {
@@ -37,23 +37,24 @@ try {
    expiresAt:values.expiresAt ? new Date(values.expiresAt) : null,
   }
 dispatch(updateoffer({offerId:_id,data:payload})).unwrap().then((res)=>{
-    toast.success(res.message)
+    toast.success(res.message);
+    resetForm();
 }).catch((err)=>{
     toast.error(err);
 })
-} catch (error) {
-  
+} catch (error:any) {
+  toast.error(error);
 }
 }
   return (
-    <div className='w-[70vw] h-[90vh] relative bg-black/70 flex items-center justify-center rounded-md shadow-xl'>
+    <div className='w-[70vw] h-[90vh] relative bg-black/90 flex items-center justify-center rounded-md shadow-xl'>
      <Formik initialValues={initialValues}
      onSubmit={handleOnSubmit}
 >
   {({values,handleBlur,handleChange,
   handleSubmit
   })=>(
-    <form className="w-[40%] h-[60%] p-4 relative flex flex-col gap-4" method='post' onSubmit={handleSubmit}>
+    <form className="w-[40%] h-[60%] p-4 relative flex flex-col gap-4 " method='post' onSubmit={handleSubmit}>
        <div className="flex flex-col gap-2 text-white">
         <label htmlFor="value">Change Value of Offer</label>
         <input type="number" name="value" id="value"
@@ -94,7 +95,7 @@ dispatch(updateoffer({offerId:_id,data:payload})).unwrap().then((res)=>{
         className='w-full py-2 px-4 border-2 border-gray-400 rounded-md'
         />
        </div>
-       <Button type='submit' className='px-3 py-2 border-2 border-first bg-transparent hover:bg-first transition-all duration-500 ease-in-out cursor-pointer'>
+       <Button type='submit' className='px-3 py-2 border-2 text-white border-first bg-transparent hover:bg-first transition-all duration-500 ease-in-out cursor-pointer'>
         Update
        </Button>
     </form>

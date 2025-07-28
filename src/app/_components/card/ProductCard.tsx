@@ -60,22 +60,22 @@ const ProductCard: React.FC<ProductCardProps> = ({
     if (user) {
       dispatch(addItemsToCart({ items: payload }));
     } else {
-      dispatch(createCart({
-    productId: productId,
-    quantity: 1,
-    image:images[0],
-    productName: productName,
-    categoryOfProduct: category,
-    variant: {
-      weight: variants?.[0].weight,
-      price: variants?.[0].price,
-      discount: variants?.[0].discount ?? 0,
-      discountExpiry: variants?.[0].discountExpiry
-        ? new Date(variants?.[0].discountExpiry)
-        : null,
-    },
-    addedAtPrice: variants?.[0].price,
-  }));
+  //     dispatch(createCart({
+  //   productId: productId,
+  //   quantity: 1,
+  //   image:images[0],
+  //   productName: productName,
+  //   categoryOfProduct: category,
+  //   variant: {
+  //     weight: variants?.[0].weight,
+  //     price: variants?.[0].price,
+  //     discount: variants?.[0].discount ?? 0,
+  //     discountExpiry: variants?.[0].discountExpiry
+  //       ? new Date(variants?.[0].discountExpiry)
+  //       : null,
+  //   },
+  //   addedAtPrice: variants?.[0].price,
+  // }));
     }
   };
 
@@ -116,8 +116,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </div>
         <figcaption className="flex flex-col items-center justify-center gap-3">
           <Link
-            href={"#"}
-            // href={`/product/${slug}`}
+            href={`/product/${slug}`}
             className="text-2xl text-head font-normal
           hover:text-first font-rice tracking-wider transition-all duration-300 ease-in-out"
           >

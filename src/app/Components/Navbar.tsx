@@ -2,14 +2,14 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
-import { MdAddShoppingCart } from "react-icons/md";
 import { FaLongArrowAltUp, FaUser } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { CartDrawer } from "./CartDrawer";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store/store";
 import { logoutUser} from "@/redux/slices/userSlice";
+import { DataProps } from "@/redux/slices/adminSlice";
 
 const Navbar = () => {
   const [active, setActive] = useState(false);
@@ -24,6 +24,10 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const user = useSelector<RootState>(state => state.user);
+  // const userId = user?.data?._id;
+  console.log('helloooooo',user)
 
   return (
     <div className="max-w-screen w-full flex flex-col items-center justify-center">
@@ -60,7 +64,7 @@ const Navbar = () => {
               <IoSearchOutline className="text-2xl cursor-pointer" />
               <CartDrawer/>
               <FaUser onClick={()=>router.push('/user/auth-login')} className="text-2xl cursor-pointer" />
-                <FaLongArrowAltUp onClick={()=>dispatch(logoutUser())}/>
+                <FaLongArrowAltUp onClick={() => dispatch(logoutUser(userId))}/>
             </div>
           </div>
         </motion.nav>

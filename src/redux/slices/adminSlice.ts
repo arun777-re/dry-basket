@@ -1,6 +1,9 @@
 'use client'
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getRequest, postRequest } from "@/redux/services/middleware";
+import { ROUTES } from "@/constants/routes";
+
+const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export interface DataProps {
   _id: string;
@@ -77,12 +80,13 @@ export const signupAdmin = createAsyncThunk(
   async (formData: any, { rejectWithValue }) => {
     if (formData) {
       try {
-        const res = await fetch("/api/auth/signup", {
+        const res = await fetch(`${ROUTES.SERVER_BASE_URL}/v1/admin/register`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
+          credentials:"include"
         });
 
         const response = await res.json();
@@ -104,12 +108,13 @@ export const loginAdmin = createAsyncThunk(
   async (formData: any, { rejectWithValue }) => {
     try {
       if (!formData) throw new Error("please provide formData");
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch(`${ROUTES.SERVER_BASE_URL}/v1/admin/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
+        credentials:"include"
       });
 
       const data = await res.json();

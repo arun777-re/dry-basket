@@ -9,7 +9,7 @@ import { AppDispatch } from "@/redux/store/store";
 import { createProduct } from "@/redux/slices/productSlice";
 import toast from "react-hot-toast";
 
-interface VariantProps {
+export interface VariantProps {
   weight: number;
   price: number;
   stock: number;
@@ -82,9 +82,10 @@ const ProductForm = () => {
         values.images.map((file) => handleImageUpload(file).then((res) => res))
       );
       formData.append("images", JSON.stringify(imageUrls));
+      console.log('formdata:',values)
      dispatch(createProduct(formData)).unwrap().then((res)=>{
       toast.success(res.message);
-resetForm();
+      resetForm();
      }).catch((err)=>{
       toast.error(err.message)
      })

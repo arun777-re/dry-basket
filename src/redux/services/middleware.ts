@@ -1,5 +1,9 @@
+import { ROUTES } from "@/constants/routes";
 import axios from "axios";
 // middleware to handle post request
+
+const BASE_URL = ROUTES.SERVER_BASE_URL;
+
 export const postRequest = async <T = any>({
   url,
   data,
@@ -10,7 +14,7 @@ export const postRequest = async <T = any>({
   reject: (value: any) => any;
 }): Promise<T | ReturnType<typeof reject>> => {
   try {
-    const response = await axios.post(url, data, {
+    const response = await axios.post(`${BASE_URL}/${url}`, data, {
       headers: {
         "Content-Type":
           data instanceof FormData ? "multipart/form-data" : "application/json",
@@ -30,8 +34,10 @@ export const postRequest = async <T = any>({
 export const getRequest = async <T = any>({
   url,
   reject,
+  params={},
 }: {
   url: string;
+  params?:Record<string,any>;
   reject: (value: any) => any;
 }): Promise<T | ReturnType<typeof reject>> => {
   try {
@@ -40,6 +46,7 @@ export const getRequest = async <T = any>({
         "Content-Type": "application/json",
       },
       withCredentials:true,
+      params
     });
 
     return response.data;

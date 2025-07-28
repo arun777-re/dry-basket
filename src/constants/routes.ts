@@ -7,4 +7,5 @@ export const ROUTES = {
     WAREHOUSE_LAT:28.996682,
     WAREHOUSE_LNG:77.030826,
     OPEN_CAGE_API_KEY:process.env.NEXT_PUBLIC_OPENCAGE_API_KEY,
+    SERVER_BASE_URL:'http://localhost:8000',
 }

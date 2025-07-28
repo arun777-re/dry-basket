@@ -1,7 +1,13 @@
 "use client";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { deleteRequest, getRequest, postRequest, patchRequest } from "../services/middleware";
+import {
+  deleteRequest,
+  getRequest,
+  postRequest,
+  patchRequest,
+} from "../services/middleware";
 import { OfferDocument, OfferFormValues } from "@/types/offer";
+import { ROUTES } from "@/constants/routes";
 export interface ErrorProps {
   status: number;
   message: string;
@@ -50,10 +56,18 @@ const initialValues: valueProps = {
 };
 
 // thunk to create offer by admin
-export const createOffer = createAsyncThunk('admin/create-offer',async(formData:OfferFormValues,{rejectWithValue})=>{
-const response = await postRequest({url:'/api/admin/create-offer',data:formData,reject:rejectWithValue});
-return response;
-})
+export const createOffer = createAsyncThunk(
+  "admin/create-offer",
+  async (formData: OfferFormValues, { rejectWithValue }) => {
+    console.log('hello:',formData);
+    const response = await postRequest({
+      url: `${ROUTES.SERVER_BASE_URL}/v1/admin/offer/create`,
+      data: formData,
+      reject: rejectWithValue,
+    });
+    return response;
+  }
+);
 
 // thunk to view offers
 export const viewoffer = createAsyncThunk(
@@ -61,7 +75,7 @@ export const viewoffer = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await getRequest({
-        url: "/api/admin/getall-offer",
+        url: `${ROUTES.SERVER_BASE_URL}/v1/admin/offer/getAll`,
 
         reject: rejectWithValue,
       });
@@ -78,7 +92,7 @@ export const deleteoffer = createAsyncThunk(
   async (offerId: string, { rejectWithValue }) => {
     try {
       const res = await deleteRequest({
-        url: `/api/admin/delete-offer?offerId=${offerId}`,
+        url: `${ROUTES.SERVER_BASE_URL}/v1/admin/offer/delete/?offerId=${offerId}`,
 
         reject: rejectWithValue,
       });
@@ -88,13 +102,21 @@ export const deleteoffer = createAsyncThunk(
     }
   }
 );
+
+// update offer
 export const updateoffer = createAsyncThunk(
   "admin/updateoffer",
-  async ({offerId,data}:{offerId:string,data:Record<string,any>}, { rejectWithValue }) => {
+  async (
+    { offerId, data }: { offerId: string; data:Record<string,any>},
+    { rejectWithValue }
+  ) => {
     try {
+      console.log('data',data)
+      console.log('data....',offerId)
+      const stringifyData = JSON.stringify(data)
       const res = await patchRequest({
-        url: `/api/admin/update-offer?offerId=${offerId}`,
-data:data,
+        url: `${ROUTES.SERVER_BASE_URL}/v1/admin/offer/update?offerId=${offerId}`,
+        data:stringifyData,
         reject: rejectWithValue,
       });
       return res;

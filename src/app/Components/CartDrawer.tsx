@@ -29,10 +29,6 @@ export function CartDrawer() {
   // getting actual cart items if user is logged in
   const cartItems = useSelector((state: RootState) => state.usercart.cart.data);
 
- 
-
- 
-
   // totalPrice selector using reselct
   const totalPrice = useSelector(selectCartTotal);
   const total = user ? cartItems?.finalTotal : totalPrice;

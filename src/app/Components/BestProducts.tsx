@@ -2,45 +2,57 @@
 import React, { useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import Button from "../_components/Button";
-import ProductCard from "../_components/card/ProductCard";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
-import { EmblaOptionsType } from "embla-carousel";
+
+
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store/store";
-import { getProduct } from "@/redux/slices/productSlice";
+import { getFeaturedProduct } from "@/redux/slices/productSlice";
 import { ItemProps } from "@/lib/type";
-import DummyComponent from "../_components/DummyComponent";
+import ProductCarousel from "../_components/ProductCarousel";
 
 const BestProducts: React.FC = () => {
   const [product, setProduct] = React.useState<ItemProps[]>([]);
+  const [section,setSection ] = React.useState<string>('nuts');
+   const dispatch = useDispatch<AppDispatch>();
+  
 
-  // here actual data comes from api
-  const dispatch = useDispatch<AppDispatch>();
-  useEffect(() => {
-    dispatch(getProduct())
+
+
+useEffect(() => {
+  dispatch(getFeaturedProduct('Nuts'))
+    .unwrap()
+    .then((res) => {
+      setSection('nuts');
+      setProduct(res?.data);
+    });
+}, []);
+
+  // function to get dynamically products for categories
+  const getDriedFruits = (e:React.MouseEvent<HTMLButtonElement>)=>{
+e.preventDefault();
+setSection('nuts')
+// here actual data comes from api
+    dispatch(getFeaturedProduct('Nuts'))
       .unwrap()
       .then((res) => {
         setProduct(res?.data);
+      }).catch((err)=>{
+        console.error(err)
       });
-  }, [dispatch]);
+  }
 
-  const autoREf = Autoplay({
-    delay: 3000,
-    stopOnInteraction: false,
-    stopOnMouseEnter: true,
-  });
-
-  const opts: Partial<EmblaOptionsType> = {
-    align: "start" as const,
-    containScroll: "trimSnaps" as const,
-  };
+  const getSpicyMasala = (e:React.MouseEvent<HTMLButtonElement>)=>{
+e.preventDefault();
+setSection('almonds');
+// here actual data comes from api
+    dispatch(getFeaturedProduct('Tufani Almonds'))
+      .unwrap()
+      .then((res) => {
+        setProduct(res?.data);
+      }).catch((err)=>{
+        console.error(err)
+      });;
+  }
   return (
     <section className="max-w-screen w-full relative min-h-screen mx-auto ">
       <div className="relative w-full flex flex-col items-center justify-center px-32 pt-16 pb-10">
@@ -55,43 +67,29 @@ const BestProducts: React.FC = () => {
             </div>
           </article>
           <div className="relative flex items-center w-full justify-center gap-8 py-8">
-            <Button className="bg-first drop-shadow-black/30 drop-shadow-xl border-2 border-first text-body tracking-wide">
+            <Button className={`${section === 'nuts' ? 'bg-first border-first text-white  drop-shadow-black/30 drop-shadow-xl'
+      : 'bg-white border-head text-body '} border-2 
+             text-body tracking-wide  hover:bg-first hover:border-first  hover:drop-shadow-xl hover:drop-shadow-black/30
+                 transition-all duration-300 ease-in-out`} onClick={getDriedFruits}>
               Dried seeds
             </Button>
             <Button
-              className="bg-white border-2 border-head  hover:bg-first hover:border-first
-                 text-body tracking-wide
-                 hover:drop-shadow-xl hover:drop-shadow-black/30
-                 transition-all duration-300 ease-in-out"
-            >
+             className={`${section === 'almonds' ? 'bg-first border-first text-white  drop-shadow-black/30 drop-shadow-xl'
+      : 'bg-white border-head text-body '} border-2 
+             text-body tracking-wide  hover:bg-first hover:border-first  hover:drop-shadow-xl hover:drop-shadow-black/30
+                 transition-all duration-300 ease-in-out`}
+            onClick={getSpicyMasala}>
               Spicy Masalas
             </Button>
           </div>
         </header>
         <section className="w-full max-w-screen relative">
-          <Carousel
-            opts={opts}
-            plugins={[autoREf]}
-            className="w-full max-w-full relative flex flex-col"
-          >
-            <CarouselContent className="-ml-0 border-box w-full flex flex-row gap-0 pb-10 pt-10">
-              {product && product.length>0 ? (product.map((item, key) => (
-                <CarouselItem
-                  key={key}
-                  className="md:pl-1 lg:pl-2 basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/5 px-2"
-                >
-                  <ProductCard key={item._id} productId={item?._id} {...item}
-                  />
-                </CarouselItem>
-              ))) : (
-                <DummyComponent/>
-              )}
-            </CarouselContent>
-
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
+          {section === 'nuts' && <ProductCarousel product={product}/>}
+          
+          {section === 'almonds' && <ProductCarousel product={product}/>
+         }
         </section>
+       
       </div>
     </section>
   );
