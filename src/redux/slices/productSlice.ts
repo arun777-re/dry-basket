@@ -1,169 +1,120 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { ItemProps } from "@/lib/type";
+import { getRequest } from "../services/middleware";
 import {
-  deleteRequest,
-  getRequest,
-  patchRequest,
-  postRequest,
-} from "../services/middleware";
-import { ErrorProps } from "@/types/response";
+  ErrorProps,
+  IncomingAPIResponseFormat,
+  PaginatedProductResponse,
+} from "@/types/response";
 import { ROUTES } from "@/constants/routes";
+import { PRODUCTAPI } from "../services/api/product";
+import { ProductIncomingDTO, SearchQueryDTO } from "@/types/product";
+import { defaultProductState, singleProductState } from "../services/helpers/productresponse";
+import { defaultError } from "../services/helpers/userresponse";
 
 interface productsType {
   loading: boolean;
   error: ErrorProps;
-  products: ItemProps[];
-  singleProduct: ItemProps | null;
+  products: PaginatedProductResponse<ProductIncomingDTO>;
+  singleProduct: IncomingAPIResponseFormat<ProductIncomingDTO>;
 }
 
 const initialState: productsType = {
   loading: false,
-  error: {
-    success: false,
-    message: "",
-    status: 400,
-  },
-  products: [
-    {
-      _id: "",
-      slug: "",
-      productName: "",
-      description: "",
-      category: "",
-      images: [],
-      reviews: [
-        {
-          _id: "",
-          rating: 0,
-          reviewText: "",
-          productId: "",
-          user: {
-            firstName: "",
-          },
-          createdAt: "",
-        },
-      ],
-      variants: [
-        {
-          stock: 0,
-          price: 0,
-          discount: 0,
-          discountExpiry: null,
-          weight: 0,
-        },
-      ],
-      status: "available",
-      tags: [],
-      isFeatured: false,
-    },
-  ],
-  singleProduct: null,
+  error: defaultError,
+  products:defaultProductState,
+  singleProduct:singleProductState,
 };
 
-
-
 // public routes
-// get all products
-export const getAllProduct = createAsyncThunk(
-  "/public/get-product",
-  async (_, { rejectWithValue }) => {
-    const response = await getRequest({
-      url: `${ROUTES.SERVER_BASE_URL}/v1/public/product/getall`,
-      reject: rejectWithValue,
-    });
-    return response;
-  }
-);
 
 // get single product
-export const getSingleProduct = createAsyncThunk(
-  "/public/get-single-product",
-  async (slug: string, { rejectWithValue }) => {
-    const response = await getRequest({
-      url: `${ROUTES.SERVER_BASE_URL}/v1/public/product/getsingle/${slug}`,
-      reject: rejectWithValue,
-    });
-    return response;
-  }
-);
+export const getSingleProduct = createAsyncThunk<
+  IncomingAPIResponseFormat<ProductIncomingDTO>,
+  string,
+  { rejectValue: ErrorProps }
+>("/public/get-single-product", async (slug, { rejectWithValue }) => {
+  const response = await PRODUCTAPI.getsingleproduct({
+    slug,
+    reject: rejectWithValue,
+  });
+  return response;
+});
 
 // get all featured products
-export const getFeaturedProduct = createAsyncThunk(
+export const getFeaturedProduct = createAsyncThunk<
+  PaginatedProductResponse<ProductIncomingDTO>,
+  {
+    query: SearchQueryDTO;
+    catname: string;
+  },
+  { rejectValue: ErrorProps }
+>(
   "/public/get-featured-product",
-  async (catname: string, { rejectWithValue }) => {
-    const response = await getRequest({
-      url: `${ROUTES.SERVER_BASE_URL}/v1/public/product/getfeatured/${catname}`,
+  async ({ catname, query }, { rejectWithValue }) => {
+    const response = await PRODUCTAPI.getfeaturedproduct({
+      catname,
       reject: rejectWithValue,
+      params: query,
     });
     return response;
   }
 );
 
 // get search products
-export const getSearchProduct = createAsyncThunk(
-  "/public/get-search-product",
-  async (_, { rejectWithValue }) => {
-    const response = await getRequest({
-      url: `${ROUTES.SERVER_BASE_URL}/v1/public/product/getsearch`,
-      reject: rejectWithValue,
-    });
-    return response;
-  }
-);
+export const getSearchProductThunk = createAsyncThunk<
+  PaginatedProductResponse<ProductIncomingDTO>,
+  SearchQueryDTO,
+  { rejectValue: ErrorProps }
+>("product/search", async (query, { rejectWithValue }) => {
+  const response = await PRODUCTAPI.getsearchproducts({
+    params: query,
+    reject: rejectWithValue,
+  });
+  return response;
+});
 
 // get related products
-export const getRelatedProduct = createAsyncThunk(
-  "/public/get-related-product",
-  async (
-    {
-      category,
-      productName,
-      query = {},
-    }: { category: string; productName: string; query?: Record<string, any> },
-    { rejectWithValue }
-  ) => {
-    const response = await getRequest({
-      url: `${ROUTES.SERVER_BASE_URL}/v1/public/product/getrelated`,
-      reject: rejectWithValue,
-      params: {
-        category,
-        productName,
-        ...query,
-      },
-    });
-    return response;
-  }
-);
+export const getRelatedProduct = createAsyncThunk<
+  PaginatedProductResponse<ProductIncomingDTO>,
+  SearchQueryDTO,
+  { rejectValue: ErrorProps }
+>("/public/get-related-product", async (query, { rejectWithValue }) => {
+  const response = await PRODUCTAPI.getrelatedproducts({
+    reject: rejectWithValue,
+    params: query,
+  });
+  return response;
+});
+
 // get recommended products
-export const getRecommendedProduct = createAsyncThunk(
+export const getRecommendedProduct = createAsyncThunk<
+  PaginatedProductResponse<ProductIncomingDTO>,
+  {
+    catId: string;
+    query: SearchQueryDTO;
+  },
+  { rejectValue: ErrorProps }
+>(
   "/public/get-recommended-product",
-  async (
-    {
+  async ({ catId, query }, { rejectWithValue }) => {
+    const response = await PRODUCTAPI.getrecommendedproducts({
+      params: query,
       catId,
-      query = {},
-    }: { catId: string; query?: Record<string, any> },
-    { rejectWithValue }
-  ) => {
-    const response = await getRequest({
-      url: `${ROUTES.SERVER_BASE_URL}/v1/public/product/getrecommended`,
       reject: rejectWithValue,
-      params: {
-        catId,
-        ...query,
-      },
     });
     return response;
   }
 );
 
 // get product by category
-export const getCategoryProduct = createAsyncThunk(
+export const getCategoryProduct = createAsyncThunk<
+  PaginatedProductResponse<ProductIncomingDTO>,
+  { catname: string; query: SearchQueryDTO },
+  { rejectValue: ErrorProps }
+>(
   "/public/get-category-product",
-  async (catname: string, { rejectWithValue }) => {
-    const response = await getRequest({
-      url: `${ROUTES.SERVER_BASE_URL}/v1/public/product/getcatproduct/${catname}`,
-      reject: rejectWithValue,
-    });
+  async ({catname,query}, { rejectWithValue }) => {
+    const response = await PRODUCTAPI.getallcategoryproducts({params:query,catname,reject:rejectWithValue});
     return response;
   }
 );
@@ -174,14 +125,7 @@ const productSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-     
-      .addCase(getAllProduct.fulfilled, (state, action) => {
-        state.error = { success: false, message: "", status: 0 };
-        state.products = action.payload;
-        state.loading = false;
-      })
-    
-    
+
       .addCase(getSingleProduct.fulfilled, (state, action) => {
         state.error = { success: false, message: "", status: 0 };
         state.singleProduct = action.payload;
@@ -192,7 +136,7 @@ const productSlice = createSlice({
         state.products = action.payload;
         state.loading = false;
       })
-      .addCase(getSearchProduct.fulfilled, (state, action) => {
+      .addCase(getSearchProductThunk.fulfilled, (state, action) => {
         state.error = { success: false, message: "", status: 0 };
         state.products = action.payload;
         state.loading = false;

@@ -1,10 +1,8 @@
-import { Document,Types } from "mongoose";
-import { ReviewDocument } from "./review";
-import { OfferDocument } from "./offer";
+import { CategoryDTO } from "./category";
 
 
 
-export interface ProductVariant {
+export interface ProductVariantDTO {
     weight:number;
     price:number;
     stock:number;
@@ -12,18 +10,27 @@ export interface ProductVariant {
     discountExpiry?:Date | null;
 }
 
-export interface ProductDocument extends Document {
+export interface ProductIncomingDTO{
     _id:string;
     slug:string;
     productName:string;
-    category:Record<string,any>;
+    category:CategoryDTO;
     status:'available' | 'unavailable';
     description:string;
     images:string[];
     isFeatured:boolean;
     tags:string[];
-    review:(Types.ObjectId | ReviewDocument)[];
+    avgRating:number;
     variants:ProductVariant[];
     createdAt?:Date;
     updatedAt?:Date;
+}
+
+
+export interface SearchQueryDTO {
+    category?:string;
+    price?:string;
+    productName?:string;
+    page?:number;
+    limit?:number;
 }

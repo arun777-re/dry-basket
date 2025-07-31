@@ -8,8 +8,7 @@ import { useRouter } from "next/navigation";
 import { CartDrawer } from "./CartDrawer";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store/store";
-import { logoutUser} from "@/redux/slices/userSlice";
-import { DataProps } from "@/redux/slices/adminSlice";
+import { logoutUserLocally,logoutuser} from "@/redux/slices/userSlice";
 
 const Navbar = () => {
   const [active, setActive] = useState(false);
@@ -25,9 +24,13 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const user = useSelector<RootState>(state => state.user);
-  // const userId = user?.data?._id;
-  console.log('helloooooo',user)
+  const userId = useSelector<RootState>(state => state.user.user.data?._id);
+  console.log('helloooooo',userId);
+
+  const handleLogout = async()=>{
+    console.log("Logout button clicked");
+    await dispatch(logoutuser(userId as string)).unwrap();
+  }
 
   return (
     <div className="max-w-screen w-full flex flex-col items-center justify-center">
@@ -64,7 +67,7 @@ const Navbar = () => {
               <IoSearchOutline className="text-2xl cursor-pointer" />
               <CartDrawer/>
               <FaUser onClick={()=>router.push('/user/auth-login')} className="text-2xl cursor-pointer" />
-                <FaLongArrowAltUp onClick={() => dispatch(logoutUser(userId))}/>
+                <FaLongArrowAltUp onClick={handleLogout}/>
             </div>
           </div>
         </motion.nav>
