@@ -90,7 +90,7 @@ export const logoutuser = createAsyncThunk<
 
 export const forgotPass = createAsyncThunk<
   any,
-  string,
+ string,
   { rejectValue: ErrorProps }
 >("/user/forgot-pass", async (email, { rejectWithValue }) => {
   try {

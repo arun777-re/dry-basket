@@ -41,9 +41,8 @@ const ForgotPass: React.FC<ValueProps> = ({ setPass }) => {
     if (values) {
       const payload = {
         email: values.email,
-        password: values.password,
       };
-      dispatch(forgotPass({ data: payload }))
+      dispatch(forgotPass(values.email))
         .unwrap()
         .then((res) => {
           toast.success(res?.message);
