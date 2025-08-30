@@ -2,20 +2,25 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
 import { PopOverCard } from "../_components/Popover";
-import { ReviewProps } from "@/lib/type";
 import { CiUser } from "react-icons/ci";
+import { ReviewIncomingDTO } from "@/types/review";
+import reviewProduct from "@/hooks/reviewProduct";
+import Spinner from "../_components/Spinner";
 
-interface Props {
-  reviews?: ReviewProps[];
+type Props = {
+  avgRating:number | 0;
+  productId:string;
 }
 
-const Review: React.FC<Props> = ({ reviews }) => {
-  const avgRate =
-    (reviews &&
-      reviews.length > 0 &&
-      reviews.reduce((acc, cur) => acc + cur.rating, 0) / reviews.length) ||
-    0;
-  const avgRating = Math.floor(Math.ceil(avgRate));
+const Review: React.FC<Props> = ({avgRating,productId}) => {
+  const [reviews,setReviews] = React.useState<ReviewIncomingDTO[]>([]);
+  const {getReviewsOfProduct} = reviewProduct();
+
+    React.useEffect(()=>{
+        getReviewsOfProduct({productId,setReviews})
+    },[])
+
+ 
   return (
     <div className="w-full relative mx-auto">
       <div className="w-full relative py-10">
@@ -62,14 +67,18 @@ const Review: React.FC<Props> = ({ reviews }) => {
                 </div>
                 <div className="py-2 flex items-center gap-1">
                   <CiUser size={30} className="bg-gray-200 text-prdct" />
-                  {item?.userName}
+                  {item.userId.firstName}
                 </div>
                 <p className="py-1 relative w-full">{item?.reviewText}</p>
               </div>
             );
           })
         ) : (
+          <>
+          <Spinner/>
           <p className="text-center">No comments yet</p>
+
+          </>
         )}
       </div>
     </div>

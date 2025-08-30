@@ -7,7 +7,7 @@ import { AuthAPI } from "../services/api/auth";
 
 
 
-interface userstate {
+export interface UserState {
   user:IncomingAPIResponseFormat<UserPropsIncoming>;
   loading:{
     login:boolean;
@@ -18,7 +18,7 @@ interface userstate {
   };
   error: ErrorProps;
 }
-const initialState: userstate = {
+const initialState: UserState = {
   user: defaultUserState,
   loading:{
     login:false,
@@ -158,10 +158,29 @@ const userSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(loginUser.pending, (state) => {
+          if (typeof state.loading !== 'object') {
+    state.loading = {
+      login: false,
+      register: false,
+      reset: false,
+      forgot: false,
+      logout: false
+    };
+  }
         state.loading.login = true;
         state.error = defaultError;
       })
       .addCase(loginUser.rejected, (state, action) => {
+       if (typeof state.loading !== 'object') {
+    state.loading = {
+      login: false,
+      register: false,
+      reset: false,
+      forgot: false,
+      logout: false
+    };
+  }
+
         state.loading.login = false;
         state.error = action.payload as ErrorProps;
         state.user = defaultUserState;

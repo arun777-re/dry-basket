@@ -17,7 +17,7 @@ export const AuthAPI = {
     }),
   logout: async (userId: string, reject: (value: any) => any) =>
     await postRequest({
-      url: `${ROUTES.AUTH.SIGNIN}/${userId}`,
+      url: `${ROUTES.AUTH.LOGOUT}`,
       reject: reject,
     }),
   reset: async (email: string, reject: (value: any) => any) =>

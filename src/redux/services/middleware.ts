@@ -1,4 +1,3 @@
-import { ROUTES } from "@/constants/routes";
 import axios from "axios";
 // middleware to handle post request
 
@@ -90,21 +89,14 @@ export const patchRequest = async <T = any>({
   reject: (value: any) => any;
 }): Promise<T | ReturnType<typeof reject>> => {
   try {
-    const response = await fetch(url, {
-      method:"PATCH",
+    const response = await axios.patch(url,data, {
       headers: {
         "Content-Type": "application/json",
       },
-      body:data,
-      credentials:'include',
+      withCredentials:true,
     });
 
-    const json = await response.json();
-    console.log('applycoupon...',json);
-    if(!response.ok){
-      return reject(json.message || 'Something went wrong')
-    }
-    return json;
+    return response.data;
   } catch (error: any) {
     const message =
       error.response?.data?.message ||
@@ -115,12 +107,12 @@ export const patchRequest = async <T = any>({
 };
 
 
-// function to get shippingCharges
-export const getShippingCharges = async (distance:number)=>{
-if(distance <=5) return 50;
-if(distance > 5 && distance <= 10) return 100;
-if(distance > 10 && distance <= 20) return 150;
-if(distance > 20 && distance <= 30) return 200;
-if(distance > 30 && distance <= 150) return 230;
-return 250;
-}
+// // function to get shippingCharges
+// export const getShippingCharges = async (distance:number)=>{
+// if(distance <=5) return 50;
+// if(distance > 5 && distance <= 10) return 100;
+// if(distance > 10 && distance <= 20) return 150;
+// if(distance > 20 && distance <= 30) return 200;
+// if(distance > 30 && distance <= 150) return 230;
+// return 250;
+// }

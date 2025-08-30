@@ -1,11 +1,10 @@
+'use client'
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getRequest } from "../services/middleware";
 import {
   ErrorProps,
   IncomingAPIResponseFormat,
   PaginatedProductResponse,
 } from "@/types/response";
-import { ROUTES } from "@/constants/routes";
 import { PRODUCTAPI } from "../services/api/product";
 import { ProductIncomingDTO, SearchQueryDTO } from "@/types/product";
 import { defaultProductState, singleProductState } from "../services/helpers/productresponse";
@@ -32,7 +31,7 @@ export const getSingleProduct = createAsyncThunk<
   IncomingAPIResponseFormat<ProductIncomingDTO>,
   string,
   { rejectValue: ErrorProps }
->("/public/get-single-product", async (slug, { rejectWithValue }) => {
+>("public/get-single-product", async(slug, { rejectWithValue }) => {
   const response = await PRODUCTAPI.getsingleproduct({
     slug,
     reject: rejectWithValue,
@@ -115,6 +114,7 @@ export const getCategoryProduct = createAsyncThunk<
   "/public/get-category-product",
   async ({catname,query}, { rejectWithValue }) => {
     const response = await PRODUCTAPI.getallcategoryproducts({params:query,catname,reject:rejectWithValue});
+    console.log('fasghdfghSFGSDHaasdjkfgjhsdfghsdhfj',response);
     return response;
   }
 );

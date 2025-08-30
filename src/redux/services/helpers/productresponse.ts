@@ -7,17 +7,12 @@ export const defaultProductState:PaginatedProductResponse<ProductIncomingDTO> =
      success:false,
     message:"",
     status:0,
-    data:{
+    data:[{
       _id: "",
       slug: "",
       productName: "",
       description: "",
-      category:{
-        _id:"",
-        name:'',
-        parent:"",
-        slug:""
-      },
+      category:"",
       avgRating:0,
       images: [],
       variants: [
@@ -26,13 +21,14 @@ export const defaultProductState:PaginatedProductResponse<ProductIncomingDTO> =
           price: 0,
           discount: 0,
           discountExpiry: null,
+          priceAfterDiscount:0,
           weight: 0,
         },
       ],
       status: "available",
       tags: [],
       isFeatured: false,
-    },
+    }],
     hasNextPage:false,
     hasPrevPage:false,
     currentPage:0,
@@ -47,12 +43,7 @@ export const singleProductState:IncomingAPIResponseFormat<ProductIncomingDTO> = 
       slug: "",
       productName: "",
       description: "",
-      category:{
-        _id:"",
-        name:'',
-        parent:"",
-        slug:""
-      },
+      category:'',
       avgRating:0,
       images: [],
       variants: [

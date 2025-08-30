@@ -19,10 +19,10 @@ export interface PaginatedProductResponse<T>{
     success:boolean,
     status:number,
     message:string,
-    data: T | null,
-    currentPage:number;
-    hasNextPage:boolean;
-    hasPrevPage:boolean;
+    data: T[] | null,
+    currentPage?:number;
+    hasNextPage?:boolean;
+    hasPrevPage?:boolean;
 }
 
 

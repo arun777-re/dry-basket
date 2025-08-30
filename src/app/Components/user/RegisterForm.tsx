@@ -2,13 +2,14 @@
 import React, { useCallback } from "react";
 import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store/store";
-import { useRouter } from "next/navigation";
-import { createUser } from "@/redux/slices/userSlice";
+import {  useSelector } from "react-redux";
+import { RootState } from "@/redux/store/store";
+import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
-import { mergeCart } from "@/redux/slices/cartSlice";
-import { CartItem } from "@/types/cart";
+import { CartItemOutgoingDTO, PopulatedCartItemDTO } from "@/types/cart";
+import { mapPopulatedOurgoing } from "@/lib/middleware/normalizedCart";
+import { ROUTES } from "@/constants/routes";
+import authHook from "@/hooks/authHook";
 
 interface registerProps {
   firstName: string;
@@ -33,23 +34,11 @@ const initialSignUpSchema = yup.object().shape({
   password: yup.string().required(),
 });
 const RegisterForm = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const [valid, setValid] = React.useState<boolean>(false);
+  const redirect = useSearchParams();
 
-  const [cartItems, setCartItems] = React.useState<CartItem[]>([]);
 
-  const cartitems = JSON.parse(localStorage.getItem("guestCart") ?? "[]");
-  const payload = cartitems.map((item: any) => ({
-    productId: item?.productId,
-    categoryOfProduct:item?.categoryOfProduct,
-    quantity: item?.quantity,
-    variant: item?.variant,
-    addedAtPrice: item?.addedAtPrice,
-  }));
-  // get guestcart
-  React.useEffect(() => {
-    setCartItems(payload);
-  }, []);
+  // authentication hook for dispatch thunks
+  const { useRegisterUser } = authHook();
 
   const router = useRouter();
 
@@ -59,22 +48,20 @@ const RegisterForm = () => {
       { resetForm }: FormikHelpers<registerProps>
     ) => {
       try {
-        await dispatch(createUser(values)).unwrap();
-        toast.success("SignUp completed");
-        setValid(true);
-        router.push("/cart");
+        useRegisterUser({
+          values,
+          route: redirect.get("redirect") as string,
+        });
+        toast.success("Signup successfull");
         resetForm();
       } catch (error: any) {
         toast.error(error.message);
-        router.push("/user/auth-login");
+        router.push(`${ROUTES.USER_LOGIN}`);
       }
     },
-    [dispatch]
+    []
   );
 
-  React.useEffect(() => {
-    dispatch(mergeCart({items:cartItems})).unwrap();
-  }, [valid,dispatch]);
   return (
     <div className="w-full relative bg-gray-100 shadow-2xl py-10">
       <Formik

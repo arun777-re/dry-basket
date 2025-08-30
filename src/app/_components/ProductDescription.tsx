@@ -1,24 +1,39 @@
 "use client";
-import React from "react";
+import React, { ChangeEvent } from "react";
 import Image from "next/image";
 import { FaStar } from "react-icons/fa";
 import Button from "@/app/_components/Button";
+import { ProductDescriptionDTO } from "@/types/product";
+import cartHook from "@/hooks/cartHook";
+import { CartItemOutgoingDTO, CommonVariantDTO } from "@/types/cart";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/constants/routes";
+import { mapPopulatedOurgoing } from "@/lib/middleware/normalizedCart";
 
-interface Props {
-  images: string[];
-  description?: string;
-  price?: number;
-  ratingCount?: number;
-  productName?: string;
-}
-
-const ProductDescription: React.FC<Props> = ({
+const ProductDescription: React.FC<ProductDescriptionDTO> = ({
+  _id,
   images,
   productName,
   description,
-  price,
-  ratingCount,
+  avgRating,
+  variants,
+  category,
 }) => {
+  const router = useRouter();
+  // state to set variants to cart dynamically
+  const [variant, setVariant] = React.useState<CommonVariantDTO>({
+    price: 0,
+    weight: 0,
+    priceAfterDiscount: 0,
+  });
+
+  React.useEffect(() => {
+    if (Array.isArray(variants) && variants.length > 0) {
+      setVariant(variants?.[0]);
+    }
+  }, [variants]);
+
   // state to increment and decrement quantity
   const [qty, setQty] = React.useState<number>(1);
   // state to change paragraph text on clicking thumbnail
@@ -35,6 +50,49 @@ const ProductDescription: React.FC<Props> = ({
     setTransformOrigin(`${x}% ${y}%`);
   };
 
+  const handleVariants = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    e.preventDefault();
+    const selectedWeight = Number(e.target.value);
+    const selectedVariant = variants?.find((v) => v.weight === selectedWeight);
+    if (selectedVariant) setVariant(selectedVariant);
+  };
+
+  const { addToCart } = cartHook();
+  // creating payload for adding to cart
+  const payload = [
+    {
+      productId: {
+        _id: _id,
+        productName: productName,
+        images: images,
+      },
+      quantity: qty,
+      categoryOfProduct: category!,
+      variant: {
+        weight: variant.weight!,
+        price: variant.price!,
+        priceAfterDiscount: variant.priceAfterDiscount!,
+      },
+      addedAtPrice: variant?.price!,
+      subtotal: variant?.priceAfterDiscount! * qty,
+    },
+  ];
+  const backendpayload = React.useMemo(
+    () => mapPopulatedOurgoing(payload),
+    [payload]
+  );
+  // api call to add item to cart
+  const handleAddItemToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    addToCart({ e, payload, backendpayload });
+  };
+
+  const handleBuy = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    handleAddItemToCart(e);
+    router.push(`${ROUTES.CHECKOUT}`);
+  };
+
   return (
     <div className=" w-full relative">
       <div className="w-full  relative flex items-start justify-center gap-8">
@@ -44,34 +102,34 @@ const ProductDescription: React.FC<Props> = ({
           className="w-1/2 h-[50vh] relative overflow-hidden group"
         >
           <div
-            className="w-full h-full relative transition-transform duration-100 scale-100
-                 group-hover:scale-125"
+            className="w-full h-full relative transition-transform duration-100 scale-100 group-hover:scale-125"
             style={{ transformOrigin }}
           >
             <Image
-              src={selectImage}
-              alt="product"
+              src={selectImage ?? "/images/banner-2.jpg"}
+              alt="product-image"
               fill
               className="object-fill object-center pointer-events-none"
             />
           </div>
         </div>
+
         <article className="w-1/2 h-auto relative flex flex-col items-start justify-start">
           <h2>{productName}</h2>
           <div className="flex flex-col items-start justify-center gap-1 py-4">
             <div className="flex gap-1">
-              {[...Array(5)].map((_, index) => (
+              {[...Array(avgRating ?? 1)].map((_, index) => (
                 <FaStar key={index} className="text-prdct text-md" />
               ))}
             </div>
-            <p>{ratingCount}</p>
+            <p>{avgRating}</p>
           </div>
-          <p>{description?.slice(0, 100)}...</p>
+          <p>{description?.slice(0, 160)}...</p>
 
           <div className="flex items-start justify-center gap-16 py-4">
             <span className="text-sm font-semibold text-head">Price:</span>
             <span className="text-sm font-semibold text-head">
-              Rs{price}/pc
+              Rs&nbsp;{variant?.priceAfterDiscount}/pc
             </span>
           </div>
           <div
@@ -80,17 +138,23 @@ const ProductDescription: React.FC<Props> = ({
           >
             <span className="text-sm font-semibold text-head">Weight:</span>
             <select
-              name=""
-              id=""
+              name="variant"
+              value={variant.weight}
+              onChange={handleVariants}
               className="px-4 py-1 text-body items-center
 border-1 border-gray-300"
             >
-              <option value="500gm" className="text-sm text-head">
-                500gm
-              </option>
-              <option value="1kg" className="text-sm text-head">
-                1kg
-              </option>
+              {Array.isArray(variants) &&
+                variants.length > 0 &&
+                variants.map((i, k) => (
+                  <option
+                    value={i.weight}
+                    className="text-sm text-head"
+                    key={k}
+                  >
+                    {i.weight}&nbsp;gm
+                  </option>
+                ))}
             </select>
           </div>
           <div
@@ -100,17 +164,20 @@ border-1 border-gray-300"
             <span className="text-sm font-semibold text-head">Quantity:</span>
             <div className="flex">
               <button
-                onClick={() => setQty((prev) => prev - 1)}
+                onClick={() => setQty((prev) => Math.max(1, prev - 1))}
                 className="px-3 py-1
                border-1 text-head border-gray-300"
               >
                 -
               </button>
               <input
-                type="number"
+                type="text"
                 className="px-1 py-1 
                border-1 w-12 text-center border-gray-300"
                 value={qty}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setQty(Number(e.target.value))
+                }
               />
               <button
                 onClick={() => setQty((prev) => prev + 1)}
@@ -127,12 +194,13 @@ border-1 border-gray-300"
              justify-center"
           >
             {[
-              { name: "Add to Cart", action: "#" },
-              { name: "Buy it now", action: "#" },
-              { name: "Add to Wishlist", action: "#" },
+              { name: "Add to Cart", action: handleAddItemToCart },
+              { name: "Buy it now", action: handleBuy },
+              { name: "Add to Wishlist", action: () => {} },
             ].map((value, key) => (
               <Button
-                onClick={() => value.action}
+                key={key}
+                onClick={value.action}
                 className="bg-tansparent text-sm transition-all duration-500 ease-in-out
                  px-4 py-2 border-1 border-head hover:border-first hover:bg-first"
               >
@@ -152,8 +220,8 @@ border-1 border-gray-300"
               className="w-[80] h-[90] active:border-head rounded-none border-2 border-transparent hover:border-head transition-all duration-500 ease-in-out relative"
             >
               <Image
-                src={item}
-                alt="product"
+                src={item ?? "/images/banner-2.jpg"}
+                alt="product-image-thumbnail"
                 fill
                 priority
                 className="object-fill object-center pointer-events-none"

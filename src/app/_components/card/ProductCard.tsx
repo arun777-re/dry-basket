@@ -3,22 +3,17 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { IoMdCart } from "react-icons/io";
-import { CiHeart } from "react-icons/ci";
 import { Card } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
-import { ProductVariant } from "@/lib/type";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/redux/store/store";
-import { addItemsToCart, createCart } from "@/redux/slices/cartSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store/store";
+import { selectCartTotal } from "@/redux/slices/cartSlice";
+import { ProductCardProps } from "@/types/product";
+import cartHook from "@/hooks/cartHook";
+import { mapPopulatedOurgoing } from "@/lib/middleware/normalizedCart";
+import toast from "react-hot-toast";
 
-export interface ProductCardProps {
-  productId: string;
-  images: string[];
-  productName: string;
-  variants: ProductVariant[];
-  slug: string;
-  category: string;
-}
+
 
 const ProductCard: React.FC<ProductCardProps> = ({
   productId,
@@ -31,53 +26,44 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const activeRef = React.useRef<HTMLDivElement>(null);
   const [active, setActive] = React.useState<boolean>(false);
 
-  const router = useRouter();
-  const dispatch = useDispatch<AppDispatch>();
 
-  // get user from cart
-  const user = useSelector((state: RootState) => state.user.user.success);
-
+  const subtotal = useSelector(selectCartTotal)
+ if(!productId || !variants.length){
+  console.error('Missing productId/variants for product',productName);
+  return null;
+ }
   // creating payload for adding to cart
-  const payload = {
-    productId: productId,
+  const payload = [{
+    productId:{
+      _id:productId,
+      productName:productName,
+      images:images
+    },
     quantity: 1,
     categoryOfProduct: category,
     variant: {
       weight: variants?.[0].weight,
       price: variants?.[0].price,
-      discount: variants?.[0].discount ?? 0,
-      discountExpiry: variants?.[0].discountExpiry
-        ? new Date(variants?.[0].discountExpiry)
-        : null,
+      priceAfterDiscount: variants?.[0].priceAfterDiscount,
     },
     addedAtPrice: variants?.[0].price,
-  };
+    subtotal:subtotal
+  }];
 
+  // normalize cart items for backend
+  const backendpayload = React.useMemo(()=>mapPopulatedOurgoing(payload),[payload])
   // function to add to cart
+const {addToCart} = cartHook();
 
-  const addToCart = (e: React.MouseEvent<HTMLOrSVGElement>) => {
-    e.preventDefault();
-    if (user) {
-      dispatch(addItemsToCart({ items: payload }));
-    } else {
-  //     dispatch(createCart({
-  //   productId: productId,
-  //   quantity: 1,
-  //   image:images[0],
-  //   productName: productName,
-  //   categoryOfProduct: category,
-  //   variant: {
-  //     weight: variants?.[0].weight,
-  //     price: variants?.[0].price,
-  //     discount: variants?.[0].discount ?? 0,
-  //     discountExpiry: variants?.[0].discountExpiry
-  //       ? new Date(variants?.[0].discountExpiry)
-  //       : null,
-  //   },
-  //   addedAtPrice: variants?.[0].price,
-  // }));
-    }
-  };
+const handleAddItem = async(e:React.MouseEvent<SVGElement>)=>{
+  // stop execution when product is not in stock
+  if(variants[0].stock === 0){
+    e.stopPropagation();
+    toast.error('Product is not in stock');
+    return;
+  }
+  await addToCart({e,payload,backendpayload})
+}
 
   return (
     <Card
@@ -89,14 +75,19 @@ const ProductCard: React.FC<ProductCardProps> = ({
     >
       <span className="border-left"></span>
       <span className="border-bottom"></span>
-      <figure className="relative flex flex-col items-center justify-between px-4 h-86 py-8 w-full">
+      <figure className="relative flex flex-col items-center justify-between px-2 h-86 py-8 w-full">
+          {variants[0]?.discount! > 0 && new Date(variants?.[0]?.discountExpiry!).getTime() > Date.now() && (
+            <span className="absolute top-2 left-2 bg-head text-white px-2 py-1 text-xs rounded">
+              {variants[0].discount!}% OFF
+          </span>
+  )}
         <div className="relative w-full h-[50%]">
           <Image
-            src={active ? images[1] : images[0]}
+            src={active &&  images[1] ? images[1] : images[0] ?? '/images/banner-1.jpg'}
             fill
             priority
             alt="product-image"
-            className="object-cover object-center"
+            className="object-fill object-center"
           />
           <div
             className={`absolute inset-0 ${
@@ -104,9 +95,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
             } transition-all duration-300 ease-in-out`}
           >
             <IoMdCart
-              onClick={addToCart}
+              onClick={handleAddItem}
               size={24}
-              className="bg-white text-head  hover:text-first "
+              className="bg-transparent text-head  hover:text-first "
             />
             {/* <CiHeart
               size={24}
@@ -122,7 +113,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
           >
             {productName}
           </Link>
-          <p className="font-extrabold text-sm">Rs&nbsp;{variants[0].price}</p>
+          <div className="flex flex-row items-center justify-between gap-4.5">
+           <p className="font-extrabold text-sm">Rs&nbsp;{variants[0].priceAfterDiscount}</p>
+
+            {variants[0]?.discount! > 0 && new Date(variants?.[0]?.discountExpiry!).getTime() > Date.now() && (
+              <p className="text-red-500 line-through text-sm">
+                Rs&nbsp;{variants[0].price}
+              </p>
+            )}
+          </div>
+        
         </figcaption>
       </figure>
     </Card>

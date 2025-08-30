@@ -1,10 +1,20 @@
-import { Document,Types } from "mongoose";
 
-export interface ReviewDocument extends Document {
+export interface ReviewOutgoingDTO {
+    productId?:string;
     rating:number;
-    comment:string;
-    user:Types.ObjectId;
-    product:Types.ObjectId;
-    createdAt:Date;
-    updatedAt:Date;
+    reviewText:string;
+}
+
+
+
+export interface UserInReviewDTO{
+  firstName:string;
+}
+
+export interface ReviewIncomingDTO {
+    _id:string;
+    rating:number;
+    reviewText:string;
+    userId:UserInReviewDTO;
+    createdAt:Date | null;
 }

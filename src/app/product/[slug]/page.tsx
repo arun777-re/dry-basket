@@ -3,24 +3,18 @@ import { Metadata } from "next";
 import Banner from "@/app/Components/Banner";
 import Footer from "@/app/Components/Footer";
 import Navbar from "@/app/Components/Navbar";
-import Image from "next/image";
 import React, { useEffect } from "react";
-import { ItemProps } from "@/lib/type";
 import Button from "@/app/_components/Button";
 import Review from "@/app/Components/Review";
 import ProductDescription from "@/app/_components/ProductDescription";
 import AdditionalInfo from "@/app/_components/AdditionalInfo";
-import ProductCard from "@/app/_components/card/ProductCard";
-import DummyCard from "@/app/_components/card/DummyCard";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store/store";
-import {
-  getSingleProduct,
-  getRelatedProduct,
-  getFeaturedProduct,
-  getRecommendedProduct,
-} from "@/redux/slices/productSlice";
 import { useParams } from "next/navigation";
+import { ProductIncomingDTO } from "@/types/product";
+import { useFetchCategoryProducts } from "@/hooks/fetchCategoryProduct";
+import ProductSection from "@/app/Components/ProductSection";
+import ProductInformation from "@/app/_components/ProductInformation";
+import { defaultPopulatedCartResponse } from "@/redux/services/helpers/cart/cartresponse";
+import { defaultProductState, singleProductState } from "@/redux/services/helpers/productresponse";
 
 interface GenerateMetaDataProps {
   params: {
@@ -53,56 +47,23 @@ interface GenerateMetaDataProps {
 //   };
 // }
 
-const productData: ItemProps = {
-  _id: "1",
-  slug: "example-product",
-  status: "available",
-  ratingAverage: 4.5,
-  ratingCount: 100,
-  category: "almonds",
-  productName: "California Almonds",
-  title: "Example Product Title",
-  price: 99.99,
-  description:
-    "Oil Rich Almonds exported from California.Once you use it then you must agin buy it from us",
-  isFeatured: true,
-  weight: 1.2,
-  discount: 10,
-  images: [
-    "/images/card1-1.jpg",
-    "/images/card1-2.jpg",
-    "/images/card2-1.jpg",
-    "/images/card2-2.jpg",
-  ],
-  reviews: [
-    {
-      userName: "John Doe",
-      rating: 5,
-      reviewText: "Great product!",
-
-      createdAt: "01/02/2025",
-    },
-    {
-      userName: "Jane Smith",
-      rating: 4,
-      reviewText: "Very good quality.",
-      createdAt: "01/02/2025",
-    },
-  ],
-  tags: ["almonds-in-sonipat", "oil rich almonds"],
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
-
 const ProductPage: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const { slug } = useParams();
 
-  // state to save productdata
-  const [products, setProducts] = React.useState<ItemProps[]>([]);
-  const [product, setProduct] = React.useState<ItemProps | null>(null);
-  const [recommendedProducts, setRecommendedProducts] = React.useState<ItemProps[]>([]);
-
+  // getting api functions from hook
+  const {
+    fetchSingleProductWithSlug,
+    fetchRelatedProducts,
+    fetchRecommendedProducts,
+  } = useFetchCategoryProducts();
+  // state to save product
+  const [relatedProducts, setRelatedProducts] = React.useState<
+    ProductIncomingDTO[]
+  >([]);
+  const [product, setProduct] = React.useState<ProductIncomingDTO>(singleProductState?.data!);
+  const [recommendedProducts, setRecommendedProducts] = React.useState<
+    ProductIncomingDTO[]
+  >([]);
 
   // state to set images to the container after clicking on thumbnail
   const [selectParagraph, setSelectParagraph] =
@@ -110,55 +71,53 @@ const ProductPage: React.FC = () => {
 
   // here actual data of a product comes from backend
   React.useEffect(() => {
+    let active = true;
     if (slug && typeof slug === "string") {
-      dispatch(getSingleProduct(slug))
-        .unwrap()
-        .then((res) => {
-          setProduct(res?.data);
-        })
-        .catch((err) => {
-            console.error(err);
-        });
+      fetchSingleProductWithSlug({ slug, setProduct: setProduct });
     }
 
-   
-  }, [dispatch,slug]);
+    // to avoid race condition of state on component unmount
+    return () => {
+      active = false;
+    };
+  }, [slug]);
 
-//   get related products
+  //   get related products
 
-  useEffect(()=>{
-    if(product?.productName){
- dispatch(getRelatedProduct({productName:product?.productName,
-        category:product?.category,
-        query:{page:1,limit:5}
-      }))
-        .unwrap()
-        .then((res) => {
-
-        })
-        .catch((err) => {});
+  useEffect(() => {
+    let active = true;
+    if (product?.productName) {
+      fetchRelatedProducts({
+        category: product?.category,
+        productName: product?.productName,
+        setProduct: setRelatedProducts,
+        limit: 10,
+        page: 1,
+      });
     }
-      
-  },[dispatch,product?.productName])
 
-//   get recommended featured products
-  useEffect(()=>{
-if(product?.category){
-  dispatch(getRecommendedProduct({catId:product.category,query:{page:1,limit:5}}))
-        .unwrap()
-        .then((res) => {
-            setRecommendedProducts(res?.data);
-        })
-        .catch((err) => {
-            console.error(err);
-        });
-}
-    
-  },[dispatch,product?.category])
+    // to avoid race condition of state on component unmount
+    return () => {
+      active = false;
+    };
+  }, [product?.productName]);
 
-console.log('product...........',product);
-console.log('products...........',products);
-console.log('recommendedproducts...........',recommendedProducts);
+  //   get recommended featured products
+  useEffect(() => {
+    let active = true;
+    if (product?.category) {
+      fetchRecommendedProducts({
+        catId: product?.category,
+        setProduct: setRecommendedProducts,
+        limit: 10,
+        page: 1,
+      });
+    }
+    // to avoid race condition of state on component unmount
+    return () => {
+      active = false;
+    };
+  }, [product?.category]);
 
   return (
     <div className="max-w-screen w-full mx-auto relative overflow-hidden">
@@ -167,14 +126,27 @@ console.log('recommendedproducts...........',recommendedProducts);
       <section className="w-full relative h-auto">
         <div className="w-full h-auto relative flex flex-col items-start justify-center px-30 py-20">
           <ProductDescription
-            images={productData.images}
-            ratingCount={productData?.ratingCount}
-            description={productData?.description}
-            price={productData?.price}
-            productName={productData?.productName}
+          key={product?._id}
+            _id={product?._id!}
+            category={product?.category!}
+            images={product?.images! || ["/images/banner-2.jpg"]}
+            avgRating={product?.avgRating}
+            description={product!.description}
+            productName={product!.productName}
+            variants={product?.variants!}
           />
           <div className="w-full relative h-auto">
             <div className="flex items-start justify-start gap-2">
+              <Button
+                onClick={() => setSelectParagraph("product")}
+                className={`rounded-none px-4 py-2 text-sm font-semibold ${
+                  selectParagraph === "product"
+                    ? "bg-first text-white border-first"
+                    : "bg-transparent text-head border-head"
+                } border-2 transition-all duration-500 ease-in-out`}
+              >
+                Product Information
+              </Button>
               <Button
                 onClick={() => setSelectParagraph("additional")}
                 className={`rounded-none px-4 py-2 text-sm font-semibold ${
@@ -186,9 +158,9 @@ console.log('recommendedproducts...........',recommendedProducts);
                 Additional Information
               </Button>
               <Button
-                onClick={() => setSelectParagraph("reviews")}
+                onClick={() => setSelectParagraph("review")}
                 className={`border-2 px-4 py-2 text-sm font-semibold ${
-                  selectParagraph === "reviews"
+                  selectParagraph === "review"
                     ? "bg-first text-white border-first"
                     : "bg-transparent text-head border-head"
                 } rounded-none transition-all duration-500 ease-in-out`}
@@ -197,64 +169,25 @@ console.log('recommendedproducts...........',recommendedProducts);
               </Button>
             </div>
             <div className="flex relative w-full flex-col items-start justify-center px-8 py-6 shadow-md">
-              {selectParagraph === "additional" ? (
-                <AdditionalInfo />
-              ) : (
-                <Review reviews={productData.reviews} />
+              {selectParagraph === "additional" && <AdditionalInfo />}
+              {selectParagraph === "review" && (
+                <Review
+                  avgRating={product?.avgRating ?? 1}
+                  productId={product?._id!}
+                />
               )}
+              {selectParagraph === "product" && <ProductInformation description={product?.description}/>}
             </div>
           </div>
           <div className="w-full relative h-auto pt-20 flex flex-col items-center gap-16">
-            <div className="w-full relative">
-              <h4 className="text-center mb-4">Related Products</h4>
-              <div className="w-full relative flex flex-row items-center gap-6">
-                {products && products.length > 0 ? (
-                  products.slice(0, 4).map((value, key) => {
-                    return (
-                      <ProductCard
-                        key={key}
-                        images={value.images}
-                        price={value.price}
-                        slug={value.slug}
-                        title={value.productName}
-                        _id={value._id}
-                      />
-                    );
-                  })
-                ) : (
-                  <div className="w-full relative h-auto flex flex-row gap-6 flex-wrap items-center">
-                    {[...Array(4)].map((_, key) => (
-                      <DummyCard key={key} />
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="w-full relative">
-              <h4 className="text-center mb-4">Recommended Products</h4>
-              <div className="w-full h-auto relative flex items-center flex-wrap gap-6">
-                {recommendedProducts && recommendedProducts.length > 0 ? (
-                  recommendedProducts.slice(0, 4).map((value, key) => {
-                    return (
-                        <div className="w-1/5" key={key}>
-
-                      <ProductCard 
-                      productId={value._id}
-                       {...value}
-                      />
-                        </div>
-
-                    );
-                  })
-                ) : (
-                  <div className="w-full relative h-auto flex flex-row gap-6 flex-wrap items-center">
-                    {[...Array(4)].map((_, key) => (
-                      <DummyCard key={key} />
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
+            <ProductSection
+              title="Related Products"
+              products={relatedProducts}
+            />
+            <ProductSection
+              title="Recommended Products"
+              products={recommendedProducts}
+            />
           </div>
         </div>
       </section>

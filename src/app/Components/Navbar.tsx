@@ -9,11 +9,17 @@ import { CartDrawer } from "./CartDrawer";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store/store";
 import { logoutUserLocally,logoutuser} from "@/redux/slices/userSlice";
+import SearchBar from "../_components/SearchBar";
+import { UserPropsIncoming } from "@/types/user";
+import { IncomingAPIResponseFormat } from "@/types/response";
+import { ROUTES } from "@/constants/routes";
+import authHook from "@/hooks/authHook";
 
 const Navbar = () => {
   const [active, setActive] = useState(false);
+  const [search, setSearch] = useState(false);
+
   const router = useRouter();
-  const dispatch = useDispatch<AppDispatch>()
 
   // Scroll logic to activate navbar
   useEffect(() => {
@@ -24,18 +30,26 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const userId = useSelector<RootState>(state => state.user.user.data?._id);
-  console.log('helloooooo',userId);
+  const user = useSelector<RootState,IncomingAPIResponseFormat<UserPropsIncoming>>(state => state.user.user);
 
-  const handleLogout = async()=>{
-    console.log("Logout button clicked");
-    await dispatch(logoutuser(userId as string)).unwrap();
+  const {LOGOUT_USER} = authHook();
+
+  const handleLogout = ()=>{
+    LOGOUT_USER(user?.data?._id!);
   }
+
+  const handleLoginAndUserDashBoard = React.useCallback((e:React.MouseEvent<SVGElement>)=>{
+    e.preventDefault();
+      if(!user.success){
+        router.push(`${ROUTES.LOGIN}`)
+      }else{
+         router.push(`${ROUTES.USER_DASHBOARD}`)
+      }
+  },[user])
 
   return (
     <div className="max-w-screen w-full flex flex-col items-center justify-center">
       <h1 className="text-center text-first relative py-6 z-50">Dry Basket</h1>
-
       {/* AnimatePresence allows exit animations */}
       <AnimatePresence>
         <motion.nav
@@ -64,14 +78,19 @@ const Navbar = () => {
               ))}
             </ul>
             <div className="flex gap-4">
-              <IoSearchOutline className="text-2xl cursor-pointer" />
+              <IoSearchOutline className="text-2xl cursor-pointer" onClick={()=>setSearch(prev => !prev)}/>
               <CartDrawer/>
-              <FaUser onClick={()=>router.push('/user/auth-login')} className="text-2xl cursor-pointer" />
+              <FaUser onClick={handleLoginAndUserDashBoard} className="text-xl cursor-pointer"/>
                 <FaLongArrowAltUp onClick={handleLogout}/>
             </div>
+             {search &&
+      <SearchBar/>
+      }
           </div>
         </motion.nav>
       </AnimatePresence>
+     
+
     </div>
   );
 };

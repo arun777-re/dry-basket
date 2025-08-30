@@ -1,0 +1,53 @@
+import { CartState, PopulatedCartItemDTO, PopulatedProductInfo, UpdateQtyDTO } from "@/types/cart";
+
+export function saveGuestCart(items:PopulatedCartItemDTO[]){
+    localStorage.setItem('guest_cart',JSON.stringify(items))
+}
+
+export function getGuestCart(){
+    const saved = localStorage.getItem('guest_cart');
+    return saved && (JSON.parse(saved) || []) as PopulatedCartItemDTO[]
+}
+
+
+
+const getId = (p: string | PopulatedProductInfo) => {
+  return typeof p === "string" ? p : p._id;
+};
+// utility function for createcart reducer
+export function createCart(state:CartState,payload:PopulatedCartItemDTO){
+   if (!state.cart.data?.items) {
+        state.cart.data!.items = [];
+      }
+      const existingItem = state.cart?.data?.items.find(
+        (c:PopulatedCartItemDTO) => getId(c.productId) === getId(payload.productId)
+      );
+      if (existingItem) {
+        existingItem.quantity += payload.quantity;
+      } else {
+        state.cart?.data?.items.push(payload);
+      }
+}
+
+// function to update qty
+export function updateqty(state:CartState,payload:UpdateQtyDTO){
+   const existingItem = state.cart.data!.items.find(
+        (c:PopulatedCartItemDTO) => getId(c.productId) === getId(payload.productId)
+      );
+      if (existingItem) {
+        existingItem.quantity += payload.delta;
+        if (existingItem.quantity <= 0) {
+          // auto remove if qty goes to 0
+          state.cart.data!.items = state.cart.data!.items.filter(
+            (c:PopulatedCartItemDTO) => getId(c.productId) !== getId(payload.productId)
+          );
+        }
+      }
+}
+
+// function to remove item from cart
+export function removeitem(state:CartState,productId:string){
+      state.cart.data!.items = state.cart.data!.items.filter(
+        (item:PopulatedCartItemDTO) => item.productId._id !== productId
+      );
+}

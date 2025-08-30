@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { Card } from "@radix-ui/themes";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -6,61 +6,75 @@ import { MdCancel } from "react-icons/md";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store/store";
-import {getCart, removeCart, removeCartItem, updateQuantity, updateQuantityLocal, updateUserQty } from "@/redux/slices/cartSlice";
+import {
+  removeItemGuestCart,
+  removeItemOptimistic,
+  updateQtyGuestCart,
+  updateQtyOptimistic,
+} from "@/redux/slices/cartSlice";
+import cartHook from "@/hooks/cartHook";
+import { PopulatedIncomingCartDTO } from "@/types/cart";
+import { defaultPopulatedCartResponse } from "@/redux/services/helpers/cart/cartresponse";
 
 interface DrawerCardProps {
   productId: string;
   productName: string;
   weight: number;
-  price: number;
+  priceAfterDiscount?:number;
   image: string;
-  quantity:number;
+  quantity: number;
 }
 
 const DrawerCard: React.FC<DrawerCardProps> = ({
   productId,
   productName,
   weight,
-  price,
+  priceAfterDiscount,
   image,
-  quantity
+  quantity,
 }) => {
   const [active, setActive] = useState<boolean>(false);
+  const [userCart, setUserCart] = React.useState<PopulatedIncomingCartDTO>(
+    defaultPopulatedCartResponse
+  );
 
-  const [fallBackImage,setFallBackImage] = React.useState<string>('');
+  const [fallBackImage, setFallBackImage] = React.useState<string>("");
 
   const dispatch = useDispatch<AppDispatch>();
- 
-  const user = useSelector((state:RootState)=> state?.user.user.success)
+
+  const user = useSelector((state: RootState) => state?.user.user.success);
+  const { REMOVE_ITEM_FROM_CART, UPDATE_ITEM_QTY } = cartHook();
 
   // function to remove item from cart
   const removeItem = (productId: string) => {
-    if(user){
-      dispatch(removeCartItem({productId}));
-      dispatch(removeCartItem({productId})).unwrap();
-       
+    if (user) {
+      dispatch(removeItemOptimistic(productId));
+      REMOVE_ITEM_FROM_CART({ productId, setUserCart });
     }
-    dispatch(removeCart(productId));
+    dispatch(removeItemGuestCart(productId));
   };
 
-  // function to updateqty 
-  const handleQuantityChange = (delta:number)=>{
-    if(user){
-      dispatch(updateQuantityLocal({productId,delta}))
+  // function to updateqty
+  const handleQuantityChange = (delta: number) => {
+    if (user) {
+      const payload = {
+        productId,
+        delta,
+      };
+      dispatch(updateQtyOptimistic({productId,delta}))
+      UPDATE_ITEM_QTY({ payload, setUserCart });
       setFallBackImage(image);
-      // update cart qty by fetching from server
-      dispatch(updateUserQty({productId,delta})).unwrap();
-    }else{
-       dispatch(updateQuantity({productId,delta}))
+    } else {
+      dispatch(updateQtyGuestCart({ productId, delta }));
     }
-  }
+  };
   return (
     <Card
       className="w-full h-auto relative"
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
     >
-      <div className="w-full h-full relative p-2 shadow-md py-4 flex items-center gap-6 justify-center">
+      <div className="w-full h-full relative p-2 shadow-xs py-4 flex items-center gap-6 justify-center border border-body/20">
         <div style={{ borderRadius: "50%" }} className="h-20 w-24 relative">
           <Image
             src={image || fallBackImage}
@@ -69,24 +83,25 @@ const DrawerCard: React.FC<DrawerCardProps> = ({
             style={{ borderRadius: "50%" }}
             className="w-full h-full object-fill object-center"
           />
+
           <MdCancel
             size={26}
             onClick={() => removeItem(productId)}
-            style={{ borderRadius: "50%" }}
-            className={`absolute -top-4 left-0  ${
+            // style={{ borderRadius: "50%" }}
+            className={`absolute -top-8 left-0  ${
               active ? "visible" : "hidden"
             } 
-                   bg-head text-white transition-all rounded-full cursor-pointer
+                  hover:text-head  transition-all rounded-full cursor-pointer
                      duration-500 ease-in-out`}
           />
         </div>
         <article className="w-full h-auto relative flex items-start justify-start flex-col gap-2">
-          <p className="text-body font-cursive">{productName}</p>
-          <p>{weight/1000} Kg</p>
-          <p className="text-black">Rs{price}</p>
+          <h5 className="text-body">{productName}</h5>
+          <p>{weight / 1000} Kg</p>
+          <p className="text-black">Rs&nbsp;{priceAfterDiscount}</p>
           <div className="relative flex items-center justify-center border-1 border-gray-200">
             <div
-              onClick={() => handleQuantityChange(+1)} 
+              onClick={() => handleQuantityChange(+1)}
               className="relative h-8 w-10 flex items-center justify-center cursor-pointer hover:bg-first transition-all duration-500 ease-in-out"
             >
               <FaPlus size={12} className="text-head hover:text-body" />
@@ -99,7 +114,7 @@ const DrawerCard: React.FC<DrawerCardProps> = ({
               )}
             </div>
             <div
-              onClick={() =>handleQuantityChange(-1)}
+              onClick={() => handleQuantityChange(-1)}
               className="relative h-8 w-10 flex items-center justify-center cursor-pointer hover:bg-first transition-all duration-500 ease-in-out"
             >
               <FaMinus size={12} className="text-head hover:text-body" />

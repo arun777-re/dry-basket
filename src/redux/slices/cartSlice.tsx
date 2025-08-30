@@ -2,60 +2,38 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 import { RootState } from "../store/store";
-import { getRequest, patchRequest, postRequest } from "../services/middleware";
-import { ErrorProps } from "@/types/response";
-import { CartItem, CartVariant } from "@/types/cart";
-import normalizedCart from "@/lib/middleware/normalizedCart";
-import { ROUTES } from "@/constants/routes";
+import { ErrorProps, IncomingAPIResponseFormat } from "@/types/response";
+import {
+  CartItemOutgoingDTO,
+  CartState,
+  PopulatedCartItemDTO,
+  PopulatedIncomingCartDTO,
+  UpdateQtyDTO,
+} from "@/types/cart";
+import { CARTAPI } from "../services/api/cart";
+import { defaultError } from "../services/helpers/userresponse";
+import { defaultPopulatedCartResponse } from "../services/helpers/cart/cartresponse";
+import { createCart, getGuestCart, removeitem, saveGuestCart, updateqty } from "../services/helpers/cart/carthelpers";
 
-export interface Cartitem {
-  image?: string;
-  productId: string;
-  quantity: number;
-  productName: string;
-  variant: CartVariant;
-  addedAtPrice: number;
-  categoryOfProduct: string;
-}
 
-type NormalizedCartType = ReturnType<typeof normalizedCart>;
-
-interface ActualCart {
-  success: boolean;
-  message: string;
-  status: number;
-  data: NormalizedCartType;
-}
-
-interface GuestCart {
-  success: boolean;
-  message: string;
-  status: number;
-  data: NormalizedCartType;
-}
-type CartResponse = ActualCart | GuestCart;
-interface CartState {
-  cart: CartResponse;
-  latdata?: Record<string, any>;
-  loading: boolean;
-  error: ErrorProps;
-}
 
 const initialState: CartState = {
   cart: {
     success: false,
     message: "",
     status: 0,
-    data: normalizedCart([]),
+    data: defaultPopulatedCartResponse,
   },
   loading: false,
-  error: {
+  error: defaultError,
+  message: "",
+  prevSnapshot:{
     success: false,
     message: "",
-    status: 400,
-  },
-  latdata: {},
-};
+    status: 0,
+    data: defaultPopulatedCartResponse,
+  }
+}; 
 
 // create input selector
 const selectCartItems = (state: RootState) =>
@@ -63,243 +41,160 @@ const selectCartItems = (state: RootState) =>
 
 // memorized derived selector for total price
 export const selectCartTotal = createSelector([selectCartItems], (cartItems) =>
-  cartItems.reduce((acc, item) => {
-    return acc + (item?.variant?.price ?? 0) * item.quantity;
+  cartItems.reduce((acc:number, item:PopulatedCartItemDTO) => {
+    return acc + (item?.variant?.priceAfterDiscount ?? 0) * item.quantity;
   }, 0)
 );
 
+// total weight of cart items using createSelector from lib reselect;
+export const cartTotalItemsWeight = createSelector([selectCartItems],(cartItems)=> cartItems.reduce((acc:number,item:PopulatedCartItemDTO)=>{
+  const totalWeigh =  acc + (item.variant.weight * item.quantity);
+  return Math.max(totalWeigh,0)
+},0))
+
 // thunk to get actual cart associated with a user
-export const getCart = createAsyncThunk(
-  "user/get-cart",
-  async (_, { rejectWithValue }) => {
-    const response = await getRequest({
-      url: "/api/public/cart/get-cart",
-      reject: rejectWithValue,
-    });
+export const getCart = createAsyncThunk<
+  IncomingAPIResponseFormat<PopulatedIncomingCartDTO>,
+  void,
+  { rejectValue: ErrorProps }
+>("user/get-cart", async (_, { rejectWithValue }) => {
+  const response = await CARTAPI.getusercart(rejectWithValue);
 
-    return response;
-  }
-);
+  return response;
+});
 
-// thunk to create or update cart when user add items to cart
-export const addItemsToCart = createAsyncThunk(
-  "user/addto-cart",
-  async (payload: { items: CartItem }, { rejectWithValue }) => {
-    const response = await postRequest({
-      url: "/api/public/cart/create-cart",
-      reject: rejectWithValue,
-      data: payload,
-    });
-    return response;
-  }
-);
+// thunk to create/merge or update cart when user add items to cart
+export const addItemsToCart = createAsyncThunk<
+  IncomingAPIResponseFormat<null>,
+  CartItemOutgoingDTO[],
+  { rejectValue: ErrorProps }
+>("user/addto-cart", async (data, { rejectWithValue }) => {
+  console.log("hello data", data);
+  const response = await CARTAPI.createcartoradditem({
+    data,
+    reject: rejectWithValue,
+  });
+  return response;
+});
 
-export const mergeCart = createAsyncThunk(
-  "user/merge-cart",
-  async (payload: { items: CartItem[],userId:string }, { rejectWithValue }) => {
-    try {
-      const response = await postRequest({
-        url:`${ROUTES.SERVER_BASE_URL}/v1/public/cart/merge-cart/${payload.userId}`,
-        data:payload.items,
-        reject:rejectWithValue
-      })
-      
-      return response;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
 
-export const updateUserQty = createAsyncThunk(
-  "user/update-qty",
-  async (
-    payload: { productId: string; delta: number },
-    { rejectWithValue }
-  ) => {
-    const response = await patchRequest({
-      url: "/api/public/cart/update-qty",
-      reject: rejectWithValue,
-      data: JSON.stringify(payload),
-    });
-    return response;
-  }
-);
+export const updateItemQty = createAsyncThunk<
+  IncomingAPIResponseFormat<PopulatedIncomingCartDTO>,
+  UpdateQtyDTO,
+  { rejectValue: ErrorProps }
+>("user/update-qty", async (payload: UpdateQtyDTO, { rejectWithValue }) => {
+  const response = await CARTAPI.updateitemquantity({
+    reject: rejectWithValue,
+    data: payload,
+  });
+  return response;
+});
 
-export const removeCartItem = createAsyncThunk(
-  "user/remove",
-  async (payload: { productId: string }, { rejectWithValue }) => {
-    const response = await patchRequest({
-      url: "/api/public/cart/remove-item",
-      reject: rejectWithValue,
-      data: JSON.stringify({ productId: payload.productId }),
-    });
-    return response;
-  }
-);
-export const applyCoupon = createAsyncThunk(
-  "user/apply-coupon",
-  async (payload: { code: string; cartId: string }, { rejectWithValue }) => {
-    const response = await patchRequest({
-      url: `/api/public/cart/apply-coupon?cartId=${payload.cartId}`,
-      reject: rejectWithValue,
-      data: JSON.stringify({ code: payload.code }),
-    });
-    return response;
-  }
-);
+export const removeCartItem = createAsyncThunk<
+  IncomingAPIResponseFormat<PopulatedIncomingCartDTO>,
+  { productId: string },
+  { rejectValue: ErrorProps }
+>("user/remove", async ({ productId }, { rejectWithValue }) => {
+  const response = await CARTAPI.removeitemfromcart({
+    reject: rejectWithValue,
+    productId: productId,
+  });
+  return response;
+});
+export const applyCoupon = createAsyncThunk<
+  IncomingAPIResponseFormat<PopulatedIncomingCartDTO>,
+  string,
+  { rejectValue: ErrorProps }
+>("user/apply-coupon", async (code, { rejectWithValue }) => {
+  const response = await CARTAPI.applycoupontocart({
+    reject: rejectWithValue,
+    code,
+  });
+  return response;
+});
 
-// thunk to create cart
+export const clearUserCart = createAsyncThunk<
+  IncomingAPIResponseFormat<null>,
+  void,
+  { rejectValue: ErrorProps }
+>("user/clear-cart", async (_, { rejectWithValue }) => {
+  const response = await CARTAPI.clearcart({ reject: rejectWithValue });
+  return response;
+});
 
-// getting user lat long from open route service api
-export const getUserLatLong = createAsyncThunk(
-  "/user/get-lat-lon",
-  async (text: string, { rejectWithValue }) => {
-    const response = await fetch(
-      `https://api.opencagedata.com/geocode/v1/json?q=${text}&key=${ROUTES.OPEN_CAGE_API_KEY}`,
-      {
-        method: "GET",
-      }
-    );
-    const res = await response.json();
-    console.log("getUserLatLong response: ", res);
-    if (!response.ok) {
-      return rejectWithValue(res.message || "Failed to fetch user location");
-    }
-    if (!res.results || res.results.length === 0) {
-      return rejectWithValue("No location found for the given text");
-    }
-    const { lat, lng } = res.results[0].geometry;
-    return { lat, lng };
-  }
-);
 
-type UserDistaqnceProps = {
-  fromLat: number;
-  fromLong: number;
-  toLat: number;
-  toLong: number;
-};
-// getting user lat long from open route service api
-export const getUserDistance = createAsyncThunk(
-  "/user/get-distance",
-  async (data: UserDistaqnceProps, { rejectWithValue }) => {
-    const response = await fetch(
-      "/api/public/cart/get-distance",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${ROUTES.OPEN_ROUTE_API_KEY}`,
-        },
-        body: JSON.stringify(data),
-      }
-    );
-    const res = await response.json();
-    if (!response.ok) {
-      return rejectWithValue(res.message || "Failed to fetch user location");
-    }
-    const distance = res.data.distances[1][0] / 1000;
-    console.log('loda',distance)
 
-    return distance
-  }
-);
+
 
 const cartSlice = createSlice({
   name: "cart",
   initialState: initialState,
   reducers: {
-    createCart: (state, action: PayloadAction<Cartitem>) => {
-      if (!Array.isArray(state.cart.data.items)) {
-        state.cart.data.items = [];
-      }
-      const existingItem =
-        Array.isArray(state.cart.data.items) &&
-        state.cart.data.items.find(
-          (item) => item.productId === action.payload.productId
-        );
-      if (existingItem) {
-        existingItem.quantity += action.payload.quantity;
-      } else {
-        Array.isArray(state.cart.data.items) &&
-          state.cart.data.items.push(action.payload);
-      }
-      localStorage.setItem("guestCart", JSON.stringify(state.cart.data.items));
+    createCartOptimisticforUX: (
+      state,
+      action: PayloadAction<PopulatedCartItemDTO>
+    ) => {
+      // snapshot for rollback
+      state.prevSnapshot = JSON.parse(JSON.stringify(state.cart));
+      createCart(state,action.payload)
+    
+    },
+    // Optimistic Remove Item from cart
+    removeItemOptimistic: (state, action: PayloadAction<string>) => {
+      // snapshot for rollback in case of failure
+      state.prevSnapshot = JSON.parse(JSON.stringify(state.cart));
+       removeitem(state,action.payload)
     },
 
-    removeCart: (state, action: PayloadAction<string>) => {
-      state.cart.data.items = state.cart.data.items.filter(
-        (item) => item.productId !== action.payload
-      );
-      localStorage.setItem("guestCart", JSON.stringify(state.cart.data.items));
+    updateQtyOptimistic: (state, action: PayloadAction<UpdateQtyDTO>) => {
+      //  snapshot for rollback in case of api failure/thunk failure
+      state.prevSnapshot = JSON.parse(JSON.stringify(state.cart));
+     updateqty(state,action.payload)
     },
-    removeItemFromCart: (
+    createOraddItemGuestCart: (
       state,
-      action: PayloadAction<{ productId: string }>
+      action: PayloadAction<PopulatedCartItemDTO>
     ) => {
-      if (!state.cart.data?.items) return;
-      state.cart.data.items = state.cart.data.items.filter((item) => {
-        typeof item.productId !== "string" &&
-          item?.productId?._id.toString() !==
-            action.payload.productId.toString();
-      });
+   createCart(state,action.payload);
+     saveGuestCart(state.cart.data!.items)
     },
-    updateQuantity: (
-      state,
-      action: PayloadAction<{ productId: string; delta: number }>
-    ) => {
-      if (!state.cart.data?.items) return;
-      const item = state.cart.data.items.find(
-        (item) => String(item.productId) === String(action.payload.productId)
-      );
-      if (item) {
-        item.quantity += action.payload.delta;
-        // assigning min quantity to 1
-        if (item.quantity < 1) item.quantity = 1;
+    removeItemGuestCart: (state, action: PayloadAction<string>) => {
+           removeitem(state,action.payload)
+          saveGuestCart(state.cart.data!.items)
+    },
+    updateQtyGuestCart: (state, action: PayloadAction<UpdateQtyDTO>) => {
+            updateqty(state,action.payload)
+            saveGuestCart(state.cart.data!.items)
+
+    },
+    getUserGuestCart: (state) => {
+       const guestItems = getGuestCart();
+      if (
+        guestItems &&
+        guestItems.length > 0
+      ) {
+        state.cart.data!.items = guestItems
       }
-      localStorage.setItem("guestCart", JSON.stringify(state.cart.data.items));
     },
-    clearCart: (state) => {
-      state.cart.data.items = [];
-      localStorage.removeItem("guestCart");
-    },
-    updateQuantityLocal: (
-      state,
-      action: PayloadAction<{ productId: string; delta: number }>
-    ) => {
-      if (!state.cart.data.items) return;
-      const item = state.cart.data.items.find((i) => {
-        const itemProductId =
-          typeof i.productId !== "string" && i?.productId?._id.toString();
-        return itemProductId === action.payload.productId.toString();
-      });
-      if (item) {
-        item.quantity += action.payload.delta;
-        if (item.quantity <= 0) item.quantity = 1;
+    // rollback in case of failure
+    rollBackCart: (state) => {
+      if(state.prevSnapshot){
+        state.cart = state.prevSnapshot ;
+        state.prevSnapshot = null;
       }
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(addItemsToCart.fulfilled, (state, action) => {
-        state.cart = action.payload;
+        state.message = action.payload.message;
         state.loading = false;
-        state.error = {
-          message: "",
-          status: 0,
-          success: true,
-        };
+        state.error = defaultError;
       })
       .addCase(getCart.fulfilled, (state, action) => {
-        console.log("getCart payload: ", action.payload);
         state.cart = action.payload;
         state.loading = false;
-        state.error = {
-          success: false,
-          status: 0,
-          message: "",
-        };
+        state.error = defaultError;
       })
       .addCase(getCart.rejected, (state, action) => {
         state.loading = false;
@@ -311,29 +206,13 @@ const cartSlice = createSlice({
       })
       .addCase(getCart.pending, (state, action) => {
         state.loading = true;
-        state.error = {
-          success: false,
-          status: 0,
-          message: "",
-        };
+        state.error = defaultError;
       })
-      .addCase(mergeCart.fulfilled, (state, action) => {
+  
+      .addCase(updateItemQty.fulfilled, (state, action) => {
         state.cart = action.payload;
         state.loading = false;
-        state.error = {
-          success: false,
-          status: 0,
-          message: "",
-        };
-      })
-      .addCase(updateUserQty.fulfilled, (state, action) => {
-        state.cart = action.payload;
-        state.loading = false;
-        state.error = {
-          success: true,
-          message: "",
-          status: 0,
-        };
+        state.error = defaultError;
       })
 
       .addCase(removeCartItem.pending, (state) => {
@@ -342,19 +221,16 @@ const cartSlice = createSlice({
       .addCase(removeCartItem.fulfilled, (state, action) => {
         state.cart = action.payload;
         state.loading = false;
-        state.error = {
-          success: true,
-          message: "",
-          status: 200,
-        };
+        state.error = defaultError;
       })
 
       .addCase(removeCartItem.rejected, (state, action) => {
         state.loading = false;
         state.error = {
           success: false,
-          message: (action.payload as string) || "Error during remove item",
-          status: (action.payload as number) || 400,
+          message:
+            (action.payload?.message as string) || "Error during remove item",
+          status: (action.payload?.status as number) || 400,
         };
       })
       .addCase(applyCoupon.fulfilled, (state, action) => {
@@ -370,28 +246,20 @@ const cartSlice = createSlice({
         state.loading = false;
         state.error = state.error = {
           success: false,
-          message: (action.payload as string) || "Error during apply coupon",
+          message:
+            (action.payload?.message as string) || "Error during apply coupon",
           status: 400,
         };
       })
-      .addCase(getUserLatLong.fulfilled, (state, action) => {
-        state.latdata = action.payload;
+      .addCase(clearUserCart.fulfilled, (state, action) => {
+        state.cart = action.payload;
+        state.error = defaultError;
         state.loading = false;
-        state.error = {
-          success: true,
-          message: "",
-          status: 200,
-        };
       });
   },
 });
 
-export const {
-  createCart,
-  clearCart,
-  removeCart,
-  updateQuantity,
-  updateQuantityLocal,
-  removeItemFromCart,
-} = cartSlice.actions;
+export const { getUserGuestCart,createCartOptimisticforUX,createOraddItemGuestCart,
+  updateQtyGuestCart,updateQtyOptimistic,removeItemGuestCart,removeItemOptimistic
+ } = cartSlice.actions;
 export default cartSlice.reducer;

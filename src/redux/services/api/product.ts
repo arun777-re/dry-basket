@@ -1,5 +1,5 @@
 import { ROUTES } from "@/constants/routes";
-import { getRequest, postRequest } from "../middleware";
+import { getRequest } from "../middleware";
 import { SearchQueryDTO } from "@/types/product";
 
 export const PRODUCTAPI = {
@@ -48,7 +48,7 @@ export const PRODUCTAPI = {
     reject: (value: any) => any;
   }) =>
     await getRequest({
-      url: `${ROUTES.PRODUCTAPI.GET_SEARCH_PRODUCTS}`,
+      url: `${ROUTES.PRODUCTAPI.GET_ALL_RELATED_PRODUCT}`,
       reject: reject,
       params,
     }),

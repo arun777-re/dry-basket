@@ -1,3 +1,4 @@
+'use client'
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -23,6 +24,10 @@ import {
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Label } from "@/components/ui/label";
 import StarRating from "./StarRating";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store/store";
+import reviewProduct from "@/hooks/reviewProduct";
+import { ReviewOutgoingDTO } from "@/types/review";
 
 export function PopOverCard() {
   const [open, setOpen] = React.useState(false);
@@ -74,10 +79,39 @@ export function PopOverCard() {
 }
 
 function ProfileForm({ className }: React.ComponentProps<"form">) {
+  const productId = useSelector<RootState>(state=> state.product.singleProduct.data?._id)
   const [rating, setRating] = React.useState<number>(0);
   const [review, setReview] = React.useState<string>("");
+
+  const {reviewAProduct} = reviewProduct();
+const data:ReviewOutgoingDTO = {
+   rating:rating,
+   reviewText:review
+}
+ const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!productId) return alert("Product not found!");
+    if (rating === 0) return alert("Please give a rating.");
+    if (review.trim().length < 5) return alert("Review is too short.");
+
+    const data: ReviewOutgoingDTO = {
+      rating,
+      reviewText: review,
+    };
+
+    try {
+      await reviewAProduct({ data, productId:productId as string});
+      alert("Review submitted successfully!");
+      setRating(0);
+      setReview("");
+    } catch (error) {
+      console.error("Review submission failed:", error);
+    }
+  };
+   
   return (
-    <form className={cn("grid items-start gap-4", className)}>
+    <form className={cn("grid items-start gap-4", className)} onSubmit={handleSubmit}>
       <div className="grid gap-2">
         <Label htmlFor="rating">Give Rating</Label>
         <StarRating rating={rating} setRating={setRating} />

@@ -1,34 +1,10 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
 import PremiumCard from "../_components/card/PremiumCard";
+import { premiumProductData } from "@/data/premiumProduct";
 
 const PremiumProduct = () => {
-  const products = [
-    {
-      image: "/images/banner-1.jpg",
-      category: "Almonds",
-      description:
-        "Lorem ipsum dolor sit amet consectetur,adipisicing elit. Aliquam, animi.",
-    },
-    {
-      image: "/images/banner-2.jpg",
-      category: "Cashews",
-      description:
-        "Lorem ipsum dolor sit amet consectetur,adipisicing elit. Aliquam, animi.",
-    },
-    {
-      image: "/images/banner-3.jpg",
-      category: "Wallnuts",
-      description:
-        "Lorem ipsum dolor sit amet consectetur,adipisicing elit. Aliquam, animi.",
-    },
-    {
-      image: "/images/banner-4.jpg",
-      category: "Desi Ghee",
-      description:
-        "Lorem ipsum dolor sit amet consectetur,adipisicing elit. Aliquam, animi.",
-    },
-  ];
+
   return (
     <section className="max-w-screen w-full h-auto bg-gray-100">
       <div className="relative w-full px-30 flex flex-col items-center justify-center gap-10 py-20">
@@ -46,9 +22,9 @@ const PremiumProduct = () => {
         </header>
 
         <section className="w-full relative flex items-center justify-center gap-8">
-          {products &&
-            products.length > 0 &&
-            products.map((item, index) => {
+          {premiumProductData &&
+            premiumProductData.length > 0 &&
+            premiumProductData.map((item, index) => {
               return <PremiumCard key={index} {...item} />;
             })}
         </section>

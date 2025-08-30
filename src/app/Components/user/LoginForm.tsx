@@ -4,14 +4,13 @@ import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store/store";
-import { RiHome8Line } from "react-icons/ri";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { loginUser } from "@/redux/slices/userSlice";
 import toast from "react-hot-toast";
-import { ErrorProps } from "@/redux/slices/adminSlice";
-import Image from "next/image";
+import { ErrorProps } from "@/types/response";
 import Button from "@/app/_components/Button";
 import ForgotPass from "./ForgotPass";
+import authHook from "@/hooks/authHook";
 
 interface loginProps {
   email: string;
@@ -30,10 +29,11 @@ const initialLoginSchema = yup.object().shape({
 
 const LoginForm = () => {
   // state to open forgot password
-const [pass,setPass] = React.useState<boolean>(false);
-
-  const dispatch = useDispatch<AppDispatch>();
+  const [pass, setPass] = React.useState<boolean>(false);
+  const redirect = useSearchParams();
   const router = useRouter();
+
+  const { useLoginUser } = authHook();
 
   const handleLogin = async (
     values: loginProps,
@@ -41,21 +41,14 @@ const [pass,setPass] = React.useState<boolean>(false);
   ) => {
     try {
       // API call to login user
-      await dispatch(loginUser(values))
-        .unwrap()
-        .then((res) => {
-          toast.success("Login Successfull");
-          router.push("/");
-        })
-        .catch((err: ErrorProps) => {
-          const message = err?.message || "Login Failed";
-          toast.error(message);
-          router.push("/user/auth-login");
-        });
+      useLoginUser({ values, route: redirect.get("redirect") as string });
+      toast.success("Login Successfull");
       resetForm();
-    } catch (error) {
+    } catch (err) {
+      const message = err || "Login Failed";
+      toast.error("Login Failed");
+      router.push("/user/auth-login");
       console.error("login failed. Please check your credentials.");
-      throw new Error("login failed. Please check your credentials.");
     }
   };
   return (
@@ -117,15 +110,18 @@ const [pass,setPass] = React.useState<boolean>(false);
           </form>
         )}
       </Formik>
-      <Button type='button' onClick={()=>setPass(true)
-
-      } className="font-medium underline hover:text-first transition-all duration-500 ease-in-out">Forgot Password ?</Button>
-    {
-pass === true && ( <div className="absolute w-full h-full top-0 left-0 bg-black/60 z-50">
-          <ForgotPass setPass={setPass}/>
-    </div>)
-    }
-   
+      <Button
+        type="button"
+        onClick={() => setPass(true)}
+        className="font-medium underline hover:text-first transition-all duration-500 ease-in-out"
+      >
+        Forgot Password ?
+      </Button>
+      {pass === true && (
+        <div className="absolute w-full h-full top-0 left-0 bg-black/60 z-50">
+          <ForgotPass setPass={setPass} />
+        </div>
+      )}
     </div>
   );
 };

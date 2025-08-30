@@ -3,17 +3,20 @@ import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "@reduxjs/toolkit";
 import logger from "redux-logger";
 import { persistStore, persistReducer,Persistor } from "redux-persist";
-import storage from "@/lib/storage";
+import {storage} from "@/lib/storage";
 import productReducer from '@/redux/slices/productSlice';
 import categoryReducer from '@/redux/slices/categorySlice';
 import offerReducer from '@/redux/slices/offerSlice';
 import cartReducer from '@/redux/slices/cartSlice';
-import userReducer from "@/redux/slices/userSlice"
+import userReducer from "@/redux/slices/userSlice";
+import reviewReducer from '@/redux/slices/reviewSlice'
+import shippingReducer from '@/redux/slices/shippingSlice';
+import orderReducer from '@/redux/slices/orderSlice';
 // configuration for the persisted reducer
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user", "product", "category",'offer','usercart'],
+  whitelist: ["user", "product", "category",'offer','usercart','review','shipping','order'],
 };
 
 // object of the root reducer
@@ -23,6 +26,9 @@ category:categoryReducer,
 offer:offerReducer,
 usercart:cartReducer,
 user:userReducer,
+review:reviewReducer,
+shipping:shippingReducer,
+order:orderReducer
 };
 
 // make the persisted reducers
