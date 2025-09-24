@@ -57,4 +57,11 @@ export const ORDERAPI = {
     reject: (value: any) => any;
     orderId: string;
   }) => await deleteRequest({ url: `${ROUTES.ORDERAPI.CANCEL_ORDER}?orderId=${orderId}`,reject}),
+  GET_SINGLE_ORDER: async ({
+    reject,
+    orderId,
+  }: {
+    reject: (value: any) => any;
+    orderId: string;
+  }) => await getRequest({ url: `${ROUTES.ORDERAPI.GET_SINGLE_ORDER_OR_TRACK_ORDER}?orderId=${orderId}`,reject}),
 };

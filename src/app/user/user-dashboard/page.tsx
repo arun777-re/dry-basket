@@ -19,6 +19,8 @@ import orderHook from "@/hooks/orderHook";
 import { paginatedOrderResponse } from "@/redux/services/helpers/order/orderResponse";
 import { PaginatedProductResponse } from "@/types/response";
 import { OrderIncomingReqDTO } from "@/types/order";
+import { ROUTES } from "@/constants/routes";
+import { useRouter } from "next/navigation";
 
 export default function UserDashboard() {
   const [activeTab, setActiveTab] = useState("profile");
@@ -26,6 +28,8 @@ export default function UserDashboard() {
   const [order, setOrder] = useState<
     PaginatedProductResponse<OrderIncomingReqDTO> | null | undefined
   >(paginatedOrderResponse);
+
+  const router = useRouter()
 
   const isLoading = useSelector((state: RootState) => state.order.loading);
   const { GET_ALL_ORDERS } = orderHook();
@@ -156,10 +160,21 @@ export default function UserDashboard() {
                 {order && Array.isArray(order.data) &&
                   order.data?.length > 0 &&
                   order.data.map((item, key) => {
+                    // mapping orderStatus 
+                    const statusColor:Record<string,string> = {
+                      pending:"bg-yellow-200 text-yellow-800",
+                      confirmed:"bg-blue-200 text-blue-800",
+                      shipped:"bg-purple-200 text-purple-800",
+                      delivered:"bg-green-200 text-green-800",
+                      cancelled:"bg-red-200 text-red-800",
+                      retrurned:"bg-orange-200 text-orange-800",
+                    }
+                    const colorClass = statusColor[item.orderStatus.toLowerCase()] || "bg-gray-200 text-gray-800"
                     return (
-                      <div key={key} className="border-1 border-gray-50 w-full h-auto p-4">
+                      <div key={key} className="border-1 border-gray-50 w-full h-auto p-4 flex justify-between" onClick={()=>router.push(
+                         `${ROUTES.COMPLETE_ORDER}?orderId=${item._id}`)}>
                         <p>order: {item._id}</p>
-                        <p>order: {item.orderStatus}</p>
+                        <p className={`px-2 py-2 rounded-md font-medium capitalize ${colorClass}`}>{item.orderStatus}</p>
                       </div>
                     );
                   })}

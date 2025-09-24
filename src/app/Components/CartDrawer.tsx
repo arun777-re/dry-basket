@@ -32,7 +32,7 @@ export function CartDrawer() {
   // getting cart from redux
 
   const guestCart: PopulatedIncomingCartDTO = useSelector(
-    (state: RootState) => state.usercart.cart.data
+    (state: RootState) => state.usercart.cart?.data
   );
 
   //this function will automatically handle dynamic cart
@@ -84,7 +84,7 @@ export function CartDrawer() {
           <div className="px-2 py-6 flex items-center justify-between border-1 border-y-gray-100 border-x-0 ">
             <p className="text-black">Total</p>
             <p className="text-black">
-              Rs{user ? guestCart.finalTotal : totalPrice}
+              Rs{user ? guestCart?.finalTotal : totalPrice}
             </p>
           </div>
           <Button

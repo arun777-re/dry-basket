@@ -11,7 +11,7 @@ const initialState = {
   message:""
 };
 
-type ShippingRate = { weight: number; pincode: number };
+type ShippingRate = { weight: number; pincode: number,amount:number };
 
 export const getShippingCharges = createAsyncThunk<
   IncomingAPIResponseFormat<number>,
@@ -19,10 +19,11 @@ export const getShippingCharges = createAsyncThunk<
   { rejectValue: ErrorProps }
 >(
   "shipping/rate-calculator",
-  async ({ weight, pincode }, { rejectWithValue }) => {
+  async ({ weight, pincode,amount }, { rejectWithValue }) => {
     const res = await SHIPPINGAPI.getshippingcharges({
       weight,
       pincode,
+      amount,
       reject: rejectWithValue,
     });
     return res;

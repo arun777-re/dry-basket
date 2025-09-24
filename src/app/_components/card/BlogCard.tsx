@@ -7,38 +7,29 @@ import { FaRegUserCircle } from "react-icons/fa";
 import { SlCalender } from "react-icons/sl";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { BlogsIncomingDTO } from "@/types/blog";
 
-interface BlogCardProps {
-  _id?: number;
-  slug?:string;
-  title?: string;
-  image?: string;
-  author?: string;
-  description?: string;
-  createdAt?: string;
-}
 
-const BlogCard: React.FC<BlogCardProps> = ({
-  _id,
+
+const BlogCard: React.FC<BlogsIncomingDTO> = ({
   slug,
-  title,
-  image,
-  author,
+  authorName,
   description,
   createdAt,
+  heading,
+  blogImage
 }) => {
 
   const router = useRouter();
   // redirect to complete blog
   const handleClick = (e:React.MouseEvent<HTMLButtonElement>) =>{
     e.preventDefault();
-  alert('hello users ')
     router.push(`/blog/${slug}`)
   }
 
   return (
     <motion.div
-      className="relative w-full h-60"
+      className="relative w-full h-auto lg:h-60"
       initial="rest"
       whileHover="hover"
       animate="rest"
@@ -46,12 +37,12 @@ const BlogCard: React.FC<BlogCardProps> = ({
       <Card
         className="relative w-full h-full"
       >
-        <div className="w-full h-full flex items-center gap-6 justify-center relative">
-          <div className="relative h-full w-[40%] z-20">
-            <div className="w-full h-full relative ">
+        <div className="w-full h-full flex items-center flex-col lg:flex-row gap-6 justify-center relative">
+          <div className="relative h-full w-full lg:w-[40%] z-20">
+            <div className="w-full h-60 lg:h-full relative ">
               <Image
-                src={image ?? "/images/card1.jpg"}
-                alt="blog-photo"
+                src={blogImage || "/images/card1.jpg"}
+                alt={heading || "blog-photo"}
                 fill
                 priority
                 className="object-center object-fill"
@@ -77,17 +68,17 @@ const BlogCard: React.FC<BlogCardProps> = ({
               }}
             />
           </div>
-          <div className="relative h-full w-[60%] flex flex-col items-start justify-center gap-4">
-            <h5 className="mb-0 hover:text-first cursor-pointer">{title}</h5>
+          <div className="relative h-full w-full lg:w-[60%] flex flex-col items-start justify-center gap-4">
+            <h5 className="mb-0 hover:text-first cursor-pointer">{heading}</h5>
             <div className="relative flex items-center justify-between w-[60%]">
               <article className="flex gap-1 items-center">
                 <FaRegUserCircle size={20} className="text-head" />
-                <p className="text-base">By&nbsp;{author}</p>
+                <p className="text-base">By&nbsp;{authorName}</p>
               </article>
               <div className="h-4 w-[1px] bg-body"></div>
               <article className="flex gap-1 items-center">
                 <SlCalender size={20} className="text-head" />
-                <p className="text-base">{createdAt ?? "November 13,2018"} </p>
+                <p className="text-base">{(new Date(createdAt).toLocaleDateString()) ?? "November 13,2018"} </p>
               </article>
             </div>
             <p className="text-sm">{description?.slice(0, 150)}...</p>

@@ -5,25 +5,26 @@ import Banner from "../Components/Banner";
 import Category from "../Components/Category";
 import PremiumProduct from "../Components/PremiumProduct";
 import Footer from "../Components/Footer";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import useSearchProductHook from "@/hooks/useSearchProductHook";
+import Spinner from "../_components/Spinner";
 
 const SearchProducts: React.FC = () => {
-  const path = usePathname();
-  const { products } = useSearchProductHook();
 
+  const path = usePathname();
+  const searchParams  = useSearchParams();
+  const searchValue = searchParams.get('searchValue') || '';
+  
+  const {loading } = useSearchProductHook();
+  if(loading){
+    return <Spinner/>
+  }
   return (
     <div className="max-w-screen w-full h-auto mx-auto overflow-x-hidden">
       <Navbar />
       <Banner heading={path} />
       <Category
-        success={products?.success ?? false}
-        status={products?.status ?? 200}
-        message={products?.message ?? ""}
-        data={products?.data ?? null}
-        currentPage={products?.currentPage ?? 1}
-        hasNextPage={products?.hasNextPage ?? false}
-        hasPrevPage={products?.hasPrevPage ?? false}
+        searchValue={searchValue}
       />
       <PremiumProduct />
       <Footer />

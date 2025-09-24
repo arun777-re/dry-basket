@@ -1,3 +1,5 @@
+import { IncomingAPIResponseFormat } from "./response";
+
 export interface CommonVariantDTO {
   weight: number;
   price: number;

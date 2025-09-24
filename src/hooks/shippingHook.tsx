@@ -3,6 +3,7 @@
 import { createOrderAndAssignOrderForShipment, getShippingCharges } from "@/redux/slices/shippingSlice";
 import { AppDispatch } from "@/redux/store/store";
 import React from "react";
+import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
 const shippingHook = () => {
@@ -26,14 +27,19 @@ const shippingHook = () => {
   const SHIPPING_RATE_CALCULATOR = async ({
     weight,
     pincode,
+    amount
   }: {
     weight: string;
     pincode: string;
+    amount:number;
   }) => {
     try {
-   await dispatch(getShippingCharges({weight:parseFloat(weight),
-    pincode:parseFloat(pincode)
-   }))
+  const res =  await dispatch(getShippingCharges({weight:parseFloat(weight),
+    pincode:parseFloat(pincode),amount
+   })).unwrap().catch((err)=>{
+    toast.error(err)
+   });
+   return res;
     } catch (error) {
       console.error("Error fetching shipping charges:", error);
     }
@@ -44,7 +50,7 @@ const shippingHook = () => {
          .unwrap()
          .then((res) => {
          });
-     }, [createOrderAndAssignOrderForShipment, dispatch]);
+     }, [dispatch]);
 
   return {SHIPPING_RATE_CALCULATOR,useDebounceHook,useCreateOrderForShipment};
 };

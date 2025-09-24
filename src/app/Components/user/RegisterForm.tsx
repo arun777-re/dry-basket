@@ -2,7 +2,7 @@
 import React, { useCallback } from "react";
 import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store/store";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
@@ -10,13 +10,13 @@ import { CartItemOutgoingDTO, PopulatedCartItemDTO } from "@/types/cart";
 import { mapPopulatedOurgoing } from "@/lib/middleware/normalizedCart";
 import { ROUTES } from "@/constants/routes";
 import authHook from "@/hooks/authHook";
+import { initialSignUpSchema } from "@/app/validation/authValidation";
 
 interface registerProps {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-  phone: string;
 }
 
 const initialSignUpValue: registerProps = {
@@ -24,18 +24,10 @@ const initialSignUpValue: registerProps = {
   lastName: "",
   email: "",
   password: "",
-  phone: "",
 };
-const initialSignUpSchema = yup.object().shape({
-  firstName: yup.string().required(),
-  lastName: yup.string().required(),
-  email: yup.string().required("Please enter a valid email"),
-  phone: yup.string().required("Please enter a valid phone"),
-  password: yup.string().required(),
-});
+
 const RegisterForm = () => {
   const redirect = useSearchParams();
-
 
   // authentication hook for dispatch thunks
   const { useRegisterUser } = authHook();
@@ -133,18 +125,7 @@ const RegisterForm = () => {
               {touched.password && errors.password && (
                 <div className="text-red-500 text-sm">{errors.password}</div>
               )}
-              <input
-                type="text"
-                placeholder="Phone"
-                name="phone"
-                value={values.phone}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                className="w-full py-3 px-6 focus:outline-head outline-1 border-transparent bg-white rounded-full placeholder:text-sm"
-              />
-              {touched.phone && errors.phone && (
-                <div className="text-red-500 text-sm">{errors.phone}</div>
-              )}
+
               <button
                 type="submit"
                 className="px-6 py-3 flex items-center justify-center border-2 border-head hover:border-first

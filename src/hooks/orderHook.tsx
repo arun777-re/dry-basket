@@ -2,9 +2,11 @@
 import { ROUTES } from "@/constants/routes";
 import { VerifyPaymentDTO } from "@/redux/services/api/order";
 import {
+  cancelOrderThunk,
   createorderthunk,
   getAllOrdersThunk,
   getLatestOredrThunk,
+  getSingleOrderAndTrackShipping,
   verifyPaymentThunk,
 } from "@/redux/slices/orderSlice";
 import { createOrderAndAssignOrderForShipment } from "@/redux/slices/shippingSlice";
@@ -29,6 +31,7 @@ const orderHook = () => {
   const checkOutRef = React.useRef(false);
   const getAllOrdersRef = React.useRef(false);
   const getSuccessOrderRef = React.useRef(false);
+  const getSingleOrderRef = React.useRef(false);
 
   const useHandleCheckout = React.useCallback(
     async ({
@@ -108,17 +111,45 @@ const orderHook = () => {
       } catch (error: any) {
         toast.error(error.message ?? "Unable to fetch latest order");
       } finally {
-        getSuccessOrderRef.current = false;
+        getAllOrdersRef.current = false;
       }
     },
-    []
+    [isAuthenticated,router,dispatch]
   );
 
   // for plain get and tarck order status
-  const GET_SINGLE_ORDER = React.useCallback(() => {}, []);
+  const GET_SINGLE_ORDER = React.useCallback(async(orderId:string) => {
+    if (!isAuthenticated) {
+        router.push(`${ROUTES.LOGIN}`);
+      }
+      if (getSingleOrderRef.current) return null;
+      getSingleOrderRef.current = true;
+      try {
+        const res = await dispatch(getSingleOrderAndTrackShipping(orderId)).unwrap();
+        if (res.success) return res;
+      } catch (error: any) {
+        toast.error(error.message ?? "Unable to fetch complete order");
+      } finally {
+        getSingleOrderRef.current = false;
+      }
+  }, [isAuthenticated,router,dispatch]);
 
   // for cancel order
-  const CANCEL_ORDER = React.useCallback(() => {}, []);
+  const CANCEL_ORDER = React.useCallback(async(orderId:string) => {
+     if (!isAuthenticated) {
+        router.push(`${ROUTES.LOGIN}`);
+      }
+      if (getSingleOrderRef.current) return null;
+      getSingleOrderRef.current = true;
+      try {
+        const res = await dispatch(cancelOrderThunk(orderId)).unwrap();
+        if (res.success) return res;
+      } catch (error: any) {
+        toast.error(error.message ?? "Unable to fetch cancel order");
+      } finally {
+        getSingleOrderRef.current = false;
+      }
+  }, []);
 
   return { useHandleCheckout, useVerifyPayment, getLatestSuccessOrder,GET_ALL_ORDERS,GET_SINGLE_ORDER,CANCEL_ORDER };
 };

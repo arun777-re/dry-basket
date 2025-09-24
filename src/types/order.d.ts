@@ -38,6 +38,13 @@ order:{
    razorpayKey:string
 }
 
+export interface CourierInfoDTO {
+  courierName:string,
+    courierTrackingId:string,
+    awbNumber:string,
+    estimatedDelieveryDate:Date,
+    shipmentOrderId:string;
+}
 export interface OrderIncomingReqDTO {
   _id?:string | Types.ObjectId;
    userId:string;

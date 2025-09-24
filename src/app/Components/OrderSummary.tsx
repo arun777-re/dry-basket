@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import CheckOutProduct from "../_components/card/CheckOutProduct";
 import { selectCartTotal } from "@/redux/slices/cartSlice";
 import React from "react";
+import orderHook from "@/hooks/orderHook";
 
 type OrderSummaryProps = {
   pincode:string;
@@ -29,7 +30,7 @@ const OrderSummary:React.FC<OrderSummaryProps> = ({pincode}) => {
     <div className="relative w-1/2 min-h-screen bg-white p-5 flex flex-col items-start">
       <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
       <div className="relative flex flex-col gap-4 w-full mb-4">
-        {userCart.items.map((item: PopulatedCartItemDTO, index) => {
+        {Array.isArray(userCart?.items) && userCart.items.length > 0 && userCart?.items.map((item: PopulatedCartItemDTO, index) => {
           return (
             <CheckOutProduct
               key={index}
@@ -44,10 +45,10 @@ const OrderSummary:React.FC<OrderSummaryProps> = ({pincode}) => {
       </div>
 
       <p className="text-sm  mb-3">
-        <strong>Total Amount:</strong> ₹{userCart.finalTotal || total}
+        <strong>Total Amount:</strong> ₹{userCart?.finalTotal || total}
       </p>
       <p className="text-sm  mb-3">
-        <strong>Items:</strong> {userCart.items?.length || 0}
+        <strong>Items:</strong> {userCart?.items?.length || 0}
       </p>
       {pincode.length === 6  ? (
         <p>

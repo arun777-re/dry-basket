@@ -12,6 +12,8 @@ import userReducer from "@/redux/slices/userSlice";
 import reviewReducer from '@/redux/slices/reviewSlice'
 import shippingReducer from '@/redux/slices/shippingSlice';
 import orderReducer from '@/redux/slices/orderSlice';
+import blogReducer from '@/redux/slices/blogSlice';
+import bannerReducer from '@/redux/slices/bannerSlice';
 // configuration for the persisted reducer
 const persistConfig = {
   key: "root",
@@ -28,7 +30,10 @@ usercart:cartReducer,
 user:userReducer,
 review:reviewReducer,
 shipping:shippingReducer,
-order:orderReducer
+order:orderReducer,
+blog:blogReducer,
+banner:bannerReducer
+
 };
 
 // make the persisted reducers

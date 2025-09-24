@@ -4,7 +4,6 @@ export interface UserPropsOutgoing{
     firstName:string,
     lastName:string,
     email:string,
-    phone:string,
     password:string,
 }
 
@@ -15,7 +14,6 @@ export interface UserPropsIncoming {
     lastName:string,
     email:string,
     isActive?:boolean,
-    phone:string
 }
 
 

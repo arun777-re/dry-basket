@@ -10,7 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const cartHook = () => {
 const dispatch = useDispatch<AppDispatch>();
-const user = useSelector((state:RootState)=> state.user.user.success)
+const user = useSelector((state:RootState)=> state.user.user.success);
+const userCart = useSelector((state:RootState)=> state.usercart.cart);
 
 const CREATECARTORADDITEMTOCART = React.useCallback(async({data}:{data:CartItemOutgoingDTO[]})=>{
 dispatch(addItemsToCart(data))
@@ -55,8 +56,10 @@ const handleCartItems = async()=>{
 //  for add item to cart
   const addToCart = async({e,payload,backendpayload}:{e: React.MouseEvent<HTMLOrSVGElement>,payload:PopulatedCartItemDTO[],backendpayload:CartItemOutgoingDTO[]}) => {
     e.stopPropagation();
-    if (user) {
+    if(user) {
+      if(userCart.data && userCart.data!.items.length > 0){
      payload.forEach(item => dispatch(createCartOptimisticforUX(item)))
+      }
       CREATECARTORADDITEMTOCART({data:backendpayload})
     } else {
    // for guest cart

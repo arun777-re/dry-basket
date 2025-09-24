@@ -137,7 +137,6 @@ const cartSlice = createSlice({
       // snapshot for rollback
       state.prevSnapshot = JSON.parse(JSON.stringify(state.cart));
       createCart(state,action.payload)
-    
     },
     // Optimistic Remove Item from cart
     removeItemOptimistic: (state, action: PayloadAction<string>) => {

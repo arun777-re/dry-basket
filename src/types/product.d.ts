@@ -42,6 +42,7 @@ export interface SearchQueryDTO {
     productName?:string;
     page?:number;
     limit?:number;
+    searchValue?:string;
 }
 
 export interface PremiumProductDTO {

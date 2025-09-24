@@ -1,4 +1,5 @@
 import { CartState, PopulatedCartItemDTO, PopulatedProductInfo, UpdateQtyDTO } from "@/types/cart";
+import { defaultPopulatedCartResponse } from "./cartresponse";
 
 export function saveGuestCart(items:PopulatedCartItemDTO[]){
     localStorage.setItem('guest_cart',JSON.stringify(items))
@@ -16,16 +17,20 @@ const getId = (p: string | PopulatedProductInfo) => {
 };
 // utility function for createcart reducer
 export function createCart(state:CartState,payload:PopulatedCartItemDTO){
-   if (!state.cart.data?.items) {
-        state.cart.data!.items = [];
+  console.log("hello statecones",state.cart.data?.items)
+   if (!Array.isArray(state.cart?.data!.items) && state.cart.data) {
+        state.cart.data = {total:0,
+          items:[],
+        finalTotal:0,
+      totalWeight:0};
       }
-      const existingItem = state.cart?.data?.items.find(
+      const existingItem = state.cart.data && state.cart.data.items.find(
         (c:PopulatedCartItemDTO) => getId(c.productId) === getId(payload.productId)
       );
       if (existingItem) {
         existingItem.quantity += payload.quantity;
       } else {
-        state.cart?.data?.items.push(payload);
+        state.cart.data && state.cart.data.items.push(payload);
       }
 }
 

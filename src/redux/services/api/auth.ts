@@ -1,5 +1,5 @@
 import { ROUTES } from "@/constants/routes";
-import { postRequest } from "../middleware";
+import { getRequest, postRequest } from "../middleware";
 import { LoginProps, UserPropsOutgoing } from "@/types/user";
 
 export const AuthAPI = {
@@ -36,4 +36,5 @@ export const AuthAPI = {
       reject: reject,
       data:{password}
     }),
+    getUser:async(reject:(value:any)=>any)=>await getRequest({url:`${ROUTES.AUTH.GET_USER}`,reject:reject})
 };

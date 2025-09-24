@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import DummyCard from '../_components/card/DummyCard';
+import DummyCard from './card/DummyCard';
 
 
 const DummyComponent = () => {

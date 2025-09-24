@@ -73,10 +73,16 @@ export const getLatestOredrThunk = createAsyncThunk<
   return res;
 });
 
-// export const getSingleOrderAndTrackShipping = createAsyncThunk<>(
-//   "getand-track-order",
-//   async () => {}
-// );
+export const getSingleOrderAndTrackShipping = createAsyncThunk<IncomingAPIResponseFormat<OrderIncomingReqDTO>,
+string,
+{rejectValue:ErrorProps}
+>(
+  "getand-track-order",
+  async (orderId,{rejectWithValue}) => {
+    const res = await ORDERAPI.GET_SINGLE_ORDER({reject:rejectWithValue,orderId});
+    return res;
+  }
+);
 
 export const getAllOrdersThunk = createAsyncThunk<
 PaginatedProductResponse<OrderIncomingReqDTO>,
@@ -140,6 +146,15 @@ const orderSlice = createSlice({
         state.loading = false;
         state.error = defaultError;
         state.message = action.payload?.message!
+      })
+      .addCase(getSingleOrderAndTrackShipping.pending,(state,action)=>{
+        state.loading = true;
+        state.error = defaultError;
+      })
+      .addCase(getSingleOrderAndTrackShipping.fulfilled,(state,action)=>{
+        state.loading = false;
+        state.error = defaultError;
+        state.order = action.payload;
       })
 
   },

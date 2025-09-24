@@ -11,6 +11,7 @@ export const ROUTES = {
     USER_DASHBOARD:'/user/user-dashboard',
     USER_LOGIN:"/user/auth-login",
     ABOUT:"/about",
+    COMPLETE_ORDER:"/complete-order",
     OPEN_ROUTE_API_KEY:process.env.DISTANCE_API_KEY,
     WAREHOUSE_LAT:28.996682,
     WAREHOUSE_LNG:77.030826,
@@ -22,6 +23,7 @@ export const ROUTES = {
         RESET_REQUSET:`${SERVER_BASE_URL}/v1/public/auth/reset-request`,
         RESET_PASSWORD:`${SERVER_BASE_URL}/v1/public/auth/reset-password`,
         UPDATE_PASSWORD:`${SERVER_BASE_URL}/v1/public/auth/update-password`,
+        GET_USER:`${SERVER_BASE_URL}/v1/public/auth/get`,
      
     },
     PRODUCTAPI:{
@@ -32,6 +34,7 @@ export const ROUTES = {
         GET_ALL_CATEGORY_PRODUCT:`${SERVER_BASE_URL}/v1/public/product/getcatproduct`,
         GET_ALL_RECOMMENDED_PRODUCT:`${SERVER_BASE_URL}/v1/public/product/getrecommended`,
         GET_ALL_RELATED_PRODUCT:`${SERVER_BASE_URL}/v1/public/product/getrelated`,
+        GET_NAV_SEARCH_PRODUCT:`${SERVER_BASE_URL}/v1/public/product/getnavsearch`,
     },
     REVIEWAPI:{
         CREATE_REVIEW:`${SERVER_BASE_URL}/v1/public/review/create`,
@@ -56,5 +59,12 @@ export const ROUTES = {
     SHIPPINGAPI:{
         GET_SHIPPING_CHARGES:`${SERVER_BASE_URL}/v1/public/shipment/rate-calculator`,
         CREATE_AND_ASSIGN_ORDER:`${SERVER_BASE_URL}/v1/public/shipment/create-assign-order`,
+    },
+     BANNERURLS:{
+        GETALL_BANNER:`${SERVER_BASE_URL}/v1/public/banner/getall`,
+    },
+    BLOGSURLS:{
+        GETALL_BLOG:`${SERVER_BASE_URL}/v1/public/blog/getall`,
+        GETSINGLE_BLOG:`${SERVER_BASE_URL}/v1/public/blog/get-single`,
     },
 }

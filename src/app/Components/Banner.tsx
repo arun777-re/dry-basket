@@ -13,60 +13,50 @@ import { EmblaOptionsType } from "embla-carousel";
 import BannerCard from "../_components/card/BannerCard";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-
+import { BannerIncomingDTO } from "@/types/banner";
+import { defaultBannerState } from "@/redux/services/helpers/bannerResponse";
+import useBannerHook from "@/hooks/bannerHooks";
+import { PaginationQuery } from "@/types/response";
+import Spinner from "../_components/Spinner";
 
 interface BannerProps {
-  heading?:string;
+  heading?: string;
 }
 
-// here actual banners are come from backend
-const banners = [
-  {
-    _id: 1,
-    image: "/images/banner-1.jpg",
-    title: "The Choice of Top Atheletes",
-    subheading: "15% off on almonds",
-    coupan: "SPI18",
-  },
-  {
-    _id: 2,
-    image: "/images/banner-2.jpg",
-    title: "The Choice of Top Atheletes",
-    subheading: "15% off on almonds",
-    coupan: "SPI18",
-  },
-  {
-    _id: 3,
-    image: "/images/banner-3.jpg",
-    title: "The Choice of Top Atheletes",
-    subheading: "15% off on almonds",
-    coupan: "SPI18",
-  },
-  {
-    _id: 4,
-    image: "/images/banner-4.jpg",
-    title: "The Choice of Top Atheletes",
-    subheading: "15% off on almonds",
-    coupan: "SPI18",
-  },
-  {
-    _id: 5,
-    image: "/images/banner-5.jpg",
-    title: "The Choice of Top Atheletes",
-    subheading: "15% off on almonds",
-    coupan: "SPI18",
-  },
-];
-const Banner: React.FC<BannerProps> = ({
-  heading
-}) => {
+const Banner: React.FC<BannerProps> = ({ heading }) => {
+  // get pathname
+  const path = usePathname();
+  const isHome = path === "/";
 
+  const [banners, setBanners] = React.useState<BannerIncomingDTO[]>([
+    defaultBannerState,
+  ]);
+  const { GET_ALL_BANNER, loading } = useBannerHook();
+  const query: PaginationQuery = {
+    page: 1,
+    limit: 7,
+  };
+  React.useEffect(() => {
+    let isMounted = true;
+    (async () => {
+      await GET_ALL_BANNER(query).then((res) => {
+        res && setBanners(res);
+      });
+    })();
+    return () => {
+      isMounted = false;
+    };
+  }, [GET_ALL_BANNER]);
   // autoplay configuration of banner
-  const autoplay = Autoplay({
-    stopOnInteraction: false,
-    delay: 5000,
-    stopOnMouseEnter: true,
-  });
+  const autoplay = React.useMemo(
+    () =>
+      Autoplay({
+        stopOnInteraction: false,
+        delay: 5000,
+        stopOnMouseEnter: true,
+      }),
+    []
+  );
 
   // options for carousel
   const opts: Partial<EmblaOptionsType> = {
@@ -74,56 +64,67 @@ const Banner: React.FC<BannerProps> = ({
     containScroll: "trimSnaps" as const,
   };
 
-// get pathname
-const path = usePathname();
-
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <>
-    <section className={`${path === '/' ? 'visible' : 'hidden'} max-w-[100vw] w-full relative min-h-screen h-[114vh] -mt-42 mx-auto`}>
-      <Carousel className="relative w-full " opts={opts} plugins={[autoplay]}>
-        <CarouselContent className="w-full relative h-full flex gap-0 !p-0 !m-0">
-          {banners.map((item, key) => {
-            return (
+      {/* Home page carousel */}
+      <section
+        className={`${
+          isHome ? "block" : "hidden"
+        } w-full relative mx-auto -mt-24 cursor-grab`}
+      >
+        <Carousel className="relative w-full" opts={opts} plugins={[autoplay]}>
+          <CarouselContent className="w-full relative h-[50vh] sm:h-[60vh] md:h-[80vh] lg:h-[95vh] xl:h-screen flex gap-0 !p-0 !m-0">
+            {banners.map((item, key) => (
               <CarouselItem
                 key={key}
-                className="w-full !p-0 !m-0 h-[114vh] relative basis-full flex-shrink-0 flex-grow-0" style={{flex:'0 0 100%'}}
+                className="w-full !p-0 !m-0 relative basis-full flex-shrink-0 flex-grow-0"
+                style={{ flex: "0 0 100%" }}
               >
-                <BannerCard
-                {...item}
-                
-                />
+                <BannerCard {...item} />
               </CarouselItem>
-            );
-          })}
-        </CarouselContent>
-        <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-white p-2 rounded-full shadow-md" />
-        <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-white p-2 rounded-full shadow-md" />
-      </Carousel>
-    </section>
-    <section className={`${path === '/' ? 'hidden' : 'visible'} max-w-[100vw] w-full relative h-[70vh] -mt-42 mx-auto`}>
-      <div className="relative w-full h-full">
-        <div className="relative w-full h-full bg-black/30">
-        <Image
-        src={'/images/banner-6.jpg'}
-        alt="banner-image"
-        fill 
-        priority
-        className="object-center object-cover"
-        />
+            ))}
+          </CarouselContent>
+
+          {/* Prev / Next buttons */}
+          <CarouselPrevious className="hidden sm:flex sm:absolute border-none left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 bg-white p-2 rounded-full shadow-md cursor-pointer" />
+          <CarouselNext
+            className="absolute right-2 sm:right-4 top-[90%] sm:top-1/2 -translate-y-1/2 z-20 bg-white p-2
+           rounded-sm border-none sm:rounded-full shadow-md cursor-pointer"
+          />
+        </Carousel>
+      </section>
+
+      {/* Non-home hero banner */}
+      <section
+        className={`${
+          path === "/" ? "hidden" : "block"
+        } w-full relative mx-auto -mt-24`}
+      >
+        <div className="relative w-full h-[30vh] sm:h-[40vh] md:h-[55vh] lg:h-[70vh]">
+          <div className="relative w-full h-full bg-black/30">
+            <Image
+              src="/images/banner-6.jpg"
+              alt="banner-image"
+              fill
+              priority
+              className="object-center object-cover"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
+            />
           </div>
-          <article className="absolute w-full h-full
-           top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  z-40 bg-black/20
-           ">
-            <div className="w-full relative top-[74%] place-items-center">
-          <h2 className="text-white">{heading}</h2> 
+          <article className="absolute inset-0 flex items-center justify-center z-40 bg-black/20">
+            <div className="w-full text-center px-4">
+              <h2 className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl">
+                {heading}
+              </h2>
             </div>
-
           </article>
-      </div>
-    </section>
+        </div>
+      </section>
     </>
-
   );
 };
 

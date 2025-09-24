@@ -71,6 +71,18 @@ export const getSearchProductThunk = createAsyncThunk<
   });
   return response;
 });
+// get search products
+export const getNavSearchProductThunk = createAsyncThunk<
+  PaginatedProductResponse<ProductIncomingDTO>,
+  SearchQueryDTO,
+  { rejectValue: ErrorProps }
+>("product/navsearch", async (query, { rejectWithValue }) => {
+  const response = await PRODUCTAPI.getnavsearchproducts({
+    params: query,
+    reject: rejectWithValue,
+  });
+  return response;
+});
 
 // get related products
 export const getRelatedProduct = createAsyncThunk<
@@ -114,7 +126,6 @@ export const getCategoryProduct = createAsyncThunk<
   "/public/get-category-product",
   async ({catname,query}, { rejectWithValue }) => {
     const response = await PRODUCTAPI.getallcategoryproducts({params:query,catname,reject:rejectWithValue});
-    console.log('fasghdfghSFGSDHaasdjkfgjhsdfghsdhfj',response);
     return response;
   }
 );
@@ -137,6 +148,11 @@ const productSlice = createSlice({
         state.loading = false;
       })
       .addCase(getSearchProductThunk.fulfilled, (state, action) => {
+        state.error = { success: false, message: "", status: 0 };
+        state.products = action.payload;
+        state.loading = false;
+      })
+      .addCase(getNavSearchProductThunk.fulfilled, (state, action) => {
         state.error = { success: false, message: "", status: 0 };
         state.products = action.payload;
         state.loading = false;

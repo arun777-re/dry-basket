@@ -6,15 +6,17 @@ export const SHIPPINGAPI = {
     weight,
     pincode,
     reject,
+    amount
   }: {
     weight: number;
     pincode: number;
     reject: (value: any) => any;
+    amount:number
   }) =>
     postRequest({
       url: `${ROUTES.SHIPPINGAPI.GET_SHIPPING_CHARGES}`,
       reject: reject,
-      data: { weight, pincode },
+      data: { weight, pincode,amount },
     }),
 
   createandassignordertoshipment: async ({

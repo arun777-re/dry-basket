@@ -80,4 +80,17 @@ export const PRODUCTAPI = {
       reject: reject,
       params,
     }),
+  getnavsearchproducts: async ({
+  
+    reject,
+    params,
+  }: {
+    params: SearchQueryDTO;
+    reject: (value: any) => any;
+  }) =>
+    await getRequest({
+      url: `${ROUTES.PRODUCTAPI.GET_NAV_SEARCH_PRODUCT}`,
+      reject: reject,
+      params,
+    }),
 };

@@ -6,7 +6,7 @@ import { shippingSchema } from "../../validation/ordervalidation";
 import OrderSummary from "../../Components/OrderSummary";
 import toast from "react-hot-toast";
 import shippingHook from "@/hooks/shippingHook";
-import { cartTotalItemsWeight } from "@/redux/slices/cartSlice";
+import { cartTotalItemsWeight, selectCartTotal } from "@/redux/slices/cartSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store/store";
 import { CartIncomingDTO } from "@/types/cart";
@@ -16,6 +16,7 @@ import { IncomingAPIResponseFormat } from "@/types/response";
 import { OrderIncomingReqDTO } from "@/types/order";
 import { useRouter } from 'next/navigation';
 import { VerifyPaymentDTO } from '@/redux/services/api/order';
+import cartHook from '@/hooks/cartHook';
 
 const CheckOutForm = () => {
     const router = useRouter();
@@ -42,7 +43,7 @@ const CheckOutForm = () => {
       handler: onSuccess,
       modal: {
         ondismiss: () => {
-          alert("Payment popup closed.");
+          alert("Are you Cancel");
         },
       },
       prefill: {
@@ -62,16 +63,23 @@ const CheckOutForm = () => {
   );
 
   const cartTotalWeight = useSelector(cartTotalItemsWeight);
+  const cartTotalAmount = useSelector(selectCartTotal)
 
   const [orderData, setOrderData] =
     React.useState<IncomingAPIResponseFormat<OrderIncomingReqDTO>>();
   const [lala, setLala] = React.useState<string>("");
+  const [rateCalculator,setRateCalculator] = React.useState<IncomingAPIResponseFormat<number> | undefined>({
+    success:false,
+    message:"",
+    status:0,
+    data:0
+  })
 
   const { useHandleCheckout,useVerifyPayment } = orderHook();
+  const {CLEAR_CART} = cartHook();
   const { useDebounceHook, SHIPPING_RATE_CALCULATOR, useCreateOrderForShipment} = shippingHook();
-
   // Initial form values
-  const initialValues = {
+    const initialValues = {
     firstName: "",
     lastName: "",
     address: "",
@@ -88,8 +96,6 @@ const CheckOutForm = () => {
     values: typeof initialValues,
     { setSubmitting }: any
   ) => {
-    console.log('lode values bhosdi ke',values);
-    alert('button clicked')
     try {
       const payload = {
         shippingDetails: {
@@ -105,21 +111,20 @@ const CheckOutForm = () => {
           agreeForBlogs: values.agreeForBlogs,
           agreeTosave: values.agreeTosave,
         },
-        amount: userCart.finalTotal,
+        amount: userCart?.finalTotal,
         currency: "INR",
+          shippingCharges:rateCalculator?.data
       };
-
-      if (!userCart._id) {
+      if (!userCart._id || !rateCalculator?.success) {
         toast.error("Cart ID missing. Please add items to cart.");
         setSubmitting(false);
         return;
       }
-
       // Step 1: Call backend to create order
     const res =  await useHandleCheckout({
         cartId: userCart._id as string,
         data: payload,
-        weight:userCart.totalWeight
+        weight:userCart.totalWeight ?? cartTotalWeight
       });
 
       if (res?.success) {
@@ -143,8 +148,11 @@ const CheckOutForm = () => {
               
 
               if (verifyRes === true) {
-                console.log("hello world api1",order)
-                useCreateOrderForShipment(order._id);
+                console.log("hello world api1",order);
+                await Promise.all([
+                useCreateOrderForShipment(order._id),
+                 CLEAR_CART(),
+                ])
                 router.push("/order-success"); // ya jahan bhej na ho success page pe
               } else {
                 toast.error("Payment verification failed!");
@@ -179,15 +187,20 @@ const CheckOutForm = () => {
           >
             {({ isSubmitting, values }) => {
               // debounce pin code live while typing
-              const debouncedPin = useDebounceHook(values.pinCode, 600);
+              const debouncedPin = useDebounceHook(values.pinCode, 50);
 
               React.useEffect(() => {
                 let value = true;
-                if (debouncedPin && debouncedPin.length === 6) {
-                  SHIPPING_RATE_CALCULATOR({
+                if (debouncedPin && debouncedPin.length === 6 && value) {
+                  (()=>   SHIPPING_RATE_CALCULATOR({
                     weight: cartTotalWeight,
                     pincode: debouncedPin,
-                  });
+                    amount:userCart.finalTotal ?? cartTotalAmount
+                  }).then((res)=>{
+                    if(res){
+                    setRateCalculator(res)
+                    }
+                  }))();
                   setLala(values.pinCode);
                 }
 

@@ -3,10 +3,7 @@ import React from 'react';
 import { LuRefreshCw } from "react-icons/lu";
 import { BsBriefcase } from "react-icons/bs";
 import { FaRegClock } from "react-icons/fa6";
-
-const Process = () => {
-
-    const processData = [
+    export const processData = [
         {
             icon:<LuRefreshCw size={30} className='text-white'/>,
             title:"Money Back Guarantee",
@@ -23,6 +20,10 @@ const Process = () => {
             description:"Sit amet dolor consecteur adipisicing elitsed to eiusmod tempor incident umbrella et dollar units et dolar."
         },
     ]
+
+const Process = () => {
+
+
 
   return (
     <section className='max-w-screen w-full h-[60vh] relative'>

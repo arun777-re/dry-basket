@@ -2,7 +2,7 @@ export interface IncomingAPIResponseFormat<T>{
     success:boolean,
     status:number,
     message:string,
-    data?: T | null,
+    data: T | null,
 }
 
 
@@ -26,4 +26,7 @@ export interface PaginatedProductResponse<T>{
 }
 
 
-
+export type PaginationQuery = {
+    page:number;
+    limit:number;
+}
