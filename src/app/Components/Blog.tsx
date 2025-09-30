@@ -7,8 +7,11 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { BlogsIncomingDTO } from '@/types/blog'
 import useBlogHook from '@/hooks/blogHook'
 import { PaginationQuery } from '@/types/response'
+import Autoplay from 'embla-carousel-autoplay';
+import { EmblaOptionsType } from "embla-carousel";
 
 const Blog = () => {
+
 
     // here actual blogdata comes from backend
 const [blogData,setBlogData] = React.useState<BlogsIncomingDTO[]>();
@@ -30,12 +33,28 @@ React.useEffect(()=>{
    }
 },[]);
 
+  // autoplay configuration of banner
+  const autoplay = React.useMemo(
+    () =>
+      Autoplay({
+        stopOnInteraction: false,
+        delay: 5000,
+        stopOnMouseEnter: true,
+      }),
+    []
+  );
+
+  // options for carousel
+  const opts: Partial<EmblaOptionsType> = {
+    align: "start" as const,
+    containScroll: "trimSnaps" as const,
+  };
   return (
-    <section className='max-w-screen w-full h-auto '>
-        <div className="relative w-full px-4 md:px-20 lg:px-30 flex flex-col items-center justify-center gap-10 py-20">
-  <header className="relative max-w-md w-full flex flex-col items-center justify-center ">
+    <section className='max-w-screen w-full h-auto relative'>
+        <div className="relative w-full px-4 md:px-20 lg:px-30 flex flex-col items-center justify-center gap-10 pt-10 pb-10 sm:py-16 md:py-20">
+  <header className="relative w-full sm:max-w-md  flex flex-col items-center justify-center ">
           <h2>Blog Post</h2>
-          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+          <p className='text-center'>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
           <div className="flex gap-2 items-center p-2">
             <FaStar size={18} className="text-first " />
             <FaStar size={25} className="text-body" />
@@ -43,7 +62,7 @@ React.useEffect(()=>{
           </div>
         </header>
         <section className="w-full relative ">
-            <Carousel>
+            <Carousel className='w-full' opts={opts} plugins={[autoplay]}>
                 <CarouselContent>
                     {blogData && blogData.length > 0 && blogData.map((item,index)=>{
                         return (

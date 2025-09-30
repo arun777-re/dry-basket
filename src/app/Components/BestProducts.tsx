@@ -42,7 +42,7 @@ const BestProducts: React.FC = () => {
       </div>
 
       <div className="relative w-full flex flex-col items-center justify-center 
-      px-4 sm:px-8 md:px-16 lg:px-24 pt-10 md:pt-16 pb-10">
+      px-4 md:px-20 lg:px-30 py-10 sm:py-16 ">
         {/* Header */}
         <header className="w-full max-w-xl flex flex-col items-center text-center">
           <h2 className="text-2xl md:text-3xl font-semibold">Best Products</h2>
@@ -83,7 +83,7 @@ const BestProducts: React.FC = () => {
         </header>
 
         {/* Product Section */}
-        <section className="w-full relative mt-6">
+        <section className="w-full relative mt-6 ">
           {section === "kaju" && <ProductCarousel product={product} />}
           {section === "almonds" && <ProductCarousel product={product} />}
         </section>

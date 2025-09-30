@@ -52,7 +52,7 @@ const Banner: React.FC<BannerProps> = ({ heading }) => {
     () =>
       Autoplay({
         stopOnInteraction: false,
-        delay: 5000,
+        delay: 2000,
         stopOnMouseEnter: true,
       }),
     []
@@ -104,7 +104,7 @@ const Banner: React.FC<BannerProps> = ({ heading }) => {
           path === "/" ? "hidden" : "block"
         } w-full relative mx-auto -mt-24`}
       >
-        <div className="relative w-full h-[30vh] sm:h-[40vh] md:h-[55vh] lg:h-[70vh]">
+        <div className="relative w-full h-[50vh] sm:h-[50vh] md:h-[55vh] lg:h-[70vh]">
           <div className="relative w-full h-full bg-black/30">
             <Image
               src="/images/banner-6.jpg"
@@ -116,10 +116,10 @@ const Banner: React.FC<BannerProps> = ({ heading }) => {
             />
           </div>
           <article className="absolute inset-0 flex items-center justify-center z-40 bg-black/20">
-            <div className="w-full text-center px-4">
-              <h2 className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl">
+            <div className="w-full text-center px-4 top-[28%] relative">
+              <h3 className="text-white ">
                 {heading}
-              </h2>
+              </h3>
             </div>
           </article>
         </div>

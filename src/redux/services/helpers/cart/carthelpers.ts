@@ -1,5 +1,4 @@
 import { CartState, PopulatedCartItemDTO, PopulatedProductInfo, UpdateQtyDTO } from "@/types/cart";
-import { defaultPopulatedCartResponse } from "./cartresponse";
 
 export function saveGuestCart(items:PopulatedCartItemDTO[]){
     localStorage.setItem('guest_cart',JSON.stringify(items))
@@ -10,14 +9,12 @@ export function getGuestCart(){
     return saved && (JSON.parse(saved) || []) as PopulatedCartItemDTO[]
 }
 
-
-
 const getId = (p: string | PopulatedProductInfo) => {
+  if(!p) return "";
   return typeof p === "string" ? p : p._id;
 };
 // utility function for createcart reducer
 export function createCart(state:CartState,payload:PopulatedCartItemDTO){
-  console.log("hello statecones",state.cart.data?.items)
    if (!Array.isArray(state.cart?.data!.items) && state.cart.data) {
         state.cart.data = {total:0,
           items:[],

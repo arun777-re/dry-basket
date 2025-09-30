@@ -1,4 +1,4 @@
-import { PopulatedIncomingCartDTO } from "./cart";
+import { CartItemOutgoingDTO, PopulatedCartItemDTO, PopulatedIncomingCartDTO } from "./cart";
 
 export interface ShippingDetailsDTO {
     country:string;
@@ -45,10 +45,14 @@ export interface CourierInfoDTO {
     estimatedDelieveryDate:Date,
     shipmentOrderId:string;
 }
+
 export interface OrderIncomingReqDTO {
   _id?:string | Types.ObjectId;
-   userId:string;
+   userId:{
+      email:string;
+   };
    cartId:PopulatedIncomingCartDTO;
+   cartItems:PopulatedCartItemDTO[];
    shippingDetails:ShippingDetails;
    orderStatus:string;
    amount:number;

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ErrorProps, IncomingAPIResponseFormat } from "@/types/response";
-import { LoginProps, UserPropsIncoming, UserPropsOutgoing } from "@/types/user";
+import { LoginProps, UpdatePasswordOutgoingDTO, UserPropsIncoming, UserPropsOutgoing } from "@/types/user";
 import { defaultError, defaultUserState } from "../services/helpers/userresponse";
 import { AuthAPI } from "../services/api/auth";
 
@@ -16,6 +16,8 @@ export interface UserState {
     forgot:boolean;
     logout:boolean;
     get:boolean;
+    updatePassword:boolean;
+
   };
   error: ErrorProps;
 }
@@ -28,6 +30,7 @@ const initialState: UserState = {
     forgot:false,
     logout:false,
     get:false,
+    updatePassword:false,
   },
   error: defaultError
 
@@ -135,7 +138,14 @@ const response = await AuthAPI.getUser(rejectWithValue);
 return response;
 })
 
-
+export const updatePasswordThunk = createAsyncThunk<
+IncomingAPIResponseFormat<UserPropsIncoming>,
+UpdatePasswordOutgoingDTO,
+{rejectValue:ErrorProps}
+>('/auth/update-pass',async({email,password},{rejectWithValue})=>{
+const res = await AuthAPI.Update_Password({reject:rejectWithValue,data:{email,password}});
+return res;
+})
 const userSlice = createSlice({
   name: "user",
   initialState,
@@ -177,6 +187,7 @@ const userSlice = createSlice({
       forgot: false,
       logout: false,
       get:false,
+      updatePassword:false,
     };
   }
         state.loading.login = true;
@@ -191,6 +202,7 @@ const userSlice = createSlice({
       forgot: false,
       logout: false,
       get:false,
+      updatePassword:false
     };
   }
 
@@ -239,6 +251,11 @@ const userSlice = createSlice({
       })
       .addCase(getUserThunk.fulfilled, (state, action) => {
         state.loading.get = false;
+        state.error = defaultError;
+        state.user = action.payload;
+      })
+      .addCase(updatePasswordThunk.fulfilled, (state, action) => {
+        state.loading.updatePassword = false;
         state.error = defaultError;
         state.user = action.payload;
       })

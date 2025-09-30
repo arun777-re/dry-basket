@@ -1,3 +1,4 @@
+'use client';
 import React from "react";
 import Navbar from "../Components/Navbar";
 import Banner from "../Components/Banner";
@@ -6,199 +7,103 @@ import Image from "next/image";
 import { FaStar } from "react-icons/fa";
 import Team from "../Components/Team";
 import Process from "../Components/Process";
-
-const testimData = [
-  {
-    image: "/images/testim.jpg",
-    name: "Arun",
-    designation: "Developer",
-    description:
-      " Lorem ipsum dolor sit amet consectetur adipisicing eli Necessitatibus ex eius perferendis distinctio voluptates excepturi fugit culpa voluptatem, neque dolor unde, maiores accusantium aliquam nostrum fuga praesentium architecto. Sit",
-  },
-  {
-    image: "/images/testim.jpg",
-    name: "Arun",
-    designation: "Developer",
-    description:
-      " Lorem ipsum dolor sit amet consectetur adipisicing eli Necessitatibus ex eius perferendis distinctio voluptates excepturi fugit culpa voluptatem, neque dolor unde, maiores accusantium aliquam nostrum fuga praesentium architecto. Sit",
-  },
-  {
-    image: "/images/testim.jpg",
-    name: "Arun",
-    designation: "Developer",
-    description:
-      " Lorem ipsum dolor sit amet consectetur adipisicing eli Necessitatibus ex eius perferendis distinctio voluptates excepturi fugit culpa voluptatem, neque dolor unde, maiores accusantium aliquam nostrum fuga praesentium architecto. Sit",
-  },
-];
+import { testimData } from "@/data/testimData";
+import Testim from "../Components/Testim";
 
 const AboutPage: React.FC = () => {
   return (
-    <div className="max-w-screen relative w-full mx-auto h-auto overflow-x-hidden">
+    <div className="w-full h-auto overflow-x-hidden">
       <Navbar />
       <Banner heading="About US" />
-      <section className="w-full relative">
-        <div className="w-full relative px-30 py-20 h-[70vh]">
-          <div className="w-full relative h-full border-2 gap-6 flex items-center justify-center overflow-hidden">
-            <div className="w-1/2 relative h-full flex flex-col gap-4">
-              <h5 className="text-head">The Oil Richest Almonds</h5>
-              <div className="w-full flex flex-col items-start justify-center relative gap-8">
-                <p className="leading-loose">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Necessitatibus ex eius perferendis distinctio voluptates
-                  excepturi fugit culpa voluptatem, neque dolor unde, maiores
-                  accusantium aliquam nostrum fuga praesentium architecto. Sit
-                  sunt ea obcaecati similique maxime est ad nisi quo molestiae
-                  nemo.
-                </p>
-                <article className="w-full relative flex items-center justify-center gap-3">
-                  <div className="h-[100px] relative bg-body w-[8px] "></div>
-                  <p className="font-cursive leading-loose">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Necessitatibus ex eius perferendis distinctio voluptates
-                    excepturi fugit culpa voluptatem, neque dolor unde, maiores
-                    accusantium aliquam nostrum fuga praesentium architecto. Sit
-                    sunt ea obcaecati similique maxime est ad nisi quo
-                    molestiae.
-                  </p>
-                </article>
-              </div>
+
+      {/* Hero Section */}
+      <section className="w-full relative px-4 sm:px-6 lg:px-8 py-12">
+        <div className="flex flex-col lg:flex-row items-center gap-8 max-w-screen-xl mx-auto">
+          {/* Text */}
+          <div className="w-full lg:w-1/2 flex flex-col gap-4">
+            <h5 className="text-head text-xl sm:text-2xl font-bold">The Oil Richest Almonds</h5>
+            <p className="leading-loose text-gray-700">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus ex eius perferendis distinctio voluptates excepturi fugit culpa voluptatem, neque dolor unde, maiores accusantium aliquam nostrum fuga praesentium architecto. Sit sunt ea obcaecati similique maxime est ad nisi quo molestiae nemo.
+            </p>
+            <article className="flex flex-col gap-3 sm:flex-row sm:items-start">
+              <div className="h-[100px] w-2 bg-body"></div>
+              <p className="font-cursive leading-loose text-gray-700">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus ex eius perferendis distinctio voluptates excepturi fugit culpa voluptatem, neque dolor unde, maiores accusantium aliquam nostrum fuga praesentium architecto.
+              </p>
+            </article>
+          </div>
+
+          {/* Image */}
+          <div className="w-full lg:w-1/2 h-64 sm:h-96 relative">
+            <Image
+              src={"/images/banner-4.jpg"}
+              alt="about"
+              fill
+              className="object-cover object-center rounded-xl"
+              priority
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Unique Blended Taste Section */}
+      <section className="w-full bg-gray-100 py-12">
+        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-12">
+          <header className="text-center flex flex-col items-center gap-2">
+            <h2 className="text-2xl sm:text-3xl font-bold">A unique blended taste</h2>
+            <p className="text-gray-600 text-sm sm:text-base">Lorem ipsum, dolor sit amet consectetur adipisicing with height.</p>
+            <div className="flex gap-2 items-center">
+              <FaStar size={18} className="text-first" />
+              <FaStar size={25} className="text-body" />
+              <FaStar size={18} className="text-first" />
             </div>
-            <div className="w-1/2 relative h-[90%]">
-              <Image
-                src={"/images/banner-4.jpg"}
-                alt="about"
-                fill
-                priority
-                className="object-cover object-center"
-              />
+          </header>
+
+          {/* Image + Text Pairs */}
+          <div className="flex flex-col gap-12">
+            {/* Pair 1 */}
+            <div className="flex flex-col lg:flex-row gap-6 lg:gap-16 items-center">
+              <div className="w-full lg:w-1/2 h-64 relative">
+                <Image
+                  src={'/images/banner-2.jpg'}
+                  alt="about"
+                  fill
+                  className="object-cover rounded-xl"
+                />
+              </div>
+              <article className="w-full lg:w-1/2 flex flex-col gap-4 text-gray-700">
+                <h5 className="text-head text-lg sm:text-xl font-bold">The finest spice</h5>
+                <p className="leading-relaxed text-sm sm:text-base">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus ex eius perferendis distinctio voluptates excepturi fugit culpa voluptatem, neque dolor unde, maiores accusantium aliquam nostrum fuga praesentium architecto.
+                </p>
+              </article>
+            </div>
+
+            {/* Pair 2 */}
+            <div className="flex flex-col lg:flex-row-reverse gap-6 lg:gap-16 items-center">
+              <div className="w-full lg:w-1/2 h-64 relative">
+                <Image
+                  src={'/images/banner-2.jpg'}
+                  alt="about"
+                  fill
+                  className="object-cover rounded-xl border-2 border-first"
+                />
+              </div>
+              <article className="w-full lg:w-1/2 flex flex-col gap-4 items-start lg:items-end text-gray-700">
+                <h5 className="text-head text-lg sm:text-xl font-bold">The finest Nuts</h5>
+                <p className="leading-relaxed text-sm sm:text-base text-left lg:text-right">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus ex eius perferendis distinctio voluptates excepturi fugit culpa voluptatem, neque dolor unde, maiores accusantium aliquam nostrum fuga praesentium architecto.
+                </p>
+              </article>
             </div>
           </div>
         </div>
       </section>
-      <section className="max-w-screen w-full h-auto bg-gray-100">
-        <div className="relative w-full px-30 flex flex-col items-center justify-center gap-10 pt-20 ">
-          <header className="relative max-w-lg w-full flex flex-col items-center justify-center ">
-            <h2>A unique blended taste</h2>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing with height.</p>
-            <div className="flex gap-2 items-center p-2">
-              <FaStar size={18} className="text-first " />
-              <FaStar size={25} className="text-body" />
-              <FaStar size={18} className="text-first " />
-            </div>
-          </header>
-          <section className="w-full relative flex flex-col items-center justify-center gap-20 pb-30">
-                <div
-                    className="w-full relative h-[32vh] flex gap-16"
-                  >
-                      <div className="w-[46%] relative ">
-                       <div className="w-full relative h-full bg-head hover:animate-pulse">
 
-                       </div>
-                       <div className="absolute w-full h-full top-8 left-8 ">
-                          <Image
-                          src={'/images/banner-2.jpg'}
-                          alt="about"
-                          fill
-                          priority
-                          className="object-center object-fill"
-                          />
-                       </div>
-                    </div>
-                    <article className="w-[54%] flex flex-col items-start justify-center gap-6">
-                        <h5 className="text-head">
-                            The finest spice
-                        </h5>
-                      <p className="font-roboto leading-relaxed">
-                        Lorem ipsum dolor sit amet consectetur adipisicing eli Necessitatibus ex eius perferendis distinctio voluptates excepturi fugit culpa voluptatem,
-                         neque dolor unde, maiores accusantium aliquam nostrum fuga praesentium architecto. Sit",
-                      </p>
-                    
-                    </article>
-                  
-                  </div>
-                <div
-                    className="w-full relative h-[32vh] flex flex-row-reverse  gap-16"
-                  >
-                      <div className="w-[46%] relative ">
-                       <div className="w-full relative h-full bg-head hover:animate-pulse">
+      <Process />
 
-                       </div>
-                       <div className="absolute w-full h-full top-8 left-8 border-2 border-first">
-                          <Image
-                          src={'/images/banner-2.jpg'}
-                          alt="about"
-                          fill
-                          priority
-                          className="object-center object-fill"
-                          />
-                       </div>
-                    </div>
-                    <article className="w-[54%] flex flex-col items-end justify-center gap-6">
-                        <h5 className="text-head">
-                            The finest Nuts
-                        </h5>
-                      <p className="font-roboto text-right leading-relaxed">
-                        Lorem ipsum dolor sit amet consectetur adipisicing eli Necessitatibus ex eius perferendis distinctio voluptates excepturi fugit culpa voluptatem,
-                         neque dolor unde, maiores accusantium aliquam nostrum fuga praesentium architecto. Sit",
-                      </p>
-                    
-                    </article>
-                  
-                  </div>
-      
-          </section>
-        </div>
-      </section>
-      <Process/>
-
-      <section className="max-w-screen w-full h-auto bg-gray-100">
-        <div className="relative w-full px-30 flex flex-col items-center justify-center gap-10 pt-20 ">
-          <header className="relative max-w-lg w-full flex flex-col items-center justify-center ">
-            <h2>Our Client Words</h2>
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing</p>
-            <div className="flex gap-2 items-center p-2">
-              <FaStar size={18} className="text-first " />
-              <FaStar size={25} className="text-body" />
-              <FaStar size={18} className="text-first " />
-            </div>
-          </header>
-          <section className="w-full relative flex items-center justify-center gap-8 pb-30">
-            {testimData &&
-              testimData.map((item, key) => {
-                return (
-                  <div
-                    key={key}
-                    className="w-1/3 relative h-[30vh] flex flex-col gap-8"
-                  >
-                    <article className="flex flex-col items-start justify-center gap-4">
-                      <p className="font-roboto">{item?.description}</p>
-                      <div className="flex items-center gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <FaStar size={18} className="text-body" />
-                        ))}
-                      </div>
-                    </article>
-                    <div className="flex items-center w-full relative justify-start gap-2">
-                      <img
-                        style={{ borderRadius: "50%" }}
-                        src={item?.image}
-                        alt="testimonial"
-                        className="h-[70px] w-[70px] border border-first object-center object-fill"
-                      />
-                      <p>
-                        <span className="font-semibold text-body">
-                          {item?.name}
-                        </span>
-                        &nbsp; -&nbsp;
-                        <span className="">{item?.designation}</span>
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-          </section>
-        </div>
-      </section>
+      {/* Testimonials */}
+    <Testim/>
       <Team />
       <Footer />
     </div>

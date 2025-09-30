@@ -10,7 +10,6 @@ import useSearchProductHook from "@/hooks/useSearchProductHook";
 import Spinner from "../_components/Spinner";
 
 const SearchProducts: React.FC = () => {
-
   const path = usePathname();
   const searchParams  = useSearchParams();
   const searchValue = searchParams.get('searchValue') || '';
@@ -22,7 +21,7 @@ const SearchProducts: React.FC = () => {
   return (
     <div className="max-w-screen w-full h-auto mx-auto overflow-x-hidden">
       <Navbar />
-      <Banner heading={path} />
+      <Banner heading={path.startsWith("/") ? path.slice(1) : path} />
       <Category
         searchValue={searchValue}
       />

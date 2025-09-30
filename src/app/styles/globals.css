@@ -222,6 +222,8 @@ body {
   width: 100%;
 }
 
+
+
 @keyframes removeRadius {
   from {
     border-radius: 50px;
@@ -239,30 +241,32 @@ body {
     @apply bg-background text-foreground;
   }
   h1 {
-    @apply text-5xl text-white font-normal tracking-wider;
+    @apply text-3xl  sm:text-4xl md:text-5xl text-white font-normal tracking-wider;
     font-family: var(--font-rice);
   }
   h2 {
-    @apply text-4xl text-head font-normal tracking-wider mb-2;
+    @apply text-2xl sm:text-3xl md:text-4xl text-head font-normal tracking-wider mb-2;
     font-family: var(--font-rice);
     color: var(--color-head);
   }
   h3 {
-    @apply text-3xl text-head font-normal tracking-wider mb-2;
+    @apply text-xl sm:text-2xl md:text-3xl text-head font-normal tracking-wider mb-2;
     font-family: var(--font-rice);
     color: var(--color-head);
   }
   h4 {
-    @apply text-2xl text-head font-normal tracking-wider mb-2;
+    @apply text-lg sm:text-xl md:text-2xl text-head font-normal tracking-wider mb-2;
     font-family: var(--font-rice);
     color: var(--color-head);
   }
   h5 {
-    @apply text-xl text-body font-normal tracking-wider hover:text-head cursor-pointer;
+    @apply text-base sm:text-lg md:text-xl text-body font-normal tracking-wider hover:text-head cursor-pointer;
     font-family: var(--font-rice);
   }
 
   p {
-    @apply text-body text-sm font-normal tracking-wider;
+    @apply text-body text-sm font-normal leading-loose;
   }
 }
+
+

@@ -1,80 +1,39 @@
 "use client";
 
 import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  User,
-  Package,
-  MapPin,
-  CreditCard,
-  Settings,
-  Menu,
-} from "lucide-react";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store/store";
-import Spinner from "@/app/_components/Spinner";
-import orderHook from "@/hooks/orderHook";
-import { paginatedOrderResponse } from "@/redux/services/helpers/order/orderResponse";
-import { PaginatedProductResponse } from "@/types/response";
-import { OrderIncomingReqDTO } from "@/types/order";
-import { ROUTES } from "@/constants/routes";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { User, Package, Settings, Menu } from "lucide-react";
+import AllOrders from "@/app/_components/AllOrders";
+import UsewrProfile from "@/app/_components/UsewrProfile";
+import Logout from "@/app/_components/Logout";
+import {Home } from 'lucide-react';
 import { useRouter } from "next/navigation";
+import { ROUTES } from "@/constants/routes";
 
 export default function UserDashboard() {
+const router = useRouter()
+
   const [activeTab, setActiveTab] = useState("profile");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [order, setOrder] = useState<
-    PaginatedProductResponse<OrderIncomingReqDTO> | null | undefined
-  >(paginatedOrderResponse);
 
-  const router = useRouter()
-
-  const isLoading = useSelector((state: RootState) => state.order.loading);
-  const { GET_ALL_ORDERS } = orderHook();
   const menuItems = [
+    { value: "home", label: "Home", icon:Home },
     { value: "profile", label: "Profile", icon: User },
     { value: "orders", label: "Orders", icon: Package },
-    { value: "addresses", label: "Addresses", icon: MapPin },
-    { value: "payments", label: "Payments", icon: CreditCard },
     { value: "settings", label: "Settings", icon: Settings },
   ];
 
-  React.useEffect(() => {
-    let value = false;
-    (async () => {
-      await GET_ALL_ORDERS({ page: 1, limit: 10 }).then((res) => {
-        setOrder(res ?? paginatedOrderResponse);
-      });
-    })();
-
-    return () => {
-      value = false;
-    };
-  }, []);
-
-  if (isLoading) {
-    return <Spinner />;
-  }
-  // handle fallback
-  if (order?.data!.length === 0  ) {
-    return (<>
-    <Spinner />
-    <p>No orders found / Place your first order with us</p>
-    </>)
-    ;
-  }
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      {/* Sidebar for Desktop */}
-      <aside className="hidden md:block w-64 bg-white shadow-md p-4">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50">
+      {/* Desktop Sidebar */}
+      <aside className="hidden md:flex md:flex-col md:w-64 bg-white shadow-md p-4">
         <h2 className="text-xl font-bold mb-6">My Account</h2>
         <Tabs
           orientation="vertical"
           value={activeTab}
           onValueChange={setActiveTab}
-          className="space-y-2 py-16"
+          className="space-y-2 py-12"
         >
           <TabsList className="flex flex-col w-full gap-2">
             {menuItems.map((item) => (
@@ -90,7 +49,7 @@ export default function UserDashboard() {
         </Tabs>
       </aside>
 
-      {/* Mobile Top Bar */}
+      {/* Mobile Topbar */}
       <div className="md:hidden fixed top-0 left-0 right-0 bg-white shadow flex items-center justify-between p-4 z-50">
         <h2 className="text-lg font-bold">My Account</h2>
         <Button
@@ -104,8 +63,8 @@ export default function UserDashboard() {
 
       {/* Mobile Sidebar Drawer */}
       {sidebarOpen && (
-        <div className="fixed inset-0 z-40 flex">
-          <div className="w-64 bg-white shadow-md p-4">
+        <div className="fixed top-16 inset-0 z-40 flex items-center justify-center max-w-screen w-full h-40 " data-aos="fade-down">
+          <div className="w-full sm:w-64 h-full flex items-center bg-white shadow-md p-4 ">
             <Tabs
               orientation="vertical"
               value={activeTab}
@@ -135,88 +94,27 @@ export default function UserDashboard() {
         </div>
       )}
 
-      {/* Main Content */}
-      <main className="flex-1 p-6 py-6 mt-14 md:mt-0">
+        {/* Main Content */}
+      <main className="flex-1 p-4 md:p-6 mt-16 md:mt-0">
         <Tabs value={activeTab}>
+          {/* Example: add your Home tab content later */}
+          <TabsContent value="home">
+            <div className="p-4 bg-white rounded shadow">
+              <h2 className="text-xl font-bold mb-2">Welcome Home</h2>
+              <Button onClick={()=>router.push(`${ROUTES.HOME}`)}>Home</Button>
+            </div>
+          </TabsContent>
+
           <TabsContent value="profile">
-            <Card>
-              <CardHeader>
-                <CardTitle>Profile Information</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>Name: Arun Jamdagni</p>
-                <p>Email: arun@example.com</p>
-                <Button className="mt-4">Edit Profile</Button>
-              </CardContent>
-            </Card>
+            <UsewrProfile />
           </TabsContent>
 
           <TabsContent value="orders">
-            <Card>
-              <CardHeader>
-                <CardTitle>My Orders</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {order && Array.isArray(order.data) &&
-                  order.data?.length > 0 &&
-                  order.data.map((item, key) => {
-                    // mapping orderStatus 
-                    const statusColor:Record<string,string> = {
-                      pending:"bg-yellow-200 text-yellow-800",
-                      confirmed:"bg-blue-200 text-blue-800",
-                      shipped:"bg-purple-200 text-purple-800",
-                      delivered:"bg-green-200 text-green-800",
-                      cancelled:"bg-red-200 text-red-800",
-                      retrurned:"bg-orange-200 text-orange-800",
-                    }
-                    const colorClass = statusColor[item.orderStatus.toLowerCase()] || "bg-gray-200 text-gray-800"
-                    return (
-                      <div key={key} className="border-1 border-gray-50 w-full h-auto p-4 flex justify-between" onClick={()=>router.push(
-                         `${ROUTES.COMPLETE_ORDER}?orderId=${item._id}`)}>
-                        <p>order: {item._id}</p>
-                        <p className={`px-2 py-2 rounded-md font-medium capitalize ${colorClass}`}>{item.orderStatus}</p>
-                      </div>
-                    );
-                  })}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="addresses">
-            <Card>
-              <CardHeader>
-                <CardTitle>Saved Addresses</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>Home: Delhi, India</p>
-                <p>Office: Gurugram, India</p>
-                <Button className="mt-4">Add New Address</Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="payments">
-            <Card>
-              <CardHeader>
-                <CardTitle>Saved Payment Methods</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>Visa - **** 1234</p>
-                <p>UPI - arun@upi</p>
-                <Button className="mt-4">Add Payment Method</Button>
-              </CardContent>
-            </Card>
+            <AllOrders />
           </TabsContent>
 
           <TabsContent value="settings">
-            <Card>
-              <CardHeader>
-                <CardTitle>Account Settings</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Button variant="destructive">Logout</Button>
-              </CardContent>
-            </Card>
+            <Logout />
           </TabsContent>
         </Tabs>
       </main>

@@ -1,8 +1,8 @@
 'use client';
 
-import { createUser, getUserThunk, loginUser, logoutuser } from '@/redux/slices/userSlice';
+import { createUser, getUserThunk, loginUser, logoutuser, updatePasswordThunk } from '@/redux/slices/userSlice';
 import { AppDispatch, RootState } from '@/redux/store/store';
-import { LoginProps, UserPropsOutgoing } from '@/types/user';
+import { LoginProps, UpdatePasswordOutgoingDTO, UserPropsOutgoing } from '@/types/user';
 import { useRouter } from 'next/navigation';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +11,7 @@ import { CartItemOutgoingDTO, PopulatedCartItemDTO } from '@/types/cart';
 import { ROUTES } from '@/constants/routes';
 import { mapPopulatedOurgoing } from '@/lib/middleware/normalizedCart';
 import toast from 'react-hot-toast';
+import { BsChevronCompactLeft } from 'react-icons/bs';
 
 
 const authHook = () => {
@@ -30,11 +31,38 @@ const authHook = () => {
     // refs for deduplication
     const signupRef = React.useRef(false);
     const loginRef = React.useRef(false);
+    const logoutRef = React.useRef(false);
+    const updatePassRef = React.useRef(false);
    
   const {CREATECARTORADDITEMTOCART} = cartHook();
     const dispatch = useDispatch<AppDispatch>();
-  const LOGOUT_USER = React.useCallback((userId:string)=>{
-    dispatch(logoutuser(userId));
+
+
+  const LOGOUT_USER = React.useCallback(async(userId:string)=>{
+    try {
+      if(logoutRef.current) return;
+      logoutRef.current = true;
+    const res = await dispatch(logoutuser(userId));
+    return res;
+      
+    } catch (error:any) {
+      console.error(error.message || "Error occured in auth")
+    }finally{
+logoutRef.current = false;
+    }
+  },[dispatch]);
+
+  const UPDATE_USER_PASSWORD = React.useCallback(async(data:UpdatePasswordOutgoingDTO)=>{
+    try {
+      if(updatePassRef.current) return;
+      updatePassRef.current = true;
+   const res = await dispatch(updatePasswordThunk(data)).unwrap();
+   return res;
+    } catch (error:any) {
+      console.error(error.message || "Error occured in auth")
+    }finally{
+   updatePassRef.current = false;
+    }
   },[dispatch]);
 
 
@@ -89,7 +117,7 @@ const getUser = React.useCallback(async()=>{
   }
 },[dispatch,user,router])
 
-  return {LOGOUT_USER,useRegisterUser,useLoginUser,getUser
+  return {LOGOUT_USER,useRegisterUser,useLoginUser,getUser,UPDATE_USER_PASSWORD
   };
 }
 

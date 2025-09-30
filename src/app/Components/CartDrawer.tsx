@@ -16,29 +16,21 @@ import React from "react";
 import { selectCartTotal } from "@/redux/slices/cartSlice";
 import { useRouter } from "next/navigation";
 import cartHook from "@/hooks/cartHook";
-import { PopulatedCartItemDTO, PopulatedIncomingCartDTO } from "@/types/cart";
+import { PopulatedIncomingCartDTO } from "@/types/cart";
 import { UserState } from "@/redux/slices/userSlice";
 
 export function CartDrawer() {
-  // const [guestCart, setGuestCart] = React.useState<PopulatedIncomingCartDTO>(defaultPopulatedCartResponse);
-
   const router = useRouter();
 
-  //  getting if user is logged in or not
   const user = useSelector(
     (state: RootState) => (state.user as UserState).user.success
   );
 
-  // getting cart from redux
-
-  const guestCart: PopulatedIncomingCartDTO = useSelector(
+  const guestCart: PopulatedIncomingCartDTO | null = useSelector(
     (state: RootState) => state.usercart.cart?.data
   );
 
-  //this function will automatically handle dynamic cart
   const { handleCartItems } = cartHook();
-
-  // totalPrice selector using reselct
   const totalPrice = useSelector(selectCartTotal);
 
   const finalCartItems = async () => {
@@ -54,40 +46,55 @@ export function CartDrawer() {
         />
       </DrawerTrigger>
 
-      <DrawerContent className="ml-auto w-[24vw] sm:w-[400px] min-h-full h-auto overflow-y-scroll overflow-x-hidden bg-white shadow-lg">
-        <div className="p-4 flex flex-col gap-4">
-          <DialogTitle className="text-xl font-semibold">Your Cart</DialogTitle>
+      {/* Responsive width classes */}
+      <DrawerContent
+        className="
+          min-h-full
+           h-auto overflow-y-scroll overflow-x-hidden 
+          bg-white shadow-lg
+          !w-screen           
+          sm:!w-4/5             
+          md:!w-2/3        
+          lg:!w-1/3      
+          xl:!w-[24vw]      
+        "
+      >
+        <div className=" p-4 flex flex-col gap-4 h-full relative ">
+          <DialogTitle className="text-lg sm:text-xl font-semibold">Cart</DialogTitle>
+
           {(guestCart?.items ?? []).length > 0 ? (
-            guestCart?.items
-              ?.filter(
-                (item): item is PopulatedCartItemDTO =>
-                  item.productId._id !== "string"
+            guestCart?.items.map((item, key) => {
+              if (
+                !item.productId ||
+                typeof item.productId === "string" ||
+                !item.productId._id
               )
-              .map((item, key) => {
-                return (
-                  <DrawerCard
-                    productName={
-                      item?.productId?.productName?.toUpperCase() ?? ""
-                    }
-                    image={item.productId.images?.[0] || "/images/cart1-1.jpg"}
-                    priceAfterDiscount={item.variant?.priceAfterDiscount}
-                    weight={item.variant?.weight}
-                    productId={item?.productId?._id}
-                    quantity={item?.quantity}
-                    key={key}
-                  />
-                );
-              })
+                return null;
+              return (
+                <DrawerCard
+                  key={key}
+                  productName={item?.productId?.productName?.toUpperCase() ?? ""}
+                  image={item.productId.images?.[0] || "/images/cart1-1.jpg"}
+                  priceAfterDiscount={item.variant?.priceAfterDiscount}
+                  weight={item.variant?.weight}
+                  productId={item?.productId?._id}
+                  quantity={item?.quantity}
+                />
+              );
+            })
           ) : (
             <p>Your cart is empty.</p>
           )}
-          <div className="px-2 py-6 flex items-center justify-between border-1 border-y-gray-100 border-x-0 ">
+
+          <div className="px-2 py-6 flex items-center justify-between border-y border-gray-100">
             <p className="text-black">Total</p>
             <p className="text-black">
               Rs{user ? guestCart?.finalTotal : totalPrice}
             </p>
           </div>
+
           <Button
+          className="cursor-pointer hover:bg-first"
             variant={"outline"}
             onClick={() => {
               router.push("/checkout");
@@ -97,6 +104,7 @@ export function CartDrawer() {
             Proceed to checkout
           </Button>
           <Button
+          className="cursor-pointer hover:bg-first"
             variant={"outline"}
             onClick={() => {
               router.push("/cart");
@@ -110,9 +118,7 @@ export function CartDrawer() {
             <MdCancel
               size={26}
               style={{ borderRadius: "50%" }}
-              className={`absolute right-2 z-50
-                              bg-head text-white transition-all rounded-full cursor-pointer hover:bg-first
-                                duration-500 ease-in-out`}
+              className={`absolute right-2 z-50 bg-head text-white transition-all rounded-full cursor-pointer hover:bg-first duration-500 ease-in-out`}
             />
           </DrawerClose>
         </div>

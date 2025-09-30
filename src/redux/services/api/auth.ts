@@ -1,6 +1,10 @@
 import { ROUTES } from "@/constants/routes";
 import { getRequest, postRequest } from "../middleware";
-import { LoginProps, UserPropsOutgoing } from "@/types/user";
+import {
+  LoginProps,
+  UpdatePasswordOutgoingDTO,
+  UserPropsOutgoing,
+} from "@/types/user";
 
 export const AuthAPI = {
   signup: async (data: UserPropsOutgoing, reject: (value: any) => any) =>
@@ -23,7 +27,7 @@ export const AuthAPI = {
   reset: async (email: string, reject: (value: any) => any) =>
     await postRequest({
       url: `${ROUTES.AUTH.RESET_REQUSET}}`,
-      data: {email},
+      data: { email },
       reject: reject,
     }),
   update: async (
@@ -34,7 +38,20 @@ export const AuthAPI = {
     await postRequest({
       url: `${ROUTES.AUTH.RESET_PASSWORD}?${token}}`,
       reject: reject,
-      data:{password}
+      data: { password },
     }),
-    getUser:async(reject:(value:any)=>any)=>await getRequest({url:`${ROUTES.AUTH.GET_USER}`,reject:reject})
+  getUser: async (reject: (value: any) => any) =>
+    await getRequest({ url: `${ROUTES.AUTH.GET_USER}`, reject: reject }),
+  Update_Password: async ({
+    data,
+    reject,
+  }: {
+    data: UpdatePasswordOutgoingDTO;
+    reject: (value: any) => any;
+  }) =>
+    await postRequest({
+      url: `${ROUTES.AUTH.UPDATE_PASSWORD}`,
+      reject: reject,
+      data: data,
+    }),
 };

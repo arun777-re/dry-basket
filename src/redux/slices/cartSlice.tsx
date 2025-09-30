@@ -110,6 +110,7 @@ export const applyCoupon = createAsyncThunk<
     reject: rejectWithValue,
     code,
   });
+  console.log("coupon response .....",response)
   return response;
 });
 
@@ -243,12 +244,7 @@ const cartSlice = createSlice({
       })
       .addCase(applyCoupon.rejected, (state, action) => {
         state.loading = false;
-        state.error = state.error = {
-          success: false,
-          message:
-            (action.payload?.message as string) || "Error during apply coupon",
-          status: 400,
-        };
+        state.error =  action.payload;
       })
       .addCase(clearUserCart.fulfilled, (state, action) => {
         state.cart = action.payload;

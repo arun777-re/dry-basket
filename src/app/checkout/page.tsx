@@ -1,29 +1,29 @@
-"use client";
-
-import React from "react";
-import { useRouter } from "next/navigation";
-import { LuShoppingBag } from "react-icons/lu";
-import CheckOutForm from "../_components/form/CheckOutForm";
-
-
-
-// debounce hook
+'use client';
+import React from 'react';
+import { useRouter } from 'next/navigation';
+import { LuShoppingBag } from 'react-icons/lu';
+import CheckOutForm from '../_components/form/CheckOutForm';
 
 const CheckOutPage = () => {
-    const router = useRouter();
-  
+  const router = useRouter();
 
   return (
-    <div className="max-w-screen w-full relative min-h-screen h-auto mx-auto bg-black/80">
-      <header className="w-full h-20 px-40 flex items-center justify-between ">
-        <h4 className="text-white text-2xl font-bold">DryBasket</h4>
+    <div className="w-full min-h-screen bg-black/80">
+      <header className="w-full h-16 sm:h-20 px-4 sm:px-8 md:px-16 lg:px-32 flex items-center justify-between">
+        <h3 className="text-first md:text-xl lg:text-2xl">
+          DryBasket
+        </h3>
         <LuShoppingBag
           size={24}
-          className="text-blue-700 cursor-pointer"
-          onClick={() => router.push("/cart")}
+          className="text-blue-700 cursor-pointer hover:scale-110 transition-transform"
+          onClick={() => router.push('/cart')}
         />
       </header>
-   <CheckOutForm/>
+        <div className="flex-1">
+          <CheckOutForm />
+        </div>
+
+   
     </div>
   );
 };

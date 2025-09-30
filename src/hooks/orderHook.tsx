@@ -9,10 +9,8 @@ import {
   getSingleOrderAndTrackShipping,
   verifyPaymentThunk,
 } from "@/redux/slices/orderSlice";
-import { createOrderAndAssignOrderForShipment } from "@/redux/slices/shippingSlice";
 import { AppDispatch, RootState } from "@/redux/store/store";
 import {
-  OrderIncomingReqDTO,
   OrderOutgoingReqDTO,
   SEARCHORDERQUERYDTO,
 } from "@/types/order";
@@ -103,8 +101,10 @@ const orderHook = () => {
       if (!isAuthenticated) {
         router.push(`${ROUTES.LOGIN}`);
       }
-      if (getAllOrdersRef.current) return null;
-      getAllOrdersRef.current = true;
+      if (getAllOrdersRef.current){ toast.error("request is already on its way");
+        return null
+      }
+        getAllOrdersRef.current = true;
       try {
         const res = await dispatch(getAllOrdersThunk({ page, limit })).unwrap();
         if (res.success) return res;

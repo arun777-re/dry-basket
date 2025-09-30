@@ -1,63 +1,26 @@
-'use client'
-import { configureStore } from "@reduxjs/toolkit";
-import { combineReducers } from "@reduxjs/toolkit";
-import logger from "redux-logger";
-import { persistStore, persistReducer,Persistor } from "redux-persist";
-import {storage} from "@/lib/storage";
-import productReducer from '@/redux/slices/productSlice';
-import categoryReducer from '@/redux/slices/categorySlice';
-import offerReducer from '@/redux/slices/offerSlice';
-import cartReducer from '@/redux/slices/cartSlice';
-import userReducer from "@/redux/slices/userSlice";
-import reviewReducer from '@/redux/slices/reviewSlice'
-import shippingReducer from '@/redux/slices/shippingSlice';
-import orderReducer from '@/redux/slices/orderSlice';
-import blogReducer from '@/redux/slices/blogSlice';
-import bannerReducer from '@/redux/slices/bannerSlice';
-// configuration for the persisted reducer
+// store.ts
+import { configureStore } from '@reduxjs/toolkit';
+import { persistStore, persistReducer } from 'redux-persist';
+import {storage} from '@/lib/storage';
+import { rootReducer, RootReducerType } from './rootReducer';
+import logger from 'redux-logger';
+
 const persistConfig = {
-  key: "root",
+  key: 'root',
   storage,
-  whitelist: ["user", "product", "category",'offer','usercart','review','shipping','order'],
+  whitelist: ['user', 'product', 'category', 'offer', 'usercart', 'review', 'shipping', 'order'],
 };
 
-// object of the root reducer
-const rootReducer = {
-product:productReducer,
-category:categoryReducer,
-offer:offerReducer,
-usercart:cartReducer,
-user:userReducer,
-review:reviewReducer,
-shipping:shippingReducer,
-order:orderReducer,
-blog:blogReducer,
-banner:bannerReducer
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-};
-
-// make the persisted reducers
-const persistedReducer = persistReducer(
-  persistConfig,
-  combineReducers(rootReducer)
-);
-
-// making store
-const store = configureStore({
+export const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware({
-      serializableCheck: false,
-      immutableCheck: false,
-    }).concat(logger);
-  },
+  middleware: (gDM) =>
+    gDM({ serializableCheck: false, immutableCheck: false }).concat(logger),
 });
 
-let persistor:Persistor;
-if (typeof window !== "undefined") {
-  persistor = persistStore(store);
-}
-export type AppDispatch = typeof store.dispatch;
-export type RootState = ReturnType<typeof store.getState>;
+export const persistor = persistStore(store);
 
-export { persistor, store };
+export type AppDispatch = typeof store.dispatch;
+// ✅ use the type from the unpersisted reducer, not from store.getState
+export type RootState = RootReducerType;

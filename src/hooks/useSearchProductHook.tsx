@@ -39,6 +39,7 @@ const useSearchProductHook= () => {
     }
   }, [searchParams, fetchSearchProducts]);
 
+  // search products hook
 const getNavSearchProducts = React.useCallback(async({query}:{query:SearchQueryDTO})=>{
 try {
   if(navsearchref.current) return;

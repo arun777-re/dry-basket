@@ -9,9 +9,12 @@ export const ROUTES = {
     CART:'/cart',
     HOME:'/',
     USER_DASHBOARD:'/user/user-dashboard',
+    UPDATE_PASSWORD:'/user/update-password',
     USER_LOGIN:"/user/auth-login",
     ABOUT:"/about",
     COMPLETE_ORDER:"/complete-order",
+
+    ALL_PRODUCTS:"/allproducts",
     OPEN_ROUTE_API_KEY:process.env.DISTANCE_API_KEY,
     WAREHOUSE_LAT:28.996682,
     WAREHOUSE_LNG:77.030826,

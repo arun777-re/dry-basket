@@ -1,5 +1,4 @@
 "use client";
-import { Metadata } from "next";
 import Banner from "@/app/Components/Banner";
 import Footer from "@/app/Components/Footer";
 import Navbar from "@/app/Components/Navbar";
@@ -13,79 +12,33 @@ import { ProductIncomingDTO } from "@/types/product";
 import { useFetchCategoryProducts } from "@/hooks/fetchCategoryProduct";
 import ProductSection from "@/app/Components/ProductSection";
 import ProductInformation from "@/app/_components/ProductInformation";
-import { defaultPopulatedCartResponse } from "@/redux/services/helpers/cart/cartresponse";
-import { defaultProductState, singleProductState } from "@/redux/services/helpers/productresponse";
-
-interface GenerateMetaDataProps {
-  params: {
-    slug: string;
-  };
-}
-
-// export async function generateMetadata({
-//   params,
-// }: GenerateMetaDataProps): Promise<Metadata> {
-//   const product = await getProductBySlug(params.slug);
-
-//   return {
-//     title: product?.productName || "Product Page",
-//     description: product?.description || "Product details and information",
-//     openGraph: {
-//       title: product?.productName || "Product Page",
-//       description: product?.description || "Product details and information",
-//       images: [
-//         {
-//           url: product?.images
-//             ? Array.isArray(product.images)
-//               ? product.images[0]
-//               : product.images
-//             : "/default-product-image.jpg",
-//           alt: product?.productName || "Product Image",
-//         },
-//       ],
-//     },
-//   };
-// }
+import {
+  singleProductState,
+} from "@/redux/services/helpers/productresponse";
 
 const ProductPage: React.FC = () => {
   const { slug } = useParams();
 
-  // getting api functions from hook
   const {
     fetchSingleProductWithSlug,
     fetchRelatedProducts,
     fetchRecommendedProducts,
   } = useFetchCategoryProducts();
-  // state to save product
-  const [relatedProducts, setRelatedProducts] = React.useState<
-    ProductIncomingDTO[]
-  >([]);
+
+  const [relatedProducts, setRelatedProducts] = React.useState<ProductIncomingDTO[]>([]);
   const [product, setProduct] = React.useState<ProductIncomingDTO>(singleProductState?.data!);
-  const [recommendedProducts, setRecommendedProducts] = React.useState<
-    ProductIncomingDTO[]
-  >([]);
+  const [recommendedProducts, setRecommendedProducts] = React.useState<ProductIncomingDTO[]>([]);
+  const [selectParagraph, setSelectParagraph] = React.useState<string>("additional");
 
-  // state to set images to the container after clicking on thumbnail
-  const [selectParagraph, setSelectParagraph] =
-    React.useState<string>("additional");
-
-  // here actual data of a product comes from backend
+  // fetch single product
   React.useEffect(() => {
-    let active = true;
     if (slug && typeof slug === "string") {
       fetchSingleProductWithSlug({ slug, setProduct: setProduct });
     }
-
-    // to avoid race condition of state on component unmount
-    return () => {
-      active = false;
-    };
   }, [slug]);
 
-  //   get related products
-
+  // fetch related
   useEffect(() => {
-    let active = true;
     if (product?.productName) {
       fetchRelatedProducts({
         category: product?.category,
@@ -95,16 +48,10 @@ const ProductPage: React.FC = () => {
         page: 1,
       });
     }
-
-    // to avoid race condition of state on component unmount
-    return () => {
-      active = false;
-    };
   }, [product?.productName]);
 
-  //   get recommended featured products
+  // fetch recommended
   useEffect(() => {
-    let active = true;
     if (product?.category) {
       fetchRecommendedProducts({
         catId: product?.category,
@@ -113,10 +60,6 @@ const ProductPage: React.FC = () => {
         page: 1,
       });
     }
-    // to avoid race condition of state on component unmount
-    return () => {
-      active = false;
-    };
   }, [product?.category]);
 
   return (
@@ -124,9 +67,10 @@ const ProductPage: React.FC = () => {
       <Navbar />
       <Banner heading="Product" />
       <section className="w-full relative h-auto">
-        <div className="w-full h-auto relative flex flex-col items-start justify-center px-30 py-20">
+        {/* changed px from 30 to responsive container */}
+        <div className="w-full h-auto relative flex flex-col items-start justify-center px-4 sm:px-6 md:px-12 lg:px-20 xl:px-28 py-10 md:py-16">
           <ProductDescription
-          key={product?._id}
+            key={product?._id}
             _id={product?._id!}
             category={product?.category!}
             images={product?.images! || ["/images/banner-2.jpg"]}
@@ -135,8 +79,10 @@ const ProductPage: React.FC = () => {
             productName={product!.productName}
             variants={product?.variants!}
           />
-          <div className="w-full relative h-auto">
-            <div className="flex items-start justify-start gap-2">
+
+          {/* Tabs */}
+          <div className="w-full relative h-auto mt-8">
+            <div className="flex flex-wrap items-start justify-start gap-3">
               <Button
                 onClick={() => setSelectParagraph("product")}
                 className={`rounded-none px-4 py-2 text-sm font-semibold ${
@@ -168,7 +114,8 @@ const ProductPage: React.FC = () => {
                 Reviews
               </Button>
             </div>
-            <div className="flex relative w-full flex-col items-start justify-center px-8 py-6 shadow-md">
+
+            <div className="flex relative w-full flex-col items-start justify-center px-4 md:px-8 py-6 shadow-md mt-4">
               {selectParagraph === "additional" && <AdditionalInfo />}
               {selectParagraph === "review" && (
                 <Review
@@ -176,18 +123,16 @@ const ProductPage: React.FC = () => {
                   productId={product?._id!}
                 />
               )}
-              {selectParagraph === "product" && <ProductInformation description={product?.description}/>}
+              {selectParagraph === "product" && (
+                <ProductInformation description={product?.description} />
+              )}
             </div>
           </div>
-          <div className="w-full relative h-auto pt-20 flex flex-col items-center gap-16">
-            <ProductSection
-              title="Related Products"
-              products={relatedProducts}
-            />
-            <ProductSection
-              title="Recommended Products"
-              products={recommendedProducts}
-            />
+
+          {/* Related & Recommended */}
+          <div className="w-full relative h-auto pt-16 flex flex-col items-center gap-16">
+            <ProductSection title="Related Products" products={relatedProducts} />
+            <ProductSection title="Recommended Products" products={recommendedProducts} />
           </div>
         </div>
       </section>

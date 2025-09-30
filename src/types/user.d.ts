@@ -7,6 +7,12 @@ export interface UserPropsOutgoing{
     password:string,
 }
 
+export interface UpdatePasswordOutgoingDTO{
+    email:string,
+    password:string,
+    confirmPassword?:string
+}
+
 
 export interface UserPropsIncoming {
     _id:string,

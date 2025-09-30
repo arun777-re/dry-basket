@@ -6,7 +6,8 @@ import { premiumProductData } from "@/data/premiumProduct";
 const PremiumProduct = () => {
   return (
     <section className="max-w-screen w-full h-auto bg-gray-100">
-      <div className="relative w-full px-4 sm:px-6 lg:px-12 flex flex-col items-center justify-center gap-10 py-20">
+      <div className="relative w-full px-4 md:px-20 lg:px-30 flex flex-col items-center justify-center gap-10
+       py-10 sm:py-16 md:py-16">
         <header className="relative max-w-lg w-full flex flex-col items-center justify-center text-center px-2">
           <h2 className="text-2xl md:text-3xl font-semibold">Premium Quality Products</h2>
           <p className="text-sm md:text-base mt-2">
@@ -18,7 +19,6 @@ const PremiumProduct = () => {
             <FaStar size={18} className="text-first" />
           </div>
         </header>
-
         {/* grid instead of single flex row */}
         <section
           className="

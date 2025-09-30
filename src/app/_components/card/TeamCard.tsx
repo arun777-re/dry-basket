@@ -9,24 +9,29 @@ import { PiLinkedinLogo } from "react-icons/pi";
 import team from '@/../public/images/team.jpg';
 
 interface TeamCardProps {
-name?:string;
-designation?:string;
-image:string;
+  name?: string;
+  designation?: string;
+  image: string;
 }
 
-const TeamCard:React.FC<TeamCardProps> = ({
-
-
-    name,designation,image
-}) => {
-
-  const [active,setActive] = React.useState<boolean>(false);
+const TeamCard: React.FC<TeamCardProps> = ({ name, designation, image }) => {
+  const [active, setActive] = React.useState<boolean>(false);
 
   return (
-    <Card className="w-[18vw] h-96 relative border border-first" onMouseEnter={()=>setActive(true)} onMouseLeave={()=>setActive(false)}>
-      <div className="w-full h-full flex flex-col items-center">
-        <div className="relative w-full h-[60%] bg-first flex items-center justify-center">
-          <div style={{borderRadius:"50%"}} className={`relative w-[60%] h-[60%] border-8  ${active ? 'border-head' : 'border-first'} transition-all duration-500 ease-in-out`}>
+    <Card
+      className="w-full sm:w-72 md:w-64 lg:w-60 h-auto border border-first transition-transform duration-300 hover:scale-105"
+      onMouseEnter={() => setActive(true)}
+      onMouseLeave={() => setActive(false)}
+    >
+      <div className="flex flex-col items-center">
+        {/* Image */}
+        <div className="relative w-full h-48 sm:h-56 md:h-48 flex items-center justify-center">
+          <div
+            style={{ borderRadius: "50%" }}
+            className={`relative w-32 h-32 sm:w-36 sm:h-36 border-8 ${
+              active ? "border-head" : "border-first"
+            } transition-all duration-500 ease-in-out`}
+          >
             <Image
               src={image ?? team}
               alt="team-image"
@@ -36,14 +41,16 @@ const TeamCard:React.FC<TeamCardProps> = ({
             />
           </div>
         </div>
-        <div className="w-full h-[40%] flex flex-col items-center justify-center gap-4 py-4 px-8">
-          <h4 className="mb-0 cursor-default">{name}</h4>
-          <p className="leading-loose text-black">{designation}</p>
-          <div className="flex items-center justify-between w-full">
-         <BiLogoFacebook size={16}/>
-         <LiaTwitter size={16}/>
-            <FaInstagram size={16}/>
-            <PiLinkedinLogo size={16}/>
+
+        {/* Info */}
+        <div className="flex flex-col items-center justify-center gap-2 py-4 px-4 sm:px-6 text-center">
+          <h4 className="text-lg sm:text-xl font-semibold">{name}</h4>
+          <p className="text-gray-700 text-sm sm:text-base">{designation}</p>
+          <div className="flex items-center justify-center gap-4 mt-2">
+            <BiLogoFacebook size={20} />
+            <LiaTwitter size={20} />
+            <FaInstagram size={20} />
+            <PiLinkedinLogo size={20} />
           </div>
         </div>
       </div>

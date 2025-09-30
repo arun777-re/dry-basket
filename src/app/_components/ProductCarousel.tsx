@@ -19,7 +19,7 @@ interface DataProps {
 const ProductCarousel: React.FC<DataProps> = ({ product }) => {
 
   const autoREf = Autoplay({
-    delay: 3000,
+    delay: 2000,
     stopOnInteraction: false,
     stopOnMouseEnter: true,
   });
@@ -27,20 +27,18 @@ const ProductCarousel: React.FC<DataProps> = ({ product }) => {
   const opts: Partial<EmblaOptionsType> = {
     align: "start" as const,
     containScroll: "trimSnaps" as const,
-    loop:true,
      slidesToScroll:1
-
   };
 
   return (
-    <div className="w-full max-w-screen relative px-2 sm:px-4">
+    <div className="w-full max-w-screen relative mx-auto">
       <Carousel
         opts={opts}
         plugins={[autoREf]}
-        className="w-full relative flex flex-col "
+        className="w-full relative flex flex-col"
       >
         <CarouselContent className="-ml-0 box-border w-full flex
-         flex-row gap-2 sm:gap-3 md:gap-2 lg:gap-0 pb-6 pt-6 ">
+         flex-row py-2 sm:py-6">
           {product && product.length > 0 ? (
             product.map((item, key) => (
               <CarouselItem
@@ -51,23 +49,27 @@ const ProductCarousel: React.FC<DataProps> = ({ product }) => {
                   sm:basis-1/2 
                   md:basis-1/3 
                   lg:basis-1/4 
-                  xl:basis-1/5
+                  xl:basis-1/5 
+                  px-1   
                 "
               >
+                <div className="mx-auto w-full md:w-[90%]">
                 <ProductCard
                   key={item._id}
                   productId={item?._id}
                   {...item}
                 />
+                </div>
+
               </CarouselItem>
             ))
           ) : (
             <DummyComponent />
           )}
         </CarouselContent>
-        <div className="flex justify-center items-center absolute align-middle gap-4 top-104 -translate-x-1/2 left-1/2">
-         <CarouselPrevious className="hidden sm:flex absolute cursor-pointer border-2 border-head " />
-        <CarouselNext className="hidden sm:flex absolute  cursor-pointer border-2 border-head " />
+        <div className="flex justify-center items-center absolute align-middle gap-4 top-108 sm:104 -translate-x-1/2 left-1/2">
+         <CarouselPrevious className="absolute cursor-pointer border-2 border-head"/>
+        <CarouselNext className="absolute  cursor-pointer border-2 border-head"/>
         </div>
 
       </Carousel>

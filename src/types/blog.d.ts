@@ -6,6 +6,7 @@ export interface BlogOutgoingReqDTO {
     description:string;
     heading:string;
     tags:string[],
+    title:string;
 }
 
 

@@ -20,7 +20,7 @@ const {getUser} = authHook();
   getUser();
   },[getUser])
   return (
-    <div className="max-w-screen min-h-screen  mx-auto w-full relative h-auto overflow-x-hidden">
+    <div className="max-w-screen min-h-screen bg-white mx-auto w-full relative h-auto overflow-x-hidden">
      <Navbar/>
      <Banner />
      <BestProducts/>

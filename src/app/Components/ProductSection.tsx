@@ -5,37 +5,38 @@ import DummyCard from '../_components/card/DummyCard';
 import { ProductIncomingDTO } from '@/types/product';
 
 type Props = {
-    title:string;
-    products:ProductIncomingDTO[]
+  title: string;
+  products: ProductIncomingDTO[]
 }
 
-const ProductSection:React.FC<Props> = ({title,products}) => {
+const ProductSection: React.FC<Props> = ({ title, products }) => {
   return (
-  <div className="w-full relative">
-              <h4 className="text-center mb-4">{title}</h4>
-              <div className="w-full h-auto relative flex items-center flex-wrap gap-6">
-                {products && products.length > 0 ? (
-                  products.slice(0, 4).map((value, key) => {
-                    return (
-                        <div className="w-1/5" key={key}>
+    <div className="w-full relative">
+      <h4 className="text-center text-lg md:text-xl font-semibold mb-6 text-head">{title}</h4>
 
-                      <ProductCard
-                      productId={value._id}
-                       {...value}
-                      />
-                        </div>
-
-                    );
-                  })
-                ) : (
-                  <div className="w-full relative h-auto flex flex-row gap-6 flex-wrap items-center">
-                    {[...Array(4)].map((_, key) => (
-                      <DummyCard key={key} />
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
+      {/* Products Grid */}
+      <div className="
+        w-full h-auto relative 
+        grid grid-cols-1 
+        sm:grid-cols-2 
+        md:grid-cols-3 
+        lg:grid-cols-4 
+        gap-6">
+        {products && products.length > 0 ? (
+          products.slice(0, 4).map((value, key) => (
+            <ProductCard
+              key={key}
+              productId={value._id}
+              {...value}
+            />
+          ))
+        ) : (
+          [...Array(4)].map((_, key) => (
+            <DummyCard key={key} />
+          ))
+        )}
+      </div>
+    </div>
   )
 }
 

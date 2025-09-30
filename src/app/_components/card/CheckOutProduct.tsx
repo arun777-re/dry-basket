@@ -18,7 +18,7 @@ const CheckOutProduct:React.FC<CheckOutProductProps> = ({
 }) => {
   return (
     <div className='relative w-full lg:w-3/4 min-h-10 h-18 flex flex-row items-center justify-between bg-white'>
-     <div className="h-full relative w-1/3 flex items-center justify-between gap-2">
+     <div className="h-full relative w-[72%] sm:w-[40%]  lg:w-[56%] flex items-center justify-between gap-2 ">
         <div className="w-20 relative h-full rounded-sm border border-gray-200 flex items-center justify-center">
        {
         imageSrc ? ( <Image
@@ -35,7 +35,7 @@ const CheckOutProduct:React.FC<CheckOutProductProps> = ({
         
       
         <article className="w-1/2 h-full relative items-start justify-center flex flex-col gap-2">
-         <p className="text-sm text-black">{productName}</p>
+         <p className="text-sm text-black leading-tight">{productName}</p>
          <p className="text-xs text-black">{weight}&nbsp;gm</p>
         </article>
      </div>

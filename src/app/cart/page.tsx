@@ -16,7 +16,6 @@ import { ROUTES } from "@/constants/routes";
 import cartHook from "@/hooks/cartHook";
 
 const CompleteCartPage: React.FC = () => {
-  const [coupon, setCoupon] = React.useState<string>("");
 
   const router = useRouter();
 
@@ -32,7 +31,7 @@ const {handleCartItems} = cartHook();
     }
   }, [user]);
 
-  const guestCart:PopulatedIncomingCartDTO = useSelector((state: RootState) => state.usercart.cart.data);
+  const guestCart:PopulatedIncomingCartDTO | null = useSelector((state: RootState) => state.usercart.cart.data);
 
   // guest user cart items total
   const guestCartItemsTotal = useSelector(selectCartTotal);
@@ -41,44 +40,7 @@ const {handleCartItems} = cartHook();
   const total = user ? guestCart?.finalTotal : guestCartItemsTotal;
 
 
-  // // function to apply coupon
-  // const ApplyCoupon = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-
-  //   if (!user) {
-  //     toast((t) => (
-  //       <span>
-  //         You can only apply coupon after login!
-  //         <button
-  //           className="ml-2 text-blue-500 underline cursor-pointer hover:text-first transition-all duration-300 ease-in"
-  //           onClick={() => {
-  //             router.push("user/auth-login");
-  //             toast.dismiss(t.id);
-  //           }}
-  //         >
-  //           Login
-  //         </button>
-  //       </span>
-  //     ));
-  //   } else {
-  //     // dispatch thunk to apply coupon
-  //     if (cartItems) {
-  //       dispatch(
-  //         applyCoupon({ code: coupon, cartId: cartItems?._id as string })
-  //       )
-  //         .unwrap()
-  //         .then((res) => {
-  //           dispatch(getCart());
-  //           setCoupon("");
-  //           setAppliedCouponCode(coupon);
-  //           setShowDiscnt(true);
-  //         })
-  //         .catch((err) => {
-  //           toast.error(err);
-  //         });
-  //     }
-  //   }
-  // };
+ 
 
   // // function for checkout
   // const handleCheckout = () => {
@@ -104,50 +66,69 @@ const {handleCartItems} = cartHook();
 
 
   return (
-    <div className="relative max-w-screen w-full h-auto mx-auto">
+    <div className="relative w-full min-h-screen">
       <Navbar />
       <Banner heading="Cart" />
-      <section className="w-full h-auto mx-auto relative">
-        <div className="flex items-start justify-start gap-10 relative w-full h-auto px-40 py-20 ">
-          <div className="relative flex flex-col items-start justify-start gap-4 w-[70%]">
-            <h4>Products</h4>
-            <div className="w-full flex flex-col items-center gap-2">
+
+      <section className="w-full mx-auto relative">
+        <div
+          className="
+            flex flex-col lg:flex-row gap-8 lg:gap-10 
+            w-full h-auto px-4 sm:px-6 md:px-10 lg:px-20 py-8 lg:py-20
+          "
+        >
+          {/* Products Section */}
+          <div className="flex flex-col w-full lg:w-2/3">
+            <h4 className=" text-lg font-semibold text-head mb-2">Products</h4>
+            <div className="w-full flex flex-col gap-4">
               {(guestCart?.items ?? []).length > 0 ? (
-            guestCart?.items
-              ?.filter(
-                (item): item is PopulatedCartItemDTO =>
-                  item.productId._id !== "string"
-              )
-              .map((item, key) => {
-                return (
-                  <DrawerCard
-                    productName={
-                      item?.productId?.productName?.toUpperCase() ?? ""
-                    }
-                    image={item.productId.images?.[0] || "/images/cart1-1.jpg"}
-                    priceAfterDiscount={item.variant?.priceAfterDiscount}
-                    weight={item.variant?.weight}
-                    productId={item?.productId?._id}
-                    quantity={item?.quantity}
-                    key={key}
-                  />
-                );
-              })
-          ) : (
-            <p>Your cart is empty.</p>
-          )}
+                guestCart?.items
+                  ?.filter(
+                    (item): item is PopulatedCartItemDTO =>
+                      item.productId._id !== "string"
+                  )
+                  .map((item, key) => (
+                    <DrawerCard
+                      key={key}
+                      productName={
+                        item?.productId?.productName?.toUpperCase() ?? ""
+                      }
+                      image={
+                        item.productId.images?.[0] || "/images/cart1-1.jpg"
+                      }
+                      priceAfterDiscount={item.variant?.priceAfterDiscount}
+                      weight={item.variant?.weight}
+                      productId={item?.productId?._id}
+                      quantity={item?.quantity}
+                    />
+                  ))
+              ) : (
+                <p>Your cart is empty.</p>
+              )}
+              <Button className="self-start border-1 border-head hover:border-first
+               hover:bg-first hover:text-white transition-all duration-500 ease-in-out">
+                <span onClick={() => router.push(`${ROUTES.ALL_PRODUCTS}`)}>
+                  Continue Shopping
+                </span>
+              </Button>
             </div>
           </div>
-          <article className="w-[30%] h-auto relative flex flex-col items-start justify-start gap-6">
-            <h4 className="my-0 pb-0">Order Summary</h4>
-            <p className="text-head font-semibold">
-              Subtotal&nbsp;:&nbsp;Rs{total}
+
+          {/* Order Summary */}
+          <article className="w-full lg:w-1/3 flex flex-col gap-4 bg-gray-50 rounded-lg p-4 sm:p-6">
+            <h4 className="text-lg font-semibold">Order Summary</h4>
+            <p className="text-head font-medium">
+              Subtotal: <span className="font-semibold">Rs{total}</span>
             </p>
-       
+
+            <b>Coupons and Shipping Charges applied to checkout</b>
             <Button
-              onClick={()=>router.push(`${ROUTES.CHECKOUT}`)}
-              className="w-full rounded-full border-2 border-head hover:border-first hover:bg-first transition-all
-              duration-500 ease-in-out cursor-pointer"
+              onClick={() => router.push(`${ROUTES.CHECKOUT}`)}
+              className="
+                w-full rounded-md border border-head 
+                hover:border-first hover:bg-first 
+                hover:text-white transition-all duration-300 ease-in-out
+              "
             >
               Proceed to Checkout
             </Button>

@@ -29,12 +29,12 @@ const shippingHook = () => {
     pincode,
     amount
   }: {
-    weight: string;
+    weight:number;
     pincode: string;
     amount:number;
   }) => {
     try {
-  const res =  await dispatch(getShippingCharges({weight:parseFloat(weight),
+  const res =  await dispatch(getShippingCharges({weight:weight,
     pincode:parseFloat(pincode),amount
    })).unwrap().catch((err)=>{
     toast.error(err)
