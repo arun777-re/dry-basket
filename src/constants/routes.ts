@@ -32,12 +32,13 @@ export const ROUTES = {
     PRODUCTAPI:{
          GET_A_PRODUCT:`${SERVER_BASE_URL}/v1/public/product/getsingle`,
         GET_FEATURED_PRODUCTS:`${SERVER_BASE_URL}/v1/public/product/getfeatured`,
-        GET_SEARCH_PRODUCTS:`${SERVER_BASE_URL}/v1/public/product/getsearch`,
+        GET_SEARCH_PRODUCTS:`${SERVER_BASE_URL}/v1/public/product/getfilter`,
         GET_ALL_PRODUCTS:`${SERVER_BASE_URL}/v1/public/product/getall`,
         GET_ALL_CATEGORY_PRODUCT:`${SERVER_BASE_URL}/v1/public/product/getcatproduct`,
         GET_ALL_RECOMMENDED_PRODUCT:`${SERVER_BASE_URL}/v1/public/product/getrecommended`,
         GET_ALL_RELATED_PRODUCT:`${SERVER_BASE_URL}/v1/public/product/getrelated`,
         GET_NAV_SEARCH_PRODUCT:`${SERVER_BASE_URL}/v1/public/product/getnavsearch`,
+        GET_WEIGHT_OF_PRODUCTS:`${SERVER_BASE_URL}/v1/public/product/getweight`,
     },
     REVIEWAPI:{
         CREATE_REVIEW:`${SERVER_BASE_URL}/v1/public/review/create`,
@@ -69,5 +70,8 @@ export const ROUTES = {
     BLOGSURLS:{
         GETALL_BLOG:`${SERVER_BASE_URL}/v1/public/blog/getall`,
         GETSINGLE_BLOG:`${SERVER_BASE_URL}/v1/public/blog/get-single`,
+    },
+    CATEGORYURLS:{
+        GETALL_CATEGORY:`${SERVER_BASE_URL}/v1/public/category/get-all`,
     },
 }

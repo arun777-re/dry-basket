@@ -12,7 +12,7 @@ type Props = {
 const ProductSection: React.FC<Props> = ({ title, products }) => {
   return (
     <div className="w-full relative">
-      <h4 className="text-center text-lg md:text-xl font-semibold mb-6 text-head">{title}</h4>
+      <h4 className="text-center text-[1.4rem] md:text-2xl font-normal mb-6 text-head">{title}</h4>
 
       {/* Products Grid */}
       <div className="

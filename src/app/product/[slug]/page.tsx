@@ -67,7 +67,6 @@ const ProductPage: React.FC = () => {
       <Navbar />
       <Banner heading="Product" />
       <section className="w-full relative h-auto">
-        {/* changed px from 30 to responsive container */}
         <div className="w-full h-auto relative flex flex-col items-start justify-center px-4 sm:px-6 md:px-12 lg:px-20 xl:px-28 py-10 md:py-16">
           <ProductDescription
             key={product?._id}
@@ -80,7 +79,6 @@ const ProductPage: React.FC = () => {
             variants={product?.variants!}
           />
 
-          {/* Tabs */}
           <div className="w-full relative h-auto mt-8">
             <div className="flex flex-wrap items-start justify-start gap-3">
               <Button

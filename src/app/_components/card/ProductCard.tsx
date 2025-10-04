@@ -22,7 +22,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const activeRef = React.useRef<HTMLDivElement>(null);
   const [active, setActive] = React.useState<boolean>(false);
-
   const subtotal = useSelector(selectCartTotal);
   if (!productId || !variants.length) {
     console.error("Missing productId/variants for product", productName);

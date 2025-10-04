@@ -10,11 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 const reviewProduct = () => {
   const dispatch = useDispatch<AppDispatch>();
 
+// get reviews and loading from state
+const {review,loading} = useSelector((state:RootState)=> state.review)
+
   // get user from redux
   const isAuthenticated = useSelector(
     (state: RootState) => state.user.user.success
   );
-
 // Track in-flight fetches to prevent duplicate network calls
 const inFlightFetches = useRef<Map<string,Promise<any>>>(new Map());
 
@@ -30,17 +32,13 @@ const inFlightFetches = useRef<Map<string,Promise<any>>>(new Map());
 
   const getReviewsOfProduct = useCallback(async ({
     productId,
-    setReviews,
   }: {
     productId: string;
-    setReviews: (value: any) => any;
   }) => {
    
    await dispatch(getReviewThunk(productId))
-        .unwrap()
-        .then((res) => {
-          setReviews(res?.data!);
-        });
+        .unwrap();
+        
   },[dispatch, getReviewThunk, isAuthenticated]);
 
   const reviewAProduct = useCallback(async ({
@@ -67,7 +65,7 @@ const inFlightFetches = useRef<Map<string,Promise<any>>>(new Map());
       });
   },[dispatch, createReviewThunk, isAuthenticated]);
 
-  return { reviewAProduct, getReviewsOfProduct };
+  return { reviewAProduct, getReviewsOfProduct,review,loading };
 };
 
 export default reviewProduct;

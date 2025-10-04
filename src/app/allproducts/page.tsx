@@ -4,15 +4,19 @@ import Banner from '../Components/Banner'
 import Navbar from '../Components/Navbar'
 import Footer from '../Components/Footer'
 import ShopProducts from '../Components/ShopProducts'
+import { usePathname } from 'next/navigation'
 
 const AllProducts = () => {
+
+  const pathName = usePathname();
+
   return (
-    <div>
+    <>
       <Navbar/>
-      <Banner/>
+      <Banner heading={pathName.startsWith("/") ? pathName.slice(1) : pathName}/>
       <ShopProducts/>
       <Footer/>
-    </div>
+    </>
   )
 }
 

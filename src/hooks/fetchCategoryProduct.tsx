@@ -8,8 +8,8 @@ import {
   getSearchProductThunk,
   getSingleProduct,
 } from "@/redux/slices/productSlice";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store/store";
 import {
   IncomingAPIResponseFormat,
   PaginatedProductResponse,
@@ -18,6 +18,11 @@ import { ProductIncomingDTO } from "@/types/product";
 
 export const useFetchCategoryProducts = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const {loading,products,singleProduct,error} = useSelector((state:RootState)=> state.product);
+  const filterRef = React.useRef(false);
+  const singleProductRef = React.useRef(false);
+  const allProductCategoryRef = React.useRef(false);
+
 
   const fetchCategoryProduct = React.useCallback(
     (
@@ -39,8 +44,9 @@ export const useFetchCategoryProducts = () => {
     [dispatch]
   );
 
-  const fetchAllProductsAssociatedWithCategory = React.useCallback(
-    ({
+  // this is used in best product component
+  const fetchAllProductsAssociatedWithCategory = React.useCallback(  
+    async({
       catname,
       page,
       limit,
@@ -51,7 +57,10 @@ export const useFetchCategoryProducts = () => {
       limit: number;
       setProducts: (value: any) => any;
     }) => {
-      dispatch(
+      if(allProductCategoryRef.current) return;
+      allProductCategoryRef.current = true;
+      try {
+         await dispatch(
         getCategoryProduct({
           catname,
           query: { page: page ?? 1, limit: limit ?? 10 },
@@ -64,19 +73,28 @@ export const useFetchCategoryProducts = () => {
         .catch((err) => {
           console.error(err);
         });
+      } catch (error) {
+        
+      }finally{
+        allProductCategoryRef.current = false;
+      }
+  
     },
     [dispatch]
   );
 
   const fetchSingleProductWithSlug = React.useCallback(
-    ({
+    async({
       slug,
       setProduct,
     }: {
       slug: string;
       setProduct: (value: any) => any;
     }) => {
-      dispatch(getSingleProduct(slug))
+      if(singleProductRef.current) return;
+      singleProductRef.current = true;
+      try {
+          await dispatch(getSingleProduct(slug))
         .unwrap()
         .then((res: IncomingAPIResponseFormat<ProductIncomingDTO>) => {
           setProduct(res?.data);
@@ -84,6 +102,12 @@ export const useFetchCategoryProducts = () => {
         .catch((err) => {
           console.error(err);
         });
+      } catch (error) {
+        
+      }finally{
+singleProductRef.current = false;
+      }
+   
     },
     [dispatch]
   );
@@ -139,14 +163,21 @@ export const useFetchCategoryProducts = () => {
     [dispatch]
   );
 
-  const fetchSearchProducts = React.useCallback(async({page,limit,category,productName,price,setProducts}:{
-page?:number,limit?:number,category?:string,productName?:string,price?:number,setProducts:(value:any)=>any
+  const fetchFilterProducts = React.useCallback(async({page,limit,category,productName,price,weight}:{
+       page?:number,limit?:number,category?:string,productName?:string,price?:number,weight?:string
   })=>{
-dispatch(getSearchProductThunk({page,limit,category,price,productName})).unwrap().then((res)=>{
-      setProducts(res)
-}) .catch((err) => {
-          console.error(err);
-        });
+    if(filterRef.current) return;
+    filterRef.current = true
+    try {
+
+   await dispatch(getSearchProductThunk({page,limit,category,price,productName,weight})).unwrap();
+      
+    } catch (error) {
+      
+    }finally{
+     filterRef.current = false;
+    }
+
   },[dispatch])
 
   return {
@@ -155,6 +186,10 @@ dispatch(getSearchProductThunk({page,limit,category,price,productName})).unwrap(
     fetchSingleProductWithSlug,
     fetchRelatedProducts,
     fetchRecommendedProducts,
-    fetchSearchProducts
+    fetchFilterProducts,
+    products,singleProduct,
+    loading,
+    error
+    
   };
 };

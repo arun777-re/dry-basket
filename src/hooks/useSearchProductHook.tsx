@@ -1,43 +1,19 @@
 'use client'
-import { ProductIncomingDTO, SearchQueryDTO } from '@/types/product';
+import { SearchQueryDTO } from '@/types/product';
 import React from 'react'
-import { useFetchCategoryProducts } from './fetchCategoryProduct';
-import { useSearchParams } from 'next/navigation';
-import { PaginatedProductResponse } from '@/types/response';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store/store';
-import { getNavSearchProductThunk } from '@/redux/slices/productSlice';
+import { getNavSearchProductThunk, getWeightsOfProduct } from '@/redux/slices/productSlice';
 
 const useSearchProductHook= () => {
-  const [products, setProducts] = React.useState<PaginatedProductResponse<ProductIncomingDTO>>();
-  const searchParams = useSearchParams();
-  const { fetchSearchProducts } = useFetchCategoryProducts();
   const navsearchref = React.useRef(false);
   const dispatch = useDispatch<AppDispatch>();
-  const loading = useSelector((state:RootState)=>state.product.loading)
+  const {loading,weights} = useSelector((state:RootState)=>state.product);
 
-  React.useEffect(() => {
-    let active = true;
-    const category = searchParams.get('category') || '';
-    const productName = searchParams.get('productName') || '';
-    const priceStr = searchParams.get('price') || '';
-
-    const query: SearchQueryDTO = {
-      category,
-      productName,
-      price: priceStr ? Number(priceStr) : undefined,
-      page: 1,
-      limit: 10,
-    };
-
-    if (category || productName || priceStr) {
-      fetchSearchProducts({ ...query, setProducts });
-    }
-
-    return () =>{
-        active = false;
-    }
-  }, [searchParams, fetchSearchProducts]);
+// get all weight of products
+const getallproductsweight = React.useCallback(async()=>{
+     await dispatch(getWeightsOfProduct()).unwrap()
+},[dispatch])
 
   // search products hook
 const getNavSearchProducts = React.useCallback(async({query}:{query:SearchQueryDTO})=>{
@@ -55,7 +31,7 @@ return res;
 }
   },[navsearchref,dispatch,getNavSearchProductThunk])
 
-  return { products,getNavSearchProducts,loading };
+  return {getNavSearchProducts,loading ,getallproductsweight,weights};
 };
 
 export default useSearchProductHook

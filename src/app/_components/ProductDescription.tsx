@@ -105,42 +105,42 @@ const ProductDescription: React.FC<ProductDescriptionDTO> = ({
               src={selectImage ?? "/images/banner-2.jpg"}
               alt="product-image"
               fill
-              className="object-cover object-center pointer-events-none"
+              className="object-fill object-center pointer-events-none"
             />
           </div>
         </div>
 
         {/* Right: Details */}
         <article className="w-full lg:w-1/2 h-auto relative flex flex-col items-start justify-start px-2 sm:px-4">
-          <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-head">
+          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-normal text-head">
             {productName}
           </h2>
           <div className="flex flex-col items-start justify-center gap-1 py-4">
             <div className="flex gap-1">
-              {[...Array(avgRating ?? 1)].map((_, index) => (
+              {[...Array((avgRating || avgRating === 0) ?? 1)].map((_, index) => (
                 <FaStar key={index} className="text-prdct text-md" />
               ))}
             </div>
-            <p className="text-sm text-first">{avgRating}</p>
+            <p className="text-sm text-body">{avgRating === 0 ? <span>No reviews yet</span> : avgRating}</p>
           </div>
-          <p className="text-sm sm:text-base text-first">
+          <p className="text-sm sm:text-base text-body">
             {description?.slice(0, 160)}...
           </p>
 
           <div className="flex items-center gap-4 py-4">
-            <span className="text-sm font-semibold text-head">Price:</span>
+            <span className="text-sm font-normal text-head font-rice tracking-wide">Price:</span>
             <span className="text-base font-semibold text-head">
               Rs&nbsp;{variant?.priceAfterDiscount}/pc
             </span>
           </div>
 
           <div className="flex flex-wrap items-center gap-4 py-2">
-            <span className="text-sm font-semibold text-head">Weight:</span>
+            <span className="text-sm font-normal text-head font-rice tracking-wide">Weight:</span>
             <select
               name="variant"
               value={variant.weight}
               onChange={handleVariants}
-              className="px-4 py-1 text-sm border border-gray-300"
+              className="px-2 py-1 text-sm border border-head cursor-pointer"
             >
               {Array.isArray(variants) &&
                 variants.length > 0 &&
@@ -157,17 +157,17 @@ const ProductDescription: React.FC<ProductDescriptionDTO> = ({
           </div>
 
           <div className="flex flex-wrap items-center gap-4 py-2">
-            <span className="text-sm font-semibold text-head">Quantity:</span>
+            <span className="text-sm font-normal text-head font-rice tracking-wide">Quantity:</span>
             <div className="flex">
               <button
                 onClick={() => setQty((prev) => Math.max(1, prev - 1))}
-                className="px-3 py-1 border text-head border-gray-300"
+                className="px-3 font-bold py-1 border text-head border-gray-300 cursor-pointer hover:bg-first hover:border-first transition-all duration-500 ease-in-out"
               >
                 -
               </button>
               <input
                 type="text"
-                className="px-1 py-1 w-12 text-center border border-gray-300"
+                className="px-1 py-1 w-12 text-center border-t border-b border-gray-300"
                 value={qty}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setQty(Number(e.target.value))
@@ -175,7 +175,7 @@ const ProductDescription: React.FC<ProductDescriptionDTO> = ({
               />
               <button
                 onClick={() => setQty((prev) => prev + 1)}
-                className="px-3 py-1 border text-head border-gray-300"
+                className="px-3 font-bold py-1 border text-head border-gray-300 cursor-pointer hover:bg-first hover:border-first transition-all duration-500 ease-in-out"
               >
                 +
               </button>
@@ -192,8 +192,8 @@ const ProductDescription: React.FC<ProductDescriptionDTO> = ({
               <Button
                 key={key}
                 onClick={value.action}
-                className="text-sm transition-all duration-500 ease-in-out
-                 px-4 py-2 border border-head hover:border-first hover:bg-first"
+                className="text-sm transition-all font-semibold duration-500 ease-in-out
+                 px-4 py-2 border-2 border-head hover:border-first hover:bg-first"
               >
                 {value.name}
               </Button>
@@ -217,7 +217,7 @@ const ProductDescription: React.FC<ProductDescriptionDTO> = ({
                 alt="product-image-thumbnail"
                 fill
                 priority
-                className="object-cover object-center pointer-events-none"
+                className="object-fill object-center pointer-events-none"
               />
             </button>
           ))}

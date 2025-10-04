@@ -93,4 +93,13 @@ export const PRODUCTAPI = {
       reject: reject,
       params,
     }),
+  getweightofproducts: async ({
+    reject,
+  }: {
+    reject: (value: any) => any;
+  }) =>
+    await getRequest({
+      url: `${ROUTES.PRODUCTAPI.GET_WEIGHT_OF_PRODUCTS}`,
+      reject: reject,
+    }),
 };

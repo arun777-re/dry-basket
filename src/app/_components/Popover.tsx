@@ -83,7 +83,7 @@ function ProfileForm({ className }: React.ComponentProps<"form">) {
   const [rating, setRating] = React.useState<number>(0);
   const [review, setReview] = React.useState<string>("");
 
-  const {reviewAProduct} = reviewProduct();
+  const {reviewAProduct,getReviewsOfProduct} = reviewProduct();
 const data:ReviewOutgoingDTO = {
    rating:rating,
    reviewText:review
@@ -102,9 +102,9 @@ const data:ReviewOutgoingDTO = {
 
     try {
       await reviewAProduct({ data, productId:productId as string});
-      alert("Review submitted successfully!");
       setRating(0);
       setReview("");
+      await getReviewsOfProduct({productId:productId as string})
     } catch (error) {
       console.error("Review submission failed:", error);
     }

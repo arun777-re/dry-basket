@@ -3,7 +3,6 @@ import React from "react";
 import { FaStar } from "react-icons/fa";
 import { PopOverCard } from "../_components/Popover";
 import { CiUser } from "react-icons/ci";
-import { ReviewIncomingDTO } from "@/types/review";
 import reviewProduct from "@/hooks/reviewProduct";
 import Spinner from "../_components/Spinner";
 
@@ -13,12 +12,19 @@ type Props = {
 }
 
 const Review: React.FC<Props> = ({avgRating,productId}) => {
-  const [reviews,setReviews] = React.useState<ReviewIncomingDTO[]>([]);
-  const {getReviewsOfProduct} = reviewProduct();
+  const {review , getReviewsOfProduct} = reviewProduct();
+
+  const getReviewRef = React.useRef(false)
 
     React.useEffect(()=>{
-        getReviewsOfProduct({productId,setReviews})
-    },[])
+      getReviewRef.current = true;
+      (async()=>{
+       await getReviewsOfProduct({productId})
+      })()
+        return(()=>{
+          getReviewRef.current = false;
+        })
+    },[]);
 
  
   return (
@@ -29,7 +35,7 @@ const Review: React.FC<Props> = ({avgRating,productId}) => {
           <div className="flex items-center justify-center gap-2">
             <article className="flex flex-col items-start">
               <span className="text-sm font-semibold text-head flex items-center">
-                Average Rating:&nbsp;{avgRating}
+              Rating:&nbsp;{avgRating}
               </span>
               <div className="flex gap-1">
                 {[...Array(avgRating)].map((_, index) => (
@@ -48,8 +54,8 @@ const Review: React.FC<Props> = ({avgRating,productId}) => {
         </div>
       </div>
       <div className="w-full relative flex flex-col gap-8 py-6 h-auto">
-        {reviews && reviews.length > 0 ? (
-          reviews.map((item, key) => {
+        {review && review.length > 0 ? (
+          review.map((item, key) => {
             return (
               <div className="w-full relative flex flex-col" key={key}>
                 <div className="bg-gray-200 w-full h-[0.5px]" />

@@ -28,7 +28,7 @@ const TeamCard: React.FC<TeamCardProps> = ({ name, designation, image }) => {
         <div className="relative w-full h-48 sm:h-56 md:h-48 flex items-center justify-center">
           <div
             style={{ borderRadius: "50%" }}
-            className={`relative w-32 h-32 sm:w-36 sm:h-36 border-8 ${
+            className={`relative w-32 h-32 sm:w-36 sm:h-36  border-8 ${
               active ? "border-head" : "border-first"
             } transition-all duration-500 ease-in-out`}
           >
@@ -47,10 +47,10 @@ const TeamCard: React.FC<TeamCardProps> = ({ name, designation, image }) => {
           <h4 className="text-lg sm:text-xl font-semibold">{name}</h4>
           <p className="text-gray-700 text-sm sm:text-base">{designation}</p>
           <div className="flex items-center justify-center gap-4 mt-2">
-            <BiLogoFacebook size={20} />
-            <LiaTwitter size={20} />
-            <FaInstagram size={20} />
-            <PiLinkedinLogo size={20} />
+            <BiLogoFacebook size={20} className="animate-pulse"/>
+            <LiaTwitter size={20} className="animate-pulse"/>
+            <FaInstagram size={20} className="animate-pulse"/>
+            <PiLinkedinLogo size={20} className="animate-pulse"/>
           </div>
         </div>
       </div>

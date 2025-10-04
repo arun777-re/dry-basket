@@ -1,6 +1,18 @@
-export interface CategoryDTO{
-    _id:string;
+import { ErrorProps, PaginatedProductResponse } from "./response";
+
+export interface OutgoingCategoryDTO {
     name:string;
-    parent?:string;
-    slug?:string;
+    parent?:Types.ObjectId | string;
+}
+
+export interface CategoryIncomingDTO extends OutgoingCategoryDTO {
+    slug:string;
+    _id:string;
+    children?:IncomingCategoryDTO[];
+}
+
+export interface CategoryState {
+    loading:boolean;
+    error:ErrorProps;
+    category:PaginatedProductResponse<CategoryIncomingDTO>
 }

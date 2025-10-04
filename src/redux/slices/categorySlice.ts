@@ -1,31 +1,38 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { deleteRequest, getRequest, postRequest } from "../services/middleware";
 import { ROUTES } from "@/constants/routes";
+import { CATEGORY_API } from "../services/api/category";
+import { IncomingAPIResponseFormat, PaginatedProductResponse } from "@/types/response";
+import { CategoryIncomingDTO, CategoryState } from "@/types/category";
+import { ErrorProps } from "./offerSlice";
+import { defaultError } from "../services/helpers/userresponse";
 
-const initialState = {
-    error:null,
+const initialState:CategoryState = {
+    error:defaultError,
     loading:false,
-    category:[] as any[],
-    message:null as string | null
+    category:{
+    hasNextPage:false,
+    hasPrevPage:false,
+    currentPage:1,
+    message:'',
+    status:200,
+    success:false,
+    data:[] as any[]
+    },
 }
 
-// admin thunk
-export const createCategory = createAsyncThunk('admin/create-category',async(formData:Object,{rejectWithValue})=>{
-const data = await postRequest({url:`${ROUTES.SERVER_BASE_URL}/v1/admin/category/create`,data:formData,reject:rejectWithValue});
-return data;
-});
+
 
 // public thunk
-export const viewCategory = createAsyncThunk('admin/get-category',async(_,{rejectWithValue})=>{
-const data = await getRequest({url:`${ROUTES.SERVER_BASE_URL}/v1/admin/category/getall`,reject:rejectWithValue});
-console.log('data....',data)
+export const viewCategory = createAsyncThunk<
+PaginatedProductResponse<CategoryIncomingDTO>,
+void,
+{rejectValue:ErrorProps}
+>('admin/get-category',async(_,{rejectWithValue})=>{
+const data = await CATEGORY_API.get_all_category({reject:rejectWithValue})
 return data;
 });
 
-export const DeleteCategory = createAsyncThunk('admin/delete-category',async(slug:string,{rejectWithValue})=>{
-const data = await deleteRequest({url:`${ROUTES.SERVER_BASE_URL}/v1/admin/category/delete/${slug}`,reject:rejectWithValue});
-return data;
-})
 
 const categorySlice = createSlice({
 name:'category',
@@ -33,22 +40,12 @@ initialState:initialState,
 reducers:{},
 extraReducers(builder) {
     builder 
-    .addCase(createCategory.fulfilled,(state,action)=>{
-        state.loading = false;
-        state.error = null;
-        state.category = action.payload;
-    })
     .addCase(viewCategory.fulfilled,(state,action)=>{
         state.loading = false;
-        state.error = null;
+        state.error = defaultError;
         state.category = action.payload;
     })
-    .addCase(DeleteCategory.fulfilled,(state,action)=>
-    {
-         state.loading = false;
-        state.error = null;
-        state.message = action.payload.message;
-    })
+   
 },
 })
 
