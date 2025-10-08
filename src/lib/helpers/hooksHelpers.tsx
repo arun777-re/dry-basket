@@ -1,12 +1,12 @@
 'use client'
 
 import { useRouter } from 'next/navigation';
-import { RefObject } from 'react'
+import { MutableRefObject } from 'react'
 
 const hooksUtil = () => {
     const router = useRouter();
 
-    const RUNSAFE_DISPATCH = async<T,>(ref:RefObject<boolean>,action:()=>Promise<T>):Promise<T>=>{
+    const RUNSAFE_DISPATCH = async<T,>(ref:MutableRefObject<boolean>,action:()=>Promise<T>):Promise<T>=>{
           if(ref.current) throw new Error("Already Processing");
           ref.current = true;
      try {
