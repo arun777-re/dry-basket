@@ -3,7 +3,6 @@ import { combineReducers } from '@reduxjs/toolkit';
 
 import productReducer from '@/redux/slices/productSlice';
 import categoryReducer from '@/redux/slices/categorySlice';
-import offerReducer from '@/redux/slices/offerSlice';
 import cartReducer from '@/redux/slices/cartSlice';
 import userReducer from "@/redux/slices/userSlice";
 import reviewReducer from '@/redux/slices/reviewSlice'
@@ -17,7 +16,6 @@ import wishReducer from '@/redux/slices/wishSlice';
 export const rootReducer = combineReducers({
   product: productReducer,
   category: categoryReducer,
-  offer: offerReducer,
   usercart: cartReducer,
   user: userReducer,
   review: reviewReducer,
