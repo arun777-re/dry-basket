@@ -9,6 +9,7 @@ import Spinner from "../_components/Spinner";
 import OrderItems from "../_components/OrderItems";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
+import useInteractionHook from "@/hooks/interactionHook";
 
 const OrderSuccessPage: React.FC = () => {
   const router = useRouter();
@@ -16,12 +17,21 @@ const OrderSuccessPage: React.FC = () => {
   const { getLatestSuccessOrder } = orderHook();
   const loading = useSelector((state: RootState) => state.order.loading);
 
+  const {getUserInteraction} = useInteractionHook()
   React.useEffect(() => {
     (async () => {
       const res = await getLatestSuccessOrder();
       res && setOrder(res);
     })();
   }, [getLatestSuccessOrder]);
+
+  React.useEffect(() => {
+    (async () => {
+      if(order && order.cartItems.length> 0){
+         order.cartItems.forEach((i)=> getUserInteraction({productId:i.productId._id , action:"purchase"}) )
+      }
+    })();
+  }, [getUserInteraction,order]);
 
   if (loading) return <Spinner />;
 

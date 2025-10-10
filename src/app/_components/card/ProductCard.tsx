@@ -11,6 +11,8 @@ import cartHook from "@/hooks/cartHook";
 import { mapPopulatedOurgoing } from "@/lib/middleware/normalizedCart";
 import toast from "react-hot-toast";
 import { CiHeart } from "react-icons/ci";
+import useInteractionHook from "@/hooks/interactionHook";
+import useWishlistHook from "@/hooks/useWhislistHook";
 
 const ProductCard: React.FC<ProductCardProps> = ({
   productId,
@@ -54,6 +56,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   );
   // function to add to cart
   const { addToCart } = cartHook();
+  const {getUserInteraction} = useInteractionHook();
+  const {createOrAddItemToWishlist} = useWishlistHook()
 
   const handleAddItem = async (e: React.MouseEvent<HTMLDivElement>) => {
     // stop execution when product is not in stock
@@ -66,8 +70,29 @@ const ProductCard: React.FC<ProductCardProps> = ({
       toast.error("Product data is incomplete. Cannot add to cart.");
       return;
     }
-    await addToCart({ e, payload, backendpayload });
+    await Promise.all([
+     addToCart({ e, payload, backendpayload }),
+      getUserInteraction({productId,action:"addCart"})
+    ])
   };
+
+  const handleAddToWishList = async(e:React.MouseEvent<HTMLDivElement>)=>{
+    e.preventDefault();
+        // stop execution when product is not in stock
+    if (variants[0].stock === 0 || variants[0].stock < 0) {
+      e.stopPropagation();
+      toast.error("Product is not in stock");
+      return;
+    }
+    if(!productId || !variants.length) {
+      toast.error("Product data is incomplete. Cannot add to cart.");
+      return;
+    }
+    await Promise.all([
+     createOrAddItemToWishlist({productId}),
+      getUserInteraction({productId,action:"addToWishlist"})
+    ])
+  }
 
   return (
     <Card
@@ -121,7 +146,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               <IoMdCart size={20} className="text-head hover:text-white" />
             </div>
             <div
-              onClick={handleAddItem}
+              onClick={handleAddToWishList}
               className="
     w-10 h-10 
     flex items-center justify-center

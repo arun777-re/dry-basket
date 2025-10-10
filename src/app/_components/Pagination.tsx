@@ -24,7 +24,7 @@ const Pagination:React.FC<PaginationProps> = ({page,setPage,hasNextPage,hasPrevP
     <FaChevronLeft size={20} className='text-head hover:text-head/70'/>
   </Button>
 
-  <span className="px-4 py-2 bg-blue-100 text-blue-800 rounded font-medium shadow-inner">
+  <span className="px-4 py-2 bg-yellow-50 text-first rounded font-medium shadow-inner">
     {page}
   </span>
 

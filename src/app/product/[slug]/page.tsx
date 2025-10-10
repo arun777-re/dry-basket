@@ -12,9 +12,8 @@ import { ProductIncomingDTO } from "@/types/product";
 import { useFetchCategoryProducts } from "@/hooks/fetchCategoryProduct";
 import ProductSection from "@/app/Components/ProductSection";
 import ProductInformation from "@/app/_components/ProductInformation";
-import {
-  singleProductState,
-} from "@/redux/services/helpers/productresponse";
+import { singleProductState } from "@/redux/services/helpers/productresponse";
+import useInteractionHook from "@/hooks/interactionHook";
 
 const ProductPage: React.FC = () => {
   const { slug } = useParams();
@@ -25,10 +24,19 @@ const ProductPage: React.FC = () => {
     fetchRecommendedProducts,
   } = useFetchCategoryProducts();
 
-  const [relatedProducts, setRelatedProducts] = React.useState<ProductIncomingDTO[]>([]);
-  const [product, setProduct] = React.useState<ProductIncomingDTO>(singleProductState?.data!);
-  const [recommendedProducts, setRecommendedProducts] = React.useState<ProductIncomingDTO[]>([]);
-  const [selectParagraph, setSelectParagraph] = React.useState<string>("additional");
+  const { getUserInteraction } = useInteractionHook();
+
+  const [relatedProducts, setRelatedProducts] = React.useState<
+    ProductIncomingDTO[]
+  >([]);
+  const [product, setProduct] = React.useState<ProductIncomingDTO>(
+    singleProductState?.data!
+  );
+  const [recommendedProducts, setRecommendedProducts] = React.useState<
+    ProductIncomingDTO[]
+  >([]);
+  const [selectParagraph, setSelectParagraph] =
+    React.useState<string>("additional");
 
   // fetch single product
   React.useEffect(() => {
@@ -39,15 +47,20 @@ const ProductPage: React.FC = () => {
 
   // fetch related
   useEffect(() => {
-    if (product?.productName) {
-      fetchRelatedProducts({
-        category: product?.category,
-        productName: product?.productName,
-        setProduct: setRelatedProducts,
-        limit: 10,
-        page: 1,
-      });
-    }
+    (async () => {
+      if (product?.productName) {
+        await Promise.all([
+          fetchRelatedProducts({
+            category: product?.category,
+            productName: product?.productName,
+            setProduct: setRelatedProducts,
+            limit: 10,
+            page: 1,
+          }),
+          getUserInteraction({ productId: product._id, action: "view" }),
+        ]);
+      }
+    })();
   }, [product?.productName]);
 
   // fetch recommended
@@ -129,8 +142,14 @@ const ProductPage: React.FC = () => {
 
           {/* Related & Recommended */}
           <div className="w-full relative h-auto pt-16 flex flex-col items-center gap-16">
-            <ProductSection title="Related Products" products={relatedProducts} />
-            <ProductSection title="Recommended Products" products={recommendedProducts} />
+            <ProductSection
+              title="Related Products"
+              products={relatedProducts}
+            />
+            <ProductSection
+              title="Recommended Products"
+              products={recommendedProducts}
+            />
           </div>
         </div>
       </section>

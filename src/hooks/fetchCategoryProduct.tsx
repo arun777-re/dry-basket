@@ -18,11 +18,12 @@ import { ProductIncomingDTO } from "@/types/product";
 
 export const useFetchCategoryProducts = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const {loading,products,singleProduct,error} = useSelector((state:RootState)=> state.product);
+  const { loading, products, singleProduct, error } = useSelector(
+    (state: RootState) => state.product
+  );
   const filterRef = React.useRef(false);
   const singleProductRef = React.useRef(false);
   const allProductCategoryRef = React.useRef(false);
-
 
   const fetchCategoryProduct = React.useCallback(
     (
@@ -38,15 +39,19 @@ export const useFetchCategoryProducts = () => {
           setSection(sectionName);
         })
         .catch((err) => {
-          console.error(err);
+          if (err instanceof Error) {
+            console.error(err.message);
+          } else {
+            console.error(err);
+          }
         });
     },
     [dispatch]
   );
 
   // this is used in best product component
-  const fetchAllProductsAssociatedWithCategory = React.useCallback(  
-    async({
+  const fetchAllProductsAssociatedWithCategory = React.useCallback(
+    async ({
       catname,
       page,
       limit,
@@ -57,57 +62,53 @@ export const useFetchCategoryProducts = () => {
       limit: number;
       setProducts: (value: any) => any;
     }) => {
-      if(allProductCategoryRef.current) return;
+      if (allProductCategoryRef.current) return;
       allProductCategoryRef.current = true;
       try {
-         await dispatch(
-        getCategoryProduct({
-          catname,
-          query: { page: page ?? 1, limit: limit ?? 10 },
-        })
-      )
-        .unwrap()
-        .then((res: PaginatedProductResponse<ProductIncomingDTO>) => {
-          setProducts(res?.data);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+        await dispatch(
+          getCategoryProduct({
+            catname,
+            query: { page: page ?? 1, limit: limit ?? 10 },
+          })
+        )
+          .unwrap()
+          .then((res: PaginatedProductResponse<ProductIncomingDTO>) => {
+            setProducts(res?.data);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
       } catch (error) {
-        
-      }finally{
+      } finally {
         allProductCategoryRef.current = false;
       }
-  
     },
     [dispatch]
   );
 
   const fetchSingleProductWithSlug = React.useCallback(
-    async({
+    async ({
       slug,
       setProduct,
     }: {
       slug: string;
       setProduct: (value: any) => any;
     }) => {
-      if(singleProductRef.current) return;
+      if (singleProductRef.current) return;
       singleProductRef.current = true;
       try {
-          await dispatch(getSingleProduct(slug))
-        .unwrap()
-        .then((res: IncomingAPIResponseFormat<ProductIncomingDTO>) => {
-          setProduct(res?.data);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+        await dispatch(getSingleProduct(slug))
+          .unwrap()
+          .then((res: IncomingAPIResponseFormat<ProductIncomingDTO>) => {
+            setProduct(res?.data);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
       } catch (error) {
-        
-      }finally{
-singleProductRef.current = false;
+      } finally {
+        singleProductRef.current = false;
       }
-   
     },
     [dispatch]
   );
@@ -120,15 +121,22 @@ singleProductRef.current = false;
       productName,
       setProduct,
     }: {
-      page:number,
-      limit:number,
+      page: number;
+      limit: number;
       productName: string;
       category: string;
       setProduct: (value: any) => any;
     }) => {
-      dispatch(getRelatedProduct({ category, productName, page:page ?? 1, limit:limit ?? 10 }))
+      dispatch(
+        getRelatedProduct({
+          category,
+          productName,
+          page: page ?? 1,
+          limit: limit ?? 10,
+        })
+      )
         .unwrap()
-        .then((res:PaginatedProductResponse<ProductIncomingDTO>) => {
+        .then((res: PaginatedProductResponse<ProductIncomingDTO>) => {
           setProduct(res?.data);
         })
         .catch((err) => {
@@ -146,14 +154,19 @@ singleProductRef.current = false;
       catId,
       setProduct,
     }: {
-      page:number,
-      limit:number,
+      page: number;
+      limit: number;
       catId: string;
       setProduct: (value: any) => any;
     }) => {
-      dispatch(getRecommendedProduct({catId,query:{page:page ?? 1, limit:limit ?? 10} }))
+      dispatch(
+        getRecommendedProduct({
+          catId,
+          query: { page: page ?? 1, limit: limit ?? 10 },
+        })
+      )
         .unwrap()
-        .then((res:PaginatedProductResponse<ProductIncomingDTO>) => {
+        .then((res: PaginatedProductResponse<ProductIncomingDTO>) => {
           setProduct(res?.data);
         })
         .catch((err) => {
@@ -163,22 +176,42 @@ singleProductRef.current = false;
     [dispatch]
   );
 
-  const fetchFilterProducts = React.useCallback(async({page,limit,category,productName,price,weight}:{
-       page?:number,limit?:number,category?:string,productName?:string,price?:number,weight?:string
-  })=>{
-    if(filterRef.current) return;
-    filterRef.current = true
-    try {
-
-   await dispatch(getSearchProductThunk({page,limit,category,price,productName,weight})).unwrap();
-      
-    } catch (error) {
-      
-    }finally{
-     filterRef.current = false;
-    }
-
-  },[dispatch])
+  const fetchFilterProducts = React.useCallback(
+    async ({
+      page,
+      limit,
+      category,
+      productName,
+      price,
+      weight,
+    }: {
+      page?: number;
+      limit?: number;
+      category?: string;
+      productName?: string;
+      price?: number;
+      weight?: string;
+    }) => {
+      if (filterRef.current) return;
+      filterRef.current = true;
+      try {
+        await dispatch(
+          getSearchProductThunk({
+            page,
+            limit,
+            category,
+            price,
+            productName,
+            weight,
+          })
+        ).unwrap();
+      } catch (error) {
+      } finally {
+        filterRef.current = false;
+      }
+    },
+    [dispatch]
+  );
 
   return {
     fetchCategoryProduct,
@@ -187,9 +220,9 @@ singleProductRef.current = false;
     fetchRelatedProducts,
     fetchRecommendedProducts,
     fetchFilterProducts,
-    products,singleProduct,
+    products,
+    singleProduct,
     loading,
-    error
-    
+    error,
   };
 };

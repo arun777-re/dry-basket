@@ -11,6 +11,8 @@ import shippingReducer from '@/redux/slices/shippingSlice';
 import orderReducer from '@/redux/slices/orderSlice';
 import blogReducer from '@/redux/slices/blogSlice';
 import bannerReducer from '@/redux/slices/bannerSlice';
+import interactionReducer from '@/redux/slices/interactionSlice';
+import wishReducer from '@/redux/slices/wishSlice';
 
 export const rootReducer = combineReducers({
   product: productReducer,
@@ -23,6 +25,8 @@ export const rootReducer = combineReducers({
   order: orderReducer,
   blog: blogReducer,
   banner: bannerReducer,
+  interaction:interactionReducer,
+  wishlist:wishReducer,
 });
 
 export type RootReducerType = ReturnType<typeof rootReducer>;

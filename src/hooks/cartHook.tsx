@@ -1,6 +1,5 @@
 "use client";
 
-import hooksUtil from "@/lib/helpers/hooksHelpers";
 import {
   addItemsToCart,
   applyCoupon,
@@ -35,16 +34,18 @@ const cartHook = () => {
 
   const CREATECARTORADDITEMTOCART = React.useCallback(
     async ({ data }: { data: CartItemOutgoingDTO[] }) => {
-      if(cartcreateRef.current) return;
+      if (cartcreateRef.current) return;
       cartcreateRef.current = true;
       try {
-    
-      await dispatch(addItemsToCart(data));
-        } catch (error:any) {
-          console.error("Error during add item to cart or create cart",error.message);
-        toast.error(error.message || "Something went wrong")
-      }finally{
-cartcreateRef.current = false;
+        await dispatch(addItemsToCart(data));
+      } catch (error: any) {
+        console.error(
+          "Error during add item to cart or create cart",
+          error.message
+        );
+        toast.error(error.message || "Something went wrong");
+      } finally {
+        cartcreateRef.current = false;
       }
     },
     [dispatch]
@@ -64,23 +65,22 @@ cartcreateRef.current = false;
       setUserCart: (value: any) => any;
       payload: UpdateQtyDTO;
     }) => {
-      if(cartupdateRef.current) return ;
+      if (cartupdateRef.current) return;
       cartupdateRef.current = true;
       try {
-          const { productId, delta } = payload;
-     await dispatch(updateItemQty({ productId, delta }))
-        .unwrap()
-        .then((res) => {
-          localStorage.removeItem("guest_cart");
-          setUserCart(res?.data);
-        });
-      } catch (error:any) {
-                console.error("Error during update item qty",error.message);
-        toast.error(error.message || "Something went wrong")
-      }finally{
-cartupdateRef.current = false;
+        const { productId, delta } = payload;
+        await dispatch(updateItemQty({ productId, delta }))
+          .unwrap()
+          .then((res) => {
+            localStorage.removeItem("guest_cart");
+            setUserCart(res?.data);
+          });
+      } catch (error: any) {
+        console.error("Error during update item qty", error.message);
+        toast.error(error.message || "Something went wrong");
+      } finally {
+        cartupdateRef.current = false;
       }
-    
     },
     [dispatch]
   );
@@ -93,22 +93,21 @@ cartupdateRef.current = false;
       productId: string;
       setUserCart: (value: any) => any;
     }) => {
-      if(cartremoveRef.current) return;
+      if (cartremoveRef.current) return;
       cartremoveRef.current = true;
       try {
-          await dispatch(removeCartItem({ productId }))
-        .unwrap()
-        .then((res) => {
-          localStorage.removeItem("guest_cart");
-          setUserCart(res?.data);
-        });
-      } catch (error:any) {
-        console.error("Error during remove item from cart",error.message);
-        toast.error(error.message || "Something went wrong")
-      }finally{
+        await dispatch(removeCartItem({ productId }))
+          .unwrap()
+          .then((res) => {
+            localStorage.removeItem("guest_cart");
+            setUserCart(res?.data);
+          });
+      } catch (error: any) {
+        console.error("Error during remove item from cart", error.message);
+        toast.error(error.message || "Something went wrong");
+      } finally {
         cartremoveRef.current = false;
       }
-   
     },
     [dispatch]
   );
@@ -147,22 +146,22 @@ cartupdateRef.current = false;
   );
 
   const CLEAR_CART = React.useCallback(async () => {
-   await dispatch(clearUserCart());
+    await dispatch(clearUserCart());
   }, [dispatch]);
 
   // for get request
   const handleCartItems = async () => {
     try {
-         if (user) {
+      if (user) {
         await GETUSERCART();
       } else {
         dispatch(getUserGuestCart());
         const updatedCart = store.getState().usercart.cart;
         return updatedCart;
       }
-    } catch (error:any) {
-      console.error(error.message || "error during get cart items")
-    } 
+    } catch (error: any) {
+      console.error(error.message || "error during get cart items");
+    }
   };
 
   //  for add item to cart
@@ -180,10 +179,15 @@ cartupdateRef.current = false;
     cartaddRef.current = true;
     try {
       if (user) {
-        if (userCart.data &&  userCart.data && userCart.data.items && userCart.data.items.length > 0) {
+        if (
+          userCart.data &&
+          userCart.data &&
+          userCart.data.items &&
+          userCart.data.items.length > 0
+        ) {
           payload.forEach((item) => dispatch(createCartOptimisticforUX(item)));
         }
-       await CREATECARTORADDITEMTOCART({ data: backendpayload });
+        await CREATECARTORADDITEMTOCART({ data: backendpayload });
       } else {
         // for guest cart
         payload.forEach((item) => dispatch(createOraddItemGuestCart(item)));

@@ -77,11 +77,11 @@ export const loginUser = createAsyncThunk<
 // thunk for logout user
 export const logoutuser = createAsyncThunk<
   ErrorProps,
-  string,
+  void,
   { rejectValue: ErrorProps }
->("user/logout", async (userId:string, { rejectWithValue }) => {
+>("user/logout", async (_, { rejectWithValue }) => {
   try {
- const response = await AuthAPI.logout(userId,rejectWithValue)
+ const response = await AuthAPI.logout(rejectWithValue)
     return response;
   } catch (error: any) {
     return rejectWithValue({

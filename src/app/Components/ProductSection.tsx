@@ -1,8 +1,8 @@
 'use client'
 import React from 'react'
 import ProductCard from '../_components/card/ProductCard';
-import DummyCard from '../_components/card/DummyCard';
 import { ProductIncomingDTO } from '@/types/product';
+import DummyComponent from '../_components/DummyComponent';
 
 type Props = {
   title: string;
@@ -31,9 +31,7 @@ const ProductSection: React.FC<Props> = ({ title, products }) => {
             />
           ))
         ) : (
-          [...Array(4)].map((_, key) => (
-            <DummyCard key={key} />
-          ))
+         <DummyComponent/>
         )}
       </div>
     </div>

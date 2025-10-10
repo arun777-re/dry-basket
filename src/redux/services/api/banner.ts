@@ -1,6 +1,5 @@
 import { ROUTES } from "@/constants/routes";
-import { deleteRequest, getRequest, patchRequest, postRequest } from "../middleware";
-import { BannerOutgoingDTO } from "@/types/banner";
+import { getRequest } from "../middleware";
 import { PaginationQuery } from "@/types/response";
 
 

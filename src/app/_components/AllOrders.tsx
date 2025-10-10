@@ -45,7 +45,7 @@ console.log(order?.data)
   if (!order?.data || order?.data.length === 0)
     return (
       <div className="flex flex-col items-center justify-center py-20 space-y-4">
-        <p className="text-gray-600 text-lg font-medium">
+        <p className="text-gray-600 text-center font-medium">
           No orders found / Place your first order with us
         </p>
       </div>

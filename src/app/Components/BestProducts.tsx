@@ -5,8 +5,6 @@ import Button from "../_components/Button";
 import ProductCarousel from "../_components/ProductCarousel";
 import { ProductIncomingDTO } from "@/types/product";
 import { useFetchCategoryProducts } from "@/hooks/fetchCategoryProduct";
-import Image from "next/image";
-// import Image from "next/image";
 
 const BestProducts: React.FC = () => {
   const [product, setProduct] = React.useState<ProductIncomingDTO[]>([]);

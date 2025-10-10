@@ -1,13 +1,9 @@
 "use client";
+
 import React, { useCallback } from "react";
 import { Formik, FormikHelpers } from "formik";
-import * as yup from "yup";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store/store";
 import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
-import { CartItemOutgoingDTO, PopulatedCartItemDTO } from "@/types/cart";
-import { mapPopulatedOurgoing } from "@/lib/middleware/normalizedCart";
 import { ROUTES } from "@/constants/routes";
 import authHook from "@/hooks/authHook";
 import { initialSignUpSchema } from "@/app/validation/authValidation";
@@ -42,7 +38,7 @@ const RegisterForm = () => {
       try {
         useRegisterUser({
           values,
-          route: redirect.get("redirect") as string,
+          route:`${ROUTES.HOME}`,
         });
         toast.success("Signup successfull");
         resetForm();
@@ -55,7 +51,7 @@ const RegisterForm = () => {
   );
 
   return (
-    <div className="w-full relative bg-gray-100 shadow-2xl py-10">
+    <div className="w-full relative bg-gray-100 shadow-md py-10">
       <Formik
         initialValues={initialSignUpValue}
         validationSchema={initialSignUpSchema}
@@ -74,7 +70,7 @@ const RegisterForm = () => {
             onSubmit={handleSubmit}
             method="POST"
             className="relative w-full  flex flex-col px-4 z-20 
-        items-center justify-center gap-5"
+              items-center justify-center gap-5"
           >
             <div className="relative w-full h-auto flex flex-col items-start gap-5 md:px-10 z-40">
               <input

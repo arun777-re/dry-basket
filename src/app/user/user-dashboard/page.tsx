@@ -3,24 +3,26 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { User, Package, Settings, Menu } from "lucide-react";
+import { User, Package, Settings, Menu, Heart} from "lucide-react";
 import AllOrders from "@/app/_components/AllOrders";
 import UsewrProfile from "@/app/_components/UsewrProfile";
 import Logout from "@/app/_components/Logout";
 import {Home } from 'lucide-react';
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
+import Wishlist from "@/app/Components/Wislist";
 
 export default function UserDashboard() {
 const router = useRouter()
 
-  const [activeTab, setActiveTab] = useState("profile");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>("profile");
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
 
   const menuItems = [
     { value: "home", label: "Home", icon:Home },
     { value: "profile", label: "Profile", icon: User },
     { value: "orders", label: "Orders", icon: Package },
+    { value: "wishlist", label: "Wishlist", icon:Heart },
     { value: "settings", label: "Settings", icon: Settings },
   ];
 
@@ -28,7 +30,7 @@ const router = useRouter()
     <div className="flex flex-col md:flex-row min-h-screen bg-gray-50">
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex md:flex-col md:w-64 bg-white shadow-md p-4">
-        <h2 className="text-xl font-bold mb-6">My Account</h2>
+        <h2 className="text-xl font-normal mb-6">My Account</h2>
         <Tabs
           orientation="vertical"
           value={activeTab}
@@ -63,7 +65,7 @@ const router = useRouter()
 
       {/* Mobile Sidebar Drawer */}
       {sidebarOpen && (
-        <div className="fixed top-16 inset-0 z-40 flex items-center justify-center max-w-screen w-full h-40 " data-aos="fade-down">
+        <div className="fixed top-16 inset-0 z-40 flex items-center justify-center max-w-screen w-full h-48 " data-aos="fade-down">
           <div className="w-full sm:w-64 h-full flex items-center bg-white shadow-md p-4 ">
             <Tabs
               orientation="vertical"
@@ -100,7 +102,7 @@ const router = useRouter()
           {/* Example: add your Home tab content later */}
           <TabsContent value="home">
             <div className="p-4 bg-white rounded shadow">
-              <h2 className="text-xl font-bold mb-2">Welcome Home</h2>
+              <h2 className="text-xl font-normal mb-2">Go to Home</h2>
               <Button onClick={()=>router.push(`${ROUTES.HOME}`)}>Home</Button>
             </div>
           </TabsContent>
@@ -111,6 +113,9 @@ const router = useRouter()
 
           <TabsContent value="orders">
             <AllOrders />
+          </TabsContent>
+          <TabsContent value="wishlist">
+            <Wishlist/>
           </TabsContent>
 
           <TabsContent value="settings">

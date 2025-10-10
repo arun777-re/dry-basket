@@ -24,7 +24,7 @@ const Logout = () => {
       return
     }
     setLoading(true)
-    const res = await LOGOUT_USER(user._id)
+    const res = await LOGOUT_USER()
     setLoading(false)
     if (res?.payload?.success) {
       toast.success('Logout successful')

@@ -9,6 +9,8 @@ import { CommonVariantDTO } from "@/types/cart";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
 import { mapPopulatedOurgoing } from "@/lib/middleware/normalizedCart";
+import useWishlistHook from "@/hooks/useWhislistHook";
+import useInteractionHook from "@/hooks/interactionHook";
 
 const ProductDescription: React.FC<ProductDescriptionDTO> = ({
   _id,
@@ -53,6 +55,8 @@ const ProductDescription: React.FC<ProductDescriptionDTO> = ({
   };
 
   const { addToCart } = cartHook();
+  const {createOrAddItemToWishlist} = useWishlistHook();
+  const {getUserInteraction} = useInteractionHook();
   const payload = [
     {
       productId: {
@@ -76,15 +80,27 @@ const ProductDescription: React.FC<ProductDescriptionDTO> = ({
     [payload]
   );
 
-  const handleAddItemToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleAddItemToCart = async(e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    addToCart({ e, payload, backendpayload });
+
+    await Promise.all([addToCart({ e, payload, backendpayload }),
+      getUserInteraction({productId:_id,action:"addCart"})
+    ]);
   };
 
-  const handleBuy = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleBuy = async(e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    handleAddItemToCart(e);
+   await  Promise.all([handleAddItemToCart(e),
+    getUserInteraction({productId:_id,action:"purchase"})
+   ]);
     router.push(`${ROUTES.CHECKOUT}`);
+  };
+  const handleWishlist = async(e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    await Promise.all([
+      createOrAddItemToWishlist({productId:_id}),
+      getUserInteraction({productId:_id,action:"addToWishlist"})
+    ])
   };
 
   return (
@@ -187,7 +203,7 @@ const ProductDescription: React.FC<ProductDescriptionDTO> = ({
             {[
               { name: "Add to Cart", action: handleAddItemToCart },
               { name: "Buy it now", action: handleBuy },
-              { name: "Add to Wishlist", action: () => {} },
+              { name: "Add to Wishlist", action:handleWishlist },
             ].map((value, key) => (
               <Button
                 key={key}

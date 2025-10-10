@@ -2,12 +2,8 @@
 import React from "react";
 import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store/store";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { loginUser } from "@/redux/slices/userSlice";
+import {useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
-import { ErrorProps } from "@/types/response";
 import Button from "@/app/_components/Button";
 import ForgotPass from "./ForgotPass";
 import authHook from "@/hooks/authHook";
@@ -42,7 +38,6 @@ const LoginForm = () => {
     try {
       // API call to login user
       useLoginUser({ values, route: redirect.get("redirect") as string });
-      toast.success("Login Successfull");
       resetForm();
     } catch (err) {
       const message = err || "Login Failed";
@@ -52,7 +47,7 @@ const LoginForm = () => {
     }
   };
   return (
-    <div className="max-w-[100vw] w-full relative bg-gray-100 shadow-2xl py-10 z-10">
+    <div className="max-w-[100vw] w-full relative bg-gray-100 shadow-md py-10 z-10">
       <Formik
         initialValues={initialLoginValue}
         validationSchema={initialLoginSchema}
