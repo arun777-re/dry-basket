@@ -14,7 +14,7 @@ export const paginatedOrderResponse:PaginatedProductResponse<OrderIncomingReqDTO
       shippingDetails:{},
       orderStatus:"",
       amount:0,
-      cartItems:defaultPopulatedCartItems[],
+      cartItems:[defaultPopulatedCartItems],
       currency:"",
       razorpayOrderId:"",
       blogsAgree:false
