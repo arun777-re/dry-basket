@@ -1,6 +1,6 @@
 import { OrderIncomingReqDTO } from "@/types/order";
 import { PaginatedProductResponse } from "@/types/response";
-import { defaultPopulatedCartResponse } from "../cart/cartresponse";
+import { defaultPopulatedCartItems, defaultPopulatedCartResponse } from "../cart/cartresponse";
 
 
 export const paginatedOrderResponse:PaginatedProductResponse<OrderIncomingReqDTO> =  {
@@ -10,10 +10,11 @@ export const paginatedOrderResponse:PaginatedProductResponse<OrderIncomingReqDTO
     data:[{
       _id: "",
       cartId:defaultPopulatedCartResponse,
-      userId:'',
+      userId:{email:""},
       shippingDetails:{},
       orderStatus:"",
       amount:0,
+      cartItems:defaultPopulatedCartItems,
       currency:"",
       razorpayOrderId:"",
       blogsAgree:false
