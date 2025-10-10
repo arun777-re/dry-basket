@@ -7,11 +7,10 @@ export const defaultUserState:IncomingAPIResponseFormat<UserPropsIncoming> = {
     message:"",
     status:0,
     data:{
-          _id: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
+    _id:"",
+    firstName:"",
+    lastName:"",
+    email:"",
     }
 }
 
