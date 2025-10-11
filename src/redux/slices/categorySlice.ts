@@ -4,7 +4,7 @@ import { ROUTES } from "@/constants/routes";
 import { CATEGORY_API } from "../services/api/category";
 import { IncomingAPIResponseFormat, PaginatedProductResponse } from "@/types/response";
 import { CategoryIncomingDTO, CategoryState } from "@/types/category";
-import { ErrorProps } from "./offerSlice";
+import { ErrorProps } from "@types/response";
 import { defaultError } from "../services/helpers/userresponse";
 
 const initialState:CategoryState = {
