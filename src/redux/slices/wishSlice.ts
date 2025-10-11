@@ -10,7 +10,7 @@ import {
   PaginatedProductResponse,
   PaginationQuery,
 } from "@/types/response";
-import { ErrorProps } from "@types/response";
+import { ErrorProps } from "@/types/response";
 import { WishListAPISFETCH } from "../services/api/wishlist";
 
 const initialState: WishSlice = {

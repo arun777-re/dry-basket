@@ -2,7 +2,7 @@ import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import { defaultError } from "../services/helpers/userresponse";
 import { IncomingAPIResponseFormat } from "@/types/response";
 import { InteractionOutgoingDTO, InteractionSlice } from "@/types/interaction";
-import { ErrorProps } from "@types/response";
+import { ErrorProps } from "@/types/response";
 import { InteractionAPISFETCH } from "../services/api/interaction";
 
 

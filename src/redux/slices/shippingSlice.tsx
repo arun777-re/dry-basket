@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { defaultError } from "../services/helpers/userresponse";
 import { IncomingAPIResponseFormat } from "@/types/response";
-import { ErrorProps } from "@types/response";
+import { ErrorProps } from "@/types/response";
 import { SHIPPINGAPI } from "../services/api/shipping";
 
 const initialState = {
