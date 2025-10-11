@@ -32,7 +32,7 @@ const UserSignUp = () => {
           >
             {page === "login" ? "SignUp" : "Login"}
           </button>
-          <div className="relative w-[70%]">
+          <div className="relative w-[100%] md:w-[100%]">
             {page === "login" ? <LoginForm /> : <RegisterForm />}
           </div>
         </div>
