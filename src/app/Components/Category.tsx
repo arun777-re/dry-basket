@@ -43,7 +43,7 @@ const Category: React.FC<Props> = ({ searchValue }) => {
   const hasPrevPage = !!(products && products.hasPrevPage);
 
   return (
-    <section className="max-w-screen-xl mx-auto px-4 md:px-10 lg:px-20 py-10">
+    <section className="max-w-screen-2xl mx-auto px-4 md:px-10 lg:px-20 py-10">
       {products && products.data && Array.isArray(products.data) && products.data.length > 0 ? (
         <div
           className="
