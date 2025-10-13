@@ -65,8 +65,8 @@ const Category: React.FC<Props> = ({ searchValue }) => {
           ))}
         </div>
       ) : (
-        <section className='w-screen h-auto gap-2 flex items-center justify-center flex-col'>
-          <h1 className="text-lg font-semibold text-head text-center mb-4">No Products to Show</h1>
+        <section className='w-screen min-h-[60vh] h-auto gap-2 flex items-center justify-center text-center flex-col'>
+          <h1 className="text-lg font-semibold text-head mb-4">No Products to Show</h1>
           <Spinner/>
                   </section>
       )}
