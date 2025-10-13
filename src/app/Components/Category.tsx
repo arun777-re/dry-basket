@@ -30,6 +30,7 @@ const Category: React.FC<Props> = ({ searchValue }) => {
      isMounted.current = true;
     if (!getNavSearchProducts) return;
     (async () => {
+
       const result = await getNavSearchProducts({ query: searchQuery });
       if (result && isMounted) setProducts(result);
     })();
@@ -64,7 +65,7 @@ const Category: React.FC<Props> = ({ searchValue }) => {
           ))}
         </div>
       ) : (
-        <section className='w-screen h-screen flex items-center justify-center flex-col'>
+        <section className='w-screen h-auto gap-10 flex items-center justify-center flex-col'>
           <h1 className="text-lg font-semibold text-head mb-4">No Products to Show</h1>
           <Spinner/>
                   </section>

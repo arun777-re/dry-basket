@@ -13,7 +13,7 @@ import DrawerCard from "../_components/card/DrawerCard";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store/store";
 import React from "react";
-import { selectCartTotal } from "@/redux/slices/cartSlice";
+import { selectCartTotal, totalCartItems } from "@/redux/slices/cartSlice";
 import { useRouter } from "next/navigation";
 import cartHook from "@/hooks/cartHook";
 import { PopulatedIncomingCartDTO } from "@/types/cart";
@@ -30,6 +30,8 @@ export function CartDrawer() {
     (state: RootState) => state.usercart.cart?.data
   );
 
+  const cartItemsLength = useSelector(totalCartItems);
+
   const { handleCartItems } = cartHook();
   const totalPrice = useSelector(selectCartTotal);
 
@@ -40,10 +42,18 @@ export function CartDrawer() {
   return (
     <Drawer direction="right">
       <DrawerTrigger asChild>
-        <MdAddShoppingCart
-          className="text-2xl cursor-pointer"
-          onClick={finalCartItems}
-        />
+        <div className="relative cursor-pointer" onClick={finalCartItems}>
+          <MdAddShoppingCart className="text-2xl" />
+
+          {cartItemsLength > 0 && (
+            <span
+              className="absolute -top-3 -right-3 bg-transparent text-first text-xs border-2 border-white
+         w-4 h-4 flex items-center justify-center rounded-full font-semibold"
+            >
+              {cartItemsLength}
+            </span>
+          )}
+        </div>
       </DrawerTrigger>
 
       {/* Responsive width classes */}
@@ -60,7 +70,9 @@ export function CartDrawer() {
         "
       >
         <div className=" p-4 flex flex-col gap-4 h-full relative ">
-          <DialogTitle className="text-lg sm:text-xl font-semibold">Cart</DialogTitle>
+          <DialogTitle className="text-lg sm:text-xl font-semibold">
+            Cart
+          </DialogTitle>
 
           {(guestCart?.items ?? []).length > 0 ? (
             guestCart?.items.map((item, key) => {
@@ -73,7 +85,9 @@ export function CartDrawer() {
               return (
                 <DrawerCard
                   key={key}
-                  productName={item?.productId?.productName?.toUpperCase() ?? ""}
+                  productName={
+                    item?.productId?.productName?.toUpperCase() ?? ""
+                  }
                   image={item.productId.images?.[0] || "/images/cart1-1.jpg"}
                   priceAfterDiscount={item.variant?.priceAfterDiscount}
                   weight={item.variant?.weight}
@@ -94,7 +108,7 @@ export function CartDrawer() {
           </div>
 
           <Button
-          className="cursor-pointer hover:bg-first"
+            className="cursor-pointer hover:bg-first"
             variant={"outline"}
             onClick={() => {
               router.push("/checkout");
@@ -104,7 +118,7 @@ export function CartDrawer() {
             Proceed to checkout
           </Button>
           <Button
-          className="cursor-pointer hover:bg-first"
+            className="cursor-pointer hover:bg-first"
             variant={"outline"}
             onClick={() => {
               router.push("/cart");

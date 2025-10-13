@@ -50,7 +50,10 @@ export const selectCartTotal = createSelector([selectCartItems], (cartItems) =>
 export const cartTotalItemsWeight = createSelector([selectCartItems],(cartItems)=> cartItems.reduce((acc:number,item:PopulatedCartItemDTO)=>{
   const totalWeigh =  acc + (item.variant.weight * item.quantity);
   return Math.max(totalWeigh,0)
-},0))
+},0));
+
+// get t6otal items in cart
+export const totalCartItems = createSelector([selectCartItems],(cartItems) => cartItems.length || 0);
 
 // thunk to get actual cart associated with a user
 export const getCart = createAsyncThunk<

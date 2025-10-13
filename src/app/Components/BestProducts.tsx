@@ -81,7 +81,7 @@ const BestProducts: React.FC = () => {
         </header>
 
         {/* Product Section */}
-        <section className="w-full relative mt-6 ">
+        <section className="w-full relative mt-4 sm:mt-6">
           {section === "kaju" && <ProductCarousel product={product} />}
           {section === "almonds" && <ProductCarousel product={product} />}
         </section>

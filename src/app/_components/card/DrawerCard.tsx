@@ -20,7 +20,7 @@ interface DrawerCardProps {
   productId: string;
   productName: string;
   weight: number;
-  priceAfterDiscount?:number;
+  priceAfterDiscount?: number;
   image: string;
   quantity: number;
 }
@@ -61,7 +61,7 @@ const DrawerCard: React.FC<DrawerCardProps> = ({
         productId,
         delta,
       };
-      dispatch(updateQtyOptimistic({productId,delta}))
+      dispatch(updateQtyOptimistic({ productId, delta }));
       UPDATE_ITEM_QTY({ payload, setUserCart });
       setFallBackImage(image);
     } else {
@@ -70,7 +70,7 @@ const DrawerCard: React.FC<DrawerCardProps> = ({
   };
   return (
     <Card
-    data-aos="fade-right"
+      data-aos="fade-right"
       className="w-full h-auto relative"
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
@@ -97,7 +97,7 @@ const DrawerCard: React.FC<DrawerCardProps> = ({
           />
         </div>
         <article className="w-full h-auto relative flex items-start justify-start flex-col gap-2">
-          <h5 className="text-body">{productName}</h5>
+          <h5 className="text-body font-normal">{productName}</h5>
           <p>{weight / 1000} Kg</p>
           <p className="text-black">Rs&nbsp;{priceAfterDiscount}</p>
           <div className="relative flex items-center justify-center border-1 border-gray-200">
