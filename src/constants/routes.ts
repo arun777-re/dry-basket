@@ -1,4 +1,4 @@
-const SERVER_BASE_URL = "http://localhost:8000";
+const SERVER_BASE_URL = "https://dry-basket-server-2.onrender.com" ;
 
 export const ROUTES = {
   LOGIN: "/user/auth-login",
