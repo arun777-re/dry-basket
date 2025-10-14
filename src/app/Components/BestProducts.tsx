@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import Button from "../_components/Button";
 import ProductCarousel from "../_components/ProductCarousel";
-import { ProductIncomingDTO } from "@/types/product";
 import { useFetchCategoryProducts } from "@/hooks/fetchCategoryProduct";
 
 const BestProducts: React.FC = () => {
@@ -13,6 +12,7 @@ const BestProducts: React.FC = () => {
 
   const isMounted = React.useRef<boolean>(false);
   useEffect(() => {
+    if(isMounted.current) return;
     isMounted.current = true;
     (async()=>{
     await fetchCategoryProduct({catname:"Kaju", sectionName:"kaju", setSection});

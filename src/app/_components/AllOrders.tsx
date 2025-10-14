@@ -40,7 +40,6 @@ const hasPrevPage = !!(order && order.hasPrevPage);
     isMounted = false;
    });
   }, [page,limit]);
-console.log(order?.data)
   if (isLoading) return <Spinner />;
   if (!order?.data || order?.data.length === 0)
     return (

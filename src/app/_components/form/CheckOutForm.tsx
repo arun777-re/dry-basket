@@ -168,7 +168,6 @@ const CheckOutForm = () => {
               const verifyRes = await useVerifyPayment(payload);
 
               if (verifyRes === true) {
-                console.log("hello world api1", order);
                 await Promise.all([
                   useCreateOrderForShipment(order._id),
                   CLEAR_CART(),

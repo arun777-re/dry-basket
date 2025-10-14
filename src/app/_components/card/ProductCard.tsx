@@ -94,7 +94,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
     ])
   }
 
-  console.log("hello ",payload)
   return (
     <Card
       ref={activeRef}
