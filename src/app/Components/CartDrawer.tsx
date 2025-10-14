@@ -59,8 +59,9 @@ export function CartDrawer() {
       {/* Responsive width classes */}
       <DrawerContent
         className="
-          min-h-full
-           h-auto overflow-y-scroll overflow-x-hidden 
+        fixed right-0 top-0 bottom-0
+        flex flex-col 
+       overflow-hidden
           bg-white shadow-lg
           !w-screen           
           sm:!w-4/5             
@@ -69,7 +70,7 @@ export function CartDrawer() {
           xl:!w-[24vw]      
         "
       >
-        <div className=" p-4 flex flex-col gap-4 h-full relative ">
+        <div className=" p-4 flex flex-col gap-4 h-full overflow-y-auto relative ">
           <DialogTitle className="text-lg sm:text-xl font-semibold">
             Cart
           </DialogTitle>
