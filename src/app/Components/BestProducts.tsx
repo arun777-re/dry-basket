@@ -7,24 +7,34 @@ import { ProductIncomingDTO } from "@/types/product";
 import { useFetchCategoryProducts } from "@/hooks/fetchCategoryProduct";
 
 const BestProducts: React.FC = () => {
-  const [product, setProduct] = React.useState<ProductIncomingDTO[]>([]);
   const [section, setSection] = React.useState<string>("kaju");
 
-  const { fetchCategoryProduct } = useFetchCategoryProducts();
+  const { fetchCategoryProduct,products } = useFetchCategoryProducts();
 
+  const isMounted = React.useRef<boolean>(false);
   useEffect(() => {
-    fetchCategoryProduct("Kaju", "kaju", setProduct, setSection);
+    isMounted.current = true;
+    (async()=>{
+    await fetchCategoryProduct({catname:"Kaju", sectionName:"kaju", setSection});
+    
+    })();
+    return ()=>{
+      isMounted.current = false;
+    }
   }, [fetchCategoryProduct]);
 
   const getDriedFruits = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    fetchCategoryProduct("Kaju", "kaju", setProduct, setSection);
+    fetchCategoryProduct({catname:"Kaju", sectionName:"kaju", setSection});
   };
 
   const getSpicyMasala = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    fetchCategoryProduct("Almonds", "almonds", setProduct, setSection);
+    fetchCategoryProduct({catname:"Almonds", sectionName:"almonds", setSection});
   };
+
+
+const productData = (products && products.data )?? [];
 
   return (
     <section className="w-full relative min-h-screen mx-auto">
@@ -82,8 +92,8 @@ const BestProducts: React.FC = () => {
 
         {/* Product Section */}
         <section className="w-full relative mt-4 sm:mt-6">
-          {section === "kaju" && <ProductCarousel product={product} />}
-          {section === "almonds" && <ProductCarousel product={product} />}
+          {section === "kaju" && <ProductCarousel product={productData} />}
+          {section === "almonds" && <ProductCarousel product={productData} />}
         </section>
       </div>
     </section>

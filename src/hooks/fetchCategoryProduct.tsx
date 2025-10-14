@@ -24,27 +24,34 @@ export const useFetchCategoryProducts = () => {
   const filterRef = React.useRef(false);
   const singleProductRef = React.useRef(false);
   const allProductCategoryRef = React.useRef(false);
+  const fetchCategoryRef = React.useRef(false);
+
 
   const fetchCategoryProduct = React.useCallback(
-    (
-      catname: string,
+   async (
+      {catname,sectionName,setSection}:{catname: string,
       sectionName: string,
-      setProduct: (value: any) => any,
-      setSection: (value: any) => any
+      setSection: (value: any) => any}
     ) => {
-      dispatch(getFeaturedProduct({ catname, query: { page: 1, limit: 10 } }))
-        .unwrap()
-        .then((res: PaginatedProductResponse<ProductIncomingDTO>) => {
-          setProduct(res?.data);
-          setSection(sectionName);
-        })
-        .catch((err) => {
-          if (err instanceof Error) {
+      if(fetchCategoryRef.current) return;
+      fetchCategoryRef.current = true;
+      try {
+    
+     const res = await  dispatch(getFeaturedProduct({ catname, query: { page: 1, limit: 10 } }))
+        .unwrap();
+        res && setSection(sectionName);
+            
+      } catch (err) {
+         if (err instanceof Error) {
             console.error(err.message);
           } else {
             console.error(err);
           }
-        });
+      }finally {
+fetchCategoryRef.current = false
+      }
+        
+      
     },
     [dispatch]
   );

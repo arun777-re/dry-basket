@@ -65,10 +65,10 @@ const Category: React.FC<Props> = ({ searchValue }) => {
           ))}
         </div>
       ) : (
-        <section className='w-screen min-h-[60vh] h-auto gap-2 flex items-center justify-center text-center flex-col'>
+        <div className='w-full min-h-[60vh] h-auto gap-2 flex items-center justify-center text-center flex-col'>
           <h1 className="text-lg font-semibold text-head mb-4">No Products to Show</h1>
           <Spinner/>
-                  </section>
+                  </div>
       )}
       <div className="mt-8 flex justify-center">
         <Pagination

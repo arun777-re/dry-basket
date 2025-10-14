@@ -71,7 +71,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       return;
     }
     await Promise.all([
-     addToCart({ e, payload, backendpayload }),
+       addToCart({ e, payload, backendpayload }),
       getUserInteraction({productId,action:"addCart"})
     ])
   };
@@ -94,6 +94,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     ])
   }
 
+  console.log("hello ",payload)
   return (
     <Card
       ref={activeRef}
