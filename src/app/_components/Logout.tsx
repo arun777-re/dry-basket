@@ -19,7 +19,7 @@ const Logout = () => {
 
   const handleLogout = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    if (!user?._id) {
+    if (!user?.email) {
       toast.error('User not found')
       return
     }
