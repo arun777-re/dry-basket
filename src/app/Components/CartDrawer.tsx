@@ -70,7 +70,7 @@ export function CartDrawer() {
           xl:!w-[24vw]      
         "
       >
-        <div className=" p-4 flex flex-col gap-4 h-full overflow-y-auto relative ">
+        <div className=" p-4 flex flex-col gap-4 h-full overflow-y-auto scroll-smooth relative ">
           <DialogTitle className="text-lg sm:text-xl font-semibold">
             Cart
           </DialogTitle>
