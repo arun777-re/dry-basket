@@ -9,27 +9,28 @@ import useBlogHook from '@/hooks/blogHook'
 import { PaginationQuery } from '@/types/response'
 import Autoplay from 'embla-carousel-autoplay';
 import { EmblaOptionsType } from "embla-carousel";
+import Spinner from '../_components/Spinner'
 
 const Blog = () => {
 
 
     // here actual blogdata comes from backend
-const [blogData,setBlogData] = React.useState<BlogsIncomingDTO[]>();
-const {GET_ALL_BLOG} = useBlogHook();
+const {GET_ALL_BLOG,loading,blogs} = useBlogHook();
 
 const query:PaginationQuery = {
 page:1,
 limit:10
 }
+
+const isMounted = React.useRef<boolean>(false);
 React.useEffect(()=>{
-   let isMounted = true;
+  if(isMounted.current) return;
+    isMounted.current = true;
    (async()=>{
-  await GET_ALL_BLOG(query).then((res)=>{
-  res && setBlogData(res);
-  });
+  await GET_ALL_BLOG(query)
    })();
    return ()=>{
-    isMounted = false;
+    isMounted.current = false;
    }
 },[]);
 
@@ -49,6 +50,16 @@ React.useEffect(()=>{
     align: "start" as const,
     containScroll: "trimSnaps" as const,
   };
+
+  if(loading){
+    return (
+      <div className="w-screen flex flex-col items-center justify-center gap-4">
+        <h5>Loading...</h5>
+        <Spinner/>
+      </div>
+    )
+  }
+
   return (
     <section className='max-w-screen w-full h-auto relative'>
         <div className="relative w-full px-4 md:px-20 lg:px-30 flex flex-col items-center justify-center gap-10 pt-10 pb-10 sm:py-16 md:py-20">
@@ -64,7 +75,7 @@ React.useEffect(()=>{
         <section className="w-full relative ">
             <Carousel className='w-full' opts={opts} plugins={[autoplay]}>
                 <CarouselContent>
-                    {blogData && blogData.length > 0 && blogData.map((item,index)=>{
+                    {blogs.data && blogs.data.length > 0 && blogs.data.map((item:BlogsIncomingDTO,index:number)=>{
                         return (
                             <CarouselItem key={index} className='basis-full'>
                              <BlogCard {...item}/>
@@ -72,8 +83,9 @@ React.useEffect(()=>{
                         )
                     })}
                 </CarouselContent>
-                <CarouselPrevious  className='cursor-pointer border-2 border-head hidden sm:flex'/>
-                <CarouselNext  className='cursor-pointer border-2 border-head hidden sm:flex'/>
+               <CarouselPrevious aria-label="Previous blog" className='cursor-pointer border-2 border-head hidden sm:flex'/>
+<CarouselNext aria-label="Next blog" className='cursor-pointer border-2 border-head hidden sm:flex'/>
+
             </Carousel>
         </section>
         </div>
