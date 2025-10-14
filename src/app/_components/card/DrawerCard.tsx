@@ -70,7 +70,6 @@ const DrawerCard: React.FC<DrawerCardProps> = ({
   };
   return (
     <Card
-      data-aos="fade-right"
       className="w-full h-auto relative"
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
