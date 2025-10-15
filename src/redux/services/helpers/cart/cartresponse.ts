@@ -38,7 +38,7 @@ export const defaultCartCouponState:CouponInfoDTO = {
 
 export const defaultPopulatedCartResponse:PopulatedIncomingCartDTO = {
 _id:'',
-items:[defaultPopulatedCartItems],
+items:[],
 total:0,
 finalTotal:0,
 totalWeight:0,

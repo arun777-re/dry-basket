@@ -30,7 +30,7 @@ export function CartDrawer() {
     (state: RootState) => state.usercart.cart?.data
   );
 
-  const cartItemsLength = useSelector(totalCartItems);
+  const cartItemsLength:number = useSelector(totalCartItems);
 
   const { handleCartItems } = cartHook();
   const totalPrice = useSelector(selectCartTotal);
@@ -38,7 +38,7 @@ export function CartDrawer() {
   const finalCartItems = async () => {
     await handleCartItems();
   };
-
+  console.log("what is this nnnnnnn.....",guestCart?.items.length)
   return (
     <Drawer direction="right">
       <DrawerTrigger asChild>
@@ -107,7 +107,7 @@ export function CartDrawer() {
               Rs{user ? guestCart?.finalTotal : totalPrice}
             </p>
           </div>
-          {guestCart && (guestCart.items ?? []).length > 0 ? (
+          {cartItemsLength > 0 ? (
             <>
               <Button
                 className="cursor-pointer hover:bg-first"

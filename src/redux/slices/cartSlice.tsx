@@ -52,7 +52,7 @@ export const cartTotalItemsWeight = createSelector([selectCartItems],(cartItems)
   return Math.max(totalWeigh,0)
 },0));
 
-// get t6otal items in cart
+// get total items in cart
 export const totalCartItems = createSelector([selectCartItems],(cartItems) => cartItems.length || 0);
 
 // thunk to get actual cart associated with a user
@@ -72,7 +72,6 @@ export const addItemsToCart = createAsyncThunk<
   CartItemOutgoingDTO[],
   { rejectValue: ErrorProps }
 >("user/addto-cart", async (data, { rejectWithValue }) => {
-  console.log("hello data", data);
   const response = await CARTAPI.createcartoradditem({
     data,
     reject: rejectWithValue,
