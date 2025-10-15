@@ -56,8 +56,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   );
   // function to add to cart
   const { addToCart } = cartHook();
-  const {getUserInteraction} = useInteractionHook();
-  const {createOrAddItemToWishlist} = useWishlistHook()
+  const { getUserInteraction } = useInteractionHook();
+  const { createOrAddItemToWishlist } = useWishlistHook();
 
   const handleAddItem = async (e: React.MouseEvent<HTMLDivElement>) => {
     // stop execution when product is not in stock
@@ -66,33 +66,33 @@ const ProductCard: React.FC<ProductCardProps> = ({
       toast.error("Product is not in stock");
       return;
     }
-    if(!productId || !variants.length) {
+    if (!productId || !variants.length) {
       toast.error("Product data is incomplete. Cannot add to cart.");
       return;
     }
     await Promise.all([
-       addToCart({ e, payload, backendpayload }),
-      getUserInteraction({productId,action:"addCart"})
-    ])
+      addToCart({ e, payload, backendpayload }),
+      getUserInteraction({ productId, action: "addCart" }),
+    ]);
   };
 
-  const handleAddToWishList = async(e:React.MouseEvent<HTMLDivElement>)=>{
+  const handleAddToWishList = async (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
-        // stop execution when product is not in stock
+    // stop execution when product is not in stock
     if (variants[0].stock === 0 || variants[0].stock < 0) {
       e.stopPropagation();
       toast.error("Product is not in stock");
       return;
     }
-    if(!productId || !variants.length) {
+    if (!productId || !variants.length) {
       toast.error("Product data is incomplete. Cannot add to cart.");
       return;
     }
     await Promise.all([
-     createOrAddItemToWishlist({productId}),
-      getUserInteraction({productId,action:"addToWishlist"})
-    ])
-  }
+      createOrAddItemToWishlist({ productId }),
+      getUserInteraction({ productId, action: "addToWishlist" }),
+    ]);
+  };
 
   return (
     <Card
@@ -110,7 +110,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       >
         {variants[0]?.discount! > 0 &&
           new Date(variants?.[0]?.discountExpiry!).getTime() > Date.now() && (
-            <span className="absolute top-2 left-2 bg-head text-white px-2 py-1 text-xs rounded">
+            <span className="absolute top-2 left-0 bg-first/80 text-white px-2 py-1 text-xs rounded">
               {variants[0].discount!}% OFF
             </span>
           )}
@@ -127,7 +127,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             className="object-fill object-center"
           />
           <div
-            className={`absolute inset-0 ${
+            className={`absolute inset-0 flex items-center justify-center gap-6 md:${
               active ? "flex items-center justify-center gap-6" : "hidden"
             } transition-all duration-300 ease-in-out`}
           >
@@ -159,7 +159,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
             >
               <CiHeart size={20} className="text-head hover:text-white" />
             </div>
-
           </div>
         </div>
         <figcaption className="flex flex-col items-center justify-center gap-3">

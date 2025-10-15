@@ -107,7 +107,8 @@ if(data.slug){
   </div>
 
   {/* Hover Action Buttons */}
-  <div className="absolute top-3 right-3 flex flex-col gap-3 sm:gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+  <div className="absolute top-3 right-3 flex flex-col gap-3 sm:gap-4 
+  transition-opacity duration-300">
     <button
       onClick={handleRemoveItemFromWishlist}
       aria-label="Remove from wishlist"

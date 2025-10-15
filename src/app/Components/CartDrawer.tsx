@@ -107,27 +107,41 @@ export function CartDrawer() {
               Rs{user ? guestCart?.finalTotal : totalPrice}
             </p>
           </div>
-
-          <Button
-            className="cursor-pointer hover:bg-first"
-            variant={"outline"}
-            onClick={() => {
-              router.push("/checkout");
-              setTimeout(() => document.body.click(), 100);
-            }}
-          >
-            Proceed to checkout
-          </Button>
-          <Button
-            className="cursor-pointer hover:bg-first"
-            variant={"outline"}
-            onClick={() => {
-              router.push("/cart");
-              setTimeout(() => document.body.click(), 100);
-            }}
-          >
-            View Cart
-          </Button>
+          {guestCart && (guestCart.items ?? []).length > 0 ? (
+            <>
+              <Button
+                className="cursor-pointer hover:bg-first"
+                variant={"outline"}
+                onClick={() => {
+                  router.push("/checkout");
+                  setTimeout(() => document.body.click(), 100);
+                }}
+              >
+                Proceed to checkout
+              </Button>
+              <Button
+                className="cursor-pointer hover:bg-first"
+                variant={"outline"}
+                onClick={() => {
+                  router.push("/cart");
+                  setTimeout(() => document.body.click(), 100);
+                }}
+              >
+                View Cart
+              </Button>
+            </>
+          ) : (
+            <Button
+              className="cursor-pointer hover:bg-first"
+              variant={"outline"}
+              onClick={() => {
+                router.push("/allproducts");
+                setTimeout(() => document.body.click(), 100);
+              }}
+            >
+              Continue Shopping
+            </Button>
+          )}
 
           <DrawerClose asChild>
             <MdCancel
