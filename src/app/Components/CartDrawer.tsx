@@ -38,7 +38,6 @@ export function CartDrawer() {
   const finalCartItems = async () => {
     await handleCartItems();
   };
-  console.log("what is this nnnnnnn.....",guestCart?.items.length)
   return (
     <Drawer direction="right">
       <DrawerTrigger asChild>
