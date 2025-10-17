@@ -39,6 +39,8 @@ const initialState: CartState = {
 const selectCartItems = (state: RootState) =>
   state.usercart?.cart?.data?.items ?? [];
 
+console.log("cart items raw:", selectCartItems);
+
 // memorized derived selector for total price
 export const selectCartTotal = createSelector([selectCartItems], (cartItems) =>
   cartItems.reduce((acc:number, item:PopulatedCartItemDTO) => {
@@ -112,7 +114,6 @@ export const applyCoupon = createAsyncThunk<
     reject: rejectWithValue,
     code,
   });
-  console.log("coupon response .....",response)
   return response;
 });
 

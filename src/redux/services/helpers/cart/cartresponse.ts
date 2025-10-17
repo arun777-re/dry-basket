@@ -42,6 +42,6 @@ items:[],
 total:0,
 finalTotal:0,
 totalWeight:0,
-coupon:[defaultCartCouponState],
+coupon:[],
 }
 

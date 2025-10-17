@@ -29,6 +29,7 @@ export function CartDrawer() {
   const guestCart: PopulatedIncomingCartDTO | null = useSelector(
     (state: RootState) => state.usercart.cart?.data
   );
+  console.log("guest cart data in drawer:", guestCart);
 
   const cartItemsLength:number = useSelector(totalCartItems);
   console.log("cart items length", cartItemsLength);

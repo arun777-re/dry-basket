@@ -15,6 +15,8 @@ const getId = (p: string | PopulatedProductInfo) => {
 };
 // utility function for createcart reducer
 export function createCart(state:CartState,payload:PopulatedCartItemDTO){
+  // ignore blank dummy products
+  if(!payload.productId || getId(payload.productId) === '') return;
    if (!Array.isArray(state.cart?.data!.items) && state.cart.data) {
         state.cart.data = {total:0,
           items:[],
