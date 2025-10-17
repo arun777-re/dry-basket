@@ -62,6 +62,14 @@ const Blog = () => {
       </div>
     );
   }
+  if (blogs.data.length === 0) {
+    return (
+      <div className="w-screen flex flex-col items-center justify-center gap-4">
+        <h5>No Blogs to show</h5>
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <section className="max-w-screen w-full h-auto relative">
