@@ -31,6 +31,7 @@ export function CartDrawer() {
   );
 
   const cartItemsLength:number = useSelector(totalCartItems);
+  console.log("cart items length", cartItemsLength);
 
   const { handleCartItems } = cartHook();
   const totalPrice = useSelector(selectCartTotal);
@@ -100,12 +101,15 @@ export function CartDrawer() {
             <p>Your cart is empty.</p>
           )}
 
-          <div className="px-2 py-6 flex items-center justify-between border-y border-gray-100">
-            <p className="text-black">Total</p>
-            <p className="text-black">
-              Rs{user ? guestCart?.finalTotal : totalPrice}
-            </p>
-          </div>
+      {cartItemsLength > 0 && (
+  <div className="px-2 py-6 flex items-center justify-between border-y border-gray-100">
+    <p className="text-black">Total</p>
+    <p className="text-black">
+      Rs{user ? guestCart?.finalTotal : totalPrice}
+    </p>
+  </div>
+)}
+
           {cartItemsLength > 0 ? (
             <>
               <Button
