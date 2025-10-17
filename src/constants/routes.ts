@@ -13,6 +13,7 @@ export const ROUTES = {
  COMPLETE_PRODUCT:"/product",
   ALL_PRODUCTS: "/allproducts",
   OPEN_ROUTE_API_KEY: process.env.DISTANCE_API_KEY,
+  ALL_BLOGS:"/allblogs",
   WAREHOUSE_LAT: 28.996682,
   WAREHOUSE_LNG: 77.030826,
   OPEN_CAGE_API_KEY: process.env.NEXT_PUBLIC_OPENCAGE_API_KEY,

@@ -85,13 +85,15 @@ const Navbar = () => {
 
               {/* Desktop Links */}
               <ul className="hidden md:flex gap-8">
-                {["Home", "Shop", "About", "Contact", "Faq"].map((item) => {
+                {["Home", "Shop", "About", "Contact", "Faq","Blogs"].map((item) => {
                   let href = `/${item.toLowerCase().replace(/\s+/g, "")}`;
 
                   if (item === "Home") {
                     href = "/";
                   } else if (item === "Shop") {
                     href = "/allproducts";
+                  }else if(item==="Blogs"){
+                    href="/allblogs";
                   }
                   return (
                     <li key={item}>
@@ -125,13 +127,16 @@ const Navbar = () => {
           {mobileOpen && (
             <div className="md:hidden bg-black/95 px-6 pb-4">
               <ul className="flex flex-col gap-4 mt-2">
-                {["Home", "Shop", "About", "Contact", "Faq"].map((item) => {
+                {["Home", "Shop", "About", "Contact", "Faq","Blogs"].map((item) => {
                     let href = `/${item.toLowerCase().replace(/\s+/g, "")}`;
                     if (item === "Home") {
                     href = "/";
                   } else if (item === "Shop") {
                     href = "/allproducts";
+                  }else if(item==="Blogs"){
+                    href = "/allblogs"
                   }
+                  
                   return <li key={item}>
                     <Link
                       href={
