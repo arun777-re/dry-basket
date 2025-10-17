@@ -36,7 +36,7 @@ export const getAllBlogThunk = createAsyncThunk<
   PaginatedProductResponse<BlogsIncomingDTO>,
   PaginationQuery,
   { rejectValue: ErrorProps }
->("/banner-getall", async (query, { rejectWithValue }) => {
+>("/blog-getall", async (query, { rejectWithValue }) => {
   const res = await BLOGAPISFETCH.getAllBlogOperation({
     reject: rejectWithValue,
     query,

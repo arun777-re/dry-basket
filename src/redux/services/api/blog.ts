@@ -11,5 +11,5 @@ export const BLOGAPISFETCH = {
       getAllBlogOperation:async({reject,query}:{
         reject:(value:any)=>any,
         query:PaginationQuery
-    })=>await getRequest({url:`${ROUTES.BLOGSURLS.GETALL_BLOG}`,reject}),
+    })=>await getRequest({url:`${ROUTES.BLOGSURLS.GETALL_BLOG}`,reject,params:query}),
 }
