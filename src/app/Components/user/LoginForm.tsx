@@ -37,7 +37,10 @@ const LoginForm = () => {
   ) => {
     try {
       // API call to login user
-      useLoginUser({ values, route: redirect.get("redirect") as string });
+      if(!redirect.get("redirect")){
+        router.push("/")
+      }
+      useLoginUser({ values, route: `${redirect.get("redirect")}` || `${"/"}` });
       resetForm();
     } catch (err) {
       const message = err || "Login Failed";

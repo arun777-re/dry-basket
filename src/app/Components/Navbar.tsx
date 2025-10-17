@@ -12,11 +12,15 @@ import SearchBar from "../_components/SearchBar";
 import { UserPropsIncoming } from "@/types/user";
 import { IncomingAPIResponseFormat } from "@/types/response";
 import { ROUTES } from "@/constants/routes";
+import { totalCartItems } from "@/redux/slices/cartSlice";
 
 const Navbar = () => {
   const [active, setActive] = useState(false);
   const [search, setSearch] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+
+  const cartItemsLength = useSelector(totalCartItems);
 
   const router = useRouter();
 

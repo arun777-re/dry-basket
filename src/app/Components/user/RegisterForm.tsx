@@ -40,14 +40,13 @@ const RegisterForm = () => {
           values,
           route:`${ROUTES.HOME}`,
         });
-        toast.success("Signup successfull");
         resetForm();
       } catch (error: any) {
         toast.error(error.message);
         router.push(`${ROUTES.USER_LOGIN}`);
       }
     },
-    []
+    [router, useRegisterUser]
   );
 
   return (

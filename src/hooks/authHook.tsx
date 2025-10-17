@@ -83,6 +83,9 @@ const authHook = () => {
         if (hasItems) {
           CREATECARTORADDITEMTOCART({ data: outgoingItems });
         }
+        if(res.success){
+          toast.success("Registration successful");
+        }
         router.push(`${route}` || ROUTES.HOME);
         return res;
       } catch (error) {
