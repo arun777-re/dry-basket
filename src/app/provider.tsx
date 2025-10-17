@@ -21,7 +21,9 @@ export default function Providers({
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <Toaster position="top-right" />
+        <Toaster position="top-right" toastOptions={{
+          duration:2000
+        }}/>
         {children}
       </PersistGate>
     </Provider>

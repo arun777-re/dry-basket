@@ -11,6 +11,7 @@ import { ROUTES } from "@/constants/routes";
 import { mapPopulatedOurgoing } from "@/lib/middleware/normalizedCart";
 import useWishlistHook from "@/hooks/useWhislistHook";
 import useInteractionHook from "@/hooks/interactionHook";
+import toast from "react-hot-toast";
 
 const ProductDescription: React.FC<ProductDescriptionDTO> = ({
   _id,
@@ -55,8 +56,8 @@ const ProductDescription: React.FC<ProductDescriptionDTO> = ({
   };
 
   const { addToCart } = cartHook();
-  const {createOrAddItemToWishlist} = useWishlistHook();
-  const {getUserInteraction} = useInteractionHook();
+  const { createOrAddItemToWishlist } = useWishlistHook();
+  const { getUserInteraction } = useInteractionHook();
   const payload = [
     {
       productId: {
@@ -80,27 +81,53 @@ const ProductDescription: React.FC<ProductDescriptionDTO> = ({
     [payload]
   );
 
-  const handleAddItemToCart = async(e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleAddItem = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
-    await Promise.all([addToCart({ e, payload, backendpayload }),
-      getUserInteraction({productId:_id,action:"addCart"})
-    ]);
+    e.stopPropagation();
+    // stop execution when product is not in stock
+    if (variants[0].stock === 0 || variants[0].stock < 0) {
+      toast.error("Product is not in stock");
+      return;
+    }
+    // preventing to add incomplete product to cart
+    // Product validation
+    if (
+      !_id ||
+      !productName ||
+      !category ||
+      !variants.length ||
+      variants[0].weight <= 0 ||
+      !images.length
+    ) {
+      toast.error("Product data is incomplete. Cannot add to cart.");
+      return;
+    }
+    try {
+      await Promise.all([
+        addToCart({ e, payload, backendpayload }),
+        getUserInteraction({ productId: _id, action: "addCart" }),
+      ]);
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+      toast.error("Failed to add item to cart. Please try again.");
+    }
   };
 
-  const handleBuy = async(e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-   await  Promise.all([handleAddItemToCart(e),
-    getUserInteraction({productId:_id,action:"purchase"})
-   ]);
-    router.push(`${ROUTES.CHECKOUT}`);
-  };
-  const handleWishlist = async(e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleBuy = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     await Promise.all([
-      createOrAddItemToWishlist({productId:_id}),
-      getUserInteraction({productId:_id,action:"addToWishlist"})
-    ])
+      handleAddItem(e),
+      getUserInteraction({ productId: _id, action: "purchase" }),
+    ]);
+    router.push(`${ROUTES.CHECKOUT}`);
+  };
+  const handleWishlist = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    await Promise.all([
+      createOrAddItemToWishlist({ productId: _id }),
+      getUserInteraction({ productId: _id, action: "addToWishlist" }),
+    ]);
   };
 
   return (
@@ -133,25 +160,33 @@ const ProductDescription: React.FC<ProductDescriptionDTO> = ({
           </h2>
           <div className="flex flex-col items-start justify-center gap-1 py-4">
             <div className="flex gap-1">
-              {[...Array((avgRating || avgRating === 0) ?? 1)].map((_, index) => (
-                <FaStar key={index} className="text-prdct text-md" />
-              ))}
+              {[...Array((avgRating || avgRating === 0) ?? 1)].map(
+                (_, index) => (
+                  <FaStar key={index} className="text-prdct text-md" />
+                )
+              )}
             </div>
-            <p className="text-sm text-body">{avgRating === 0 ? <span>No reviews yet</span> : avgRating}</p>
+            <p className="text-sm text-body">
+              {avgRating === 0 ? <span>No reviews yet</span> : avgRating}
+            </p>
           </div>
           <p className="text-sm sm:text-base text-body">
             {description?.slice(0, 160)}...
           </p>
 
           <div className="flex items-center gap-4 py-4">
-            <span className="text-sm font-normal text-head font-rice tracking-wide">Price:</span>
+            <span className="text-sm font-normal text-head font-rice tracking-wide">
+              Price:
+            </span>
             <span className="text-base font-semibold text-head">
               Rs&nbsp;{variant?.priceAfterDiscount}/pc
             </span>
           </div>
 
           <div className="flex flex-wrap items-center gap-4 py-2">
-            <span className="text-sm font-normal text-head font-rice tracking-wide">Weight:</span>
+            <span className="text-sm font-normal text-head font-rice tracking-wide">
+              Weight:
+            </span>
             <select
               name="variant"
               value={variant.weight}
@@ -173,7 +208,9 @@ const ProductDescription: React.FC<ProductDescriptionDTO> = ({
           </div>
 
           <div className="flex flex-wrap items-center gap-4 py-2">
-            <span className="text-sm font-normal text-head font-rice tracking-wide">Quantity:</span>
+            <span className="text-sm font-normal text-head font-rice tracking-wide">
+              Quantity:
+            </span>
             <div className="flex">
               <button
                 onClick={() => setQty((prev) => Math.max(1, prev - 1))}
@@ -201,9 +238,9 @@ const ProductDescription: React.FC<ProductDescriptionDTO> = ({
           {/* Buttons */}
           <div className="flex flex-wrap gap-3 py-4">
             {[
-              { name: "Add to Cart", action: handleAddItemToCart },
+              { name: "Add to Cart", action: handleAddItem },
               { name: "Buy it now", action: handleBuy },
-              { name: "Add to Wishlist", action:handleWishlist },
+              { name: "Add to Wishlist", action: handleWishlist },
             ].map((value, key) => (
               <Button
                 key={key}

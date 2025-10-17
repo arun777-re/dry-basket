@@ -25,6 +25,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const activeRef = React.useRef<HTMLDivElement>(null);
   const [active, setActive] = React.useState<boolean>(false);
   const subtotal = useSelector(selectCartTotal);
+
   if (!productId || !variants.length) {
     console.error("Missing productId/variants for product", productName);
     return null;
@@ -60,20 +61,36 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const { createOrAddItemToWishlist } = useWishlistHook();
 
   const handleAddItem = async (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault()
+      e.stopPropagation();
     // stop execution when product is not in stock
     if (variants[0].stock === 0 || variants[0].stock < 0) {
-      e.stopPropagation();
       toast.error("Product is not in stock");
       return;
     }
-    if (!productId || !variants.length) {
-      toast.error("Product data is incomplete. Cannot add to cart.");
-      return;
-    }
-    await Promise.all([
+    // preventing to add incomplete product to cart
+  // Product validation
+  if (
+    !productId ||
+    !productName ||
+    !category ||
+    !variants.length ||
+    variants[0].weight <= 0 ||
+    !images.length
+  ) {
+    toast.error("Product data is incomplete. Cannot add to cart.");
+    return;
+  }
+  try {
+       await Promise.all([
       addToCart({ e, payload, backendpayload }),
       getUserInteraction({ productId, action: "addCart" }),
     ]);
+  } catch (error) {
+    console.error("Error adding item to cart:", error);
+    toast.error("Failed to add item to cart. Please try again.");
+  }
+ 
   };
 
   const handleAddToWishList = async (e: React.MouseEvent<HTMLDivElement>) => {

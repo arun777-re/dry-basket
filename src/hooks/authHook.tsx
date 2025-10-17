@@ -21,7 +21,6 @@ import { CartItemOutgoingDTO, PopulatedCartItemDTO } from "@/types/cart";
 import { ROUTES } from "@/constants/routes";
 import { mapPopulatedOurgoing } from "@/lib/middleware/normalizedCart";
 import toast from "react-hot-toast";
-import { BsChevronCompactLeft } from "react-icons/bs";
 
 const authHook = () => {
   const router = useRouter();
