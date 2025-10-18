@@ -4,6 +4,7 @@ import { FaStar } from "react-icons/fa";
 import Button from "../_components/Button";
 import ProductCarousel from "../_components/ProductCarousel";
 import { useFetchCategoryProducts } from "@/hooks/fetchCategoryProduct";
+import Image from "next/image";
 
 const BestProducts: React.FC = () => {
   const [section, setSection] = React.useState<string>("kaju");
@@ -37,16 +38,16 @@ const BestProducts: React.FC = () => {
 const productData = (products && products.data )?? [];
 
   return (
-    <section className="w-full relative min-h-screen mx-auto">
+    <section className="w-full relative min-h-screen h-auto mx-auto border-2 border-green-500 overflow-hidden">
       {/* Background Overlay */}
       <div className="absolute w-full h-full bg-white">
         {/* Background Image (enable if needed) */}
-        {/* <Image
+        <Image
           alt="best-product-background"
           src={"/images/bp-1.jpg"}
           fill
-          className="object-cover object-center"
-        /> */}
+          className="object-fill object-center"
+        />
       </div>
 
       <div className="relative w-full flex flex-col items-center justify-center 
@@ -91,10 +92,10 @@ const productData = (products && products.data )?? [];
         </header>
 
         {/* Product Section */}
-        <section className="w-full relative mt-4 sm:mt-6">
+        <div className="w-full h-full relative mt-4 sm:mt-6">
           {section === "kaju" && <ProductCarousel product={productData} />}
           {section === "almonds" && <ProductCarousel product={productData} />}
-        </section>
+        </div>
       </div>
     </section>
   );
