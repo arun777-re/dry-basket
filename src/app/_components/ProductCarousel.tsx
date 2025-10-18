@@ -32,7 +32,7 @@ const ProductCarousel: React.FC<DataProps> = ({ product }) => {
   };
 
   return (
-    <div className="w-full max-w-screen relative mx-auto">
+    <div className="w-full max-w-screen h-full border-2 border-red-800 relative mx-auto">
       <Carousel
         opts={opts}
         plugins={[autoREf]}
