@@ -16,16 +16,23 @@ const getId = (p: string | PopulatedProductInfo) => {
 // utility function for createcart reducer
 export function createCart(state:CartState,payload:PopulatedCartItemDTO){
   // ignore blank dummy products
-  if(!payload.productId || getId(payload.productId) === '') return;
-   if (!Array.isArray(state.cart?.data!.items) && state.cart.data) {
+  if(!payload.productId || getId(payload.productId) === '' || !payload.variant || payload.variant.weight <= 0 || payload.quantity === 0) {
+  console.warn("Ignoring invalid product in cart creation", payload);
+    return
+  };
+   if (!state.cart?.data || !Array.isArray(state.cart?.data!.items)) {
         state.cart.data = {total:0,
           items:[],
         finalTotal:0,
       totalWeight:0};
       }
+
+      // check if item already exists in cart
       const existingItem = state.cart.data && state.cart.data.items.find(
         (c:PopulatedCartItemDTO) => getId(c.productId) === getId(payload.productId)
       );
+
+      // update qty if exists else add new item
       if (existingItem) {
         existingItem.quantity += payload.quantity;
       } else {
