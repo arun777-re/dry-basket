@@ -46,7 +46,7 @@ const productData = (products && products.data )?? [];
           alt="best-product-background"
           src={"/images/bp-1.jpg"}
           fill
-          className="object-fill object-center"
+          className="object-fill object-center opacity-70"
         />
       </div>
 

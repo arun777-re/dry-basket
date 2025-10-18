@@ -95,9 +95,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   const handleAddToWishList = async (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
+      e.stopPropagation();
     // stop execution when product is not in stock
     if (variants[0].stock === 0 || variants[0].stock < 0) {
-      e.stopPropagation();
       toast.error("Product is not in stock");
       return;
     }
@@ -116,7 +116,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       ref={activeRef}
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
-      className="w-full shadow-sm h-100 sm:h-86 relative animated-border px-2
+      className="w-full shadow-sm h-100 sm:h-86 relative animated-border px-2 bg-gray-200
     "
     >
       <span className="border-left"></span>
