@@ -93,7 +93,7 @@ const productData = (products && products.data )?? [];
         </header>
 
         {/* Product Section */}
-        <div className="w-full  relative mt-4 sm:mt-6 border-2 border-blue-500 h-[70%]">
+        <div className="w-full  relative mt-4 sm:mt-6 border-2 bg-blue-500 h-[70%]">
           {section === "kaju" && <ProductCarousel product={productData} />}
           {section === "almonds" && <ProductCarousel product={productData} />}
         </div>
