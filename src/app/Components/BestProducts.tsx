@@ -38,7 +38,7 @@ const BestProducts: React.FC = () => {
 const productData = (products && products.data )?? [];
 
   return (
-    <section className="w-full relative min-h-[110vh] h-auto mx-auto border-2 border-green-500 overflow-hidden">
+    <section className="w-full relative min-h-screen h-auto mx-auto border-2 border-green-500 overflow-hidden">
       {/* Background Overlay */}
       <div className="absolute w-full h-full bg-white">
         {/* Background Image (enable if needed) */}
@@ -93,7 +93,7 @@ const productData = (products && products.data )?? [];
         </header>
 
         {/* Product Section */}
-        <div className="w-full h-auto relative mt-4 sm:mt-6">
+        <div className="w-full  relative mt-4 sm:mt-6 border-2 border-blue-500 h-[70%]">
           {section === "kaju" && <ProductCarousel product={productData} />}
           {section === "almonds" && <ProductCarousel product={productData} />}
         </div>
