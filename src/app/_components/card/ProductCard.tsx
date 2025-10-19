@@ -122,8 +122,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <span className="border-left"></span>
       <span className="border-bottom"></span>
       <figure
-        className="relative flex flex-col items-center justify-between h-96
-       sm:h-86 py-8 w-full "
+        className="relative flex flex-col items-center justify-between min-h-[360px] py-8 w-full "
       >
         {variants[0]?.discount! > 0 &&
           new Date(variants?.[0]?.discountExpiry!).getTime() > Date.now() && (
