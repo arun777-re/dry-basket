@@ -46,6 +46,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ page, setPage }) => {
               images={item.images ?? ["/images/banner-1.jpg"]}
               category={item.category ?? ""}
               productId={item._id}
+              description={item.description}
             />
           ))}
         </div>
