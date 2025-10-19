@@ -178,7 +178,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </div>
           </div>
         </div>
-        <figcaption className="flex flex-col items-center justify-center gap-3">
+        <figcaption className="flex flex-col items-center justify-center gap-4">
           <Link
             href={`/product/${slug}`}
             className="text-xl text-head font-normal text-center
