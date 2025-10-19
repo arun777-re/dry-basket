@@ -116,13 +116,14 @@ const ProductCard: React.FC<ProductCardProps> = ({
       ref={activeRef}
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
-      className="w-full shadow-sm h-auto sm:h-86 relative animated-border px-2 bg-gray-50
+      className="w-full shadow-sm h-100 sm:h-86 relative animated-border px-2 bg-gray-50
     "
     >
       <span className="border-left"></span>
       <span className="border-bottom"></span>
       <figure
-        className="relative flex flex-col items-center justify-between min-h-[360px] py-8 w-full "
+        className="relative flex flex-col items-center justify-between h-96
+       sm:h-86 py-8 w-full "
       >
         {variants[0]?.discount! > 0 &&
           new Date(variants?.[0]?.discountExpiry!).getTime() > Date.now() && (
