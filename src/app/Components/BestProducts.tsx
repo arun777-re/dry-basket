@@ -52,7 +52,7 @@ const productData = (products && products.data )?? [];
       </div>
 
       <div className="relative w-full flex flex-col items-center justify-center 
-      px-4 md:px-20 lg:px-30 py-10 sm:py-16 ">
+      px-4 md:px-20 lg:px-30 py-10 bg-green-200 sm:py-16 ">
         {/* Header */}
         <header className="w-full max-w-xl flex flex-col items-center text-center">
           <h2 className="text-2xl md:text-3xl font-semibold">Best Products</h2>
