@@ -1,181 +1,145 @@
 "use client";
 
 import React, { useCallback } from "react";
-import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
-import { PiGreaterThanBold } from "react-icons/pi";
-import { useRouter} from "next/navigation";
 import Link from "next/link";
-import { FaHome } from "react-icons/fa";
-import { FaPhone } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaLinkedin,
+  FaTwitter,
+  FaHome,
+  FaPhone,
+} from "react-icons/fa";
 import { GoClock } from "react-icons/go";
 import { MdOutlineEmail } from "react-icons/md";
+import { PiGreaterThanBold } from "react-icons/pi";
 
 const footerData = [
   {
-    title: "Help",
-    link1: "Search",
-    link2: "Help",
-    link3: "Information",
-    link4: "Privacy Policy",
-    link5: "Shipping Details",
+    title: "Quick Links",
+    links: [
+      { label: "Home", href: "/" },
+      { label: "Shop", href: "/shop" },
+      { label: "About Us", href: "/about" },
+      { label: "Contact Us", href: "/contact" },
+    ],
   },
   {
-    title: "Support",
-    link1: "Contact us",
-    link2: "About us",
-    link3: "Carrers",
-    link4: "Refunds",
-    link5: "Deliveries",
+    title: "Our Products",
+    links: [
+      { label: "Almonds", href: "/category/almonds" },
+      { label: "Cashews", href: "/category/cashews" },
+      { label: "Raisins", href: "/category/raisins" },
+      { label: "Pistachios", href: "/category/pistachios" },
+      { label: "Walnuts", href: "/category/walnuts" },
+    ],
   },
   {
-    title: "Help",
-    link1: "Search Terms",
-    link2: "Advance Search",
-    link3: "Help & Faq's",
-    link4: "Store Location",
-    link5: "Orders & Returns",
+    title: "Information",
+    links: [
+      { label: "Shipping Policy", href: "/shipping-policy" },
+      { label: "Return & Refund Policy", href: "/refund-policy" },
+      { label: "Privacy Policy", href: "/privacy-policy" },
+      { label: "Terms & Conditions", href: "/terms-and-conditions" },
+    ],
   },
 ];
 
 const Footer = () => {
-  const redirect = useRouter();
+  const router = useRouter();
 
-  // const Handlecontact = useCallback(
-  //   (e: React.MouseEvent<HTMLButtonElement>) => {
-  //     e.preventDefault();
-  //     redirect.push("/contact");
-  //   },
-  //   [redirect]
-  // );
+  const handleContact = useCallback(() => {
+    router.push("/contact");
+  }, [router]);
+
   return (
-    <section className="relative max-w-screen w-full mx-auto">
-      <div className="relative h-auto bg-black px-0 w-full z-0 top-[88%] text-gray-100/90 flex flex-col gap-20">
-          <div className="max-w-screen w-full grid grid-cols-1 lg:grid-cols-5 px-4 md:px-20 lg:px-30 pt-20 gap-6 ">
-            <div className="flex flex-col gap-5 items-start w-2/3 justify-start">
-              <h5 className="text-first">About Us</h5>
-              <p className="text-sm text-space text-white h-16 lg:h-20 tracking-wide">
-                A great plateform to buy and sell your properties without any
-                agent or commisions.
-              </p>
-              <Link
-                href={"/about"}
-                className="pt-8 transition-all duration-500 ease-in-out"
-              >
-                <p className="text-first hover:text-white">Read more</p>
-              </Link>
-            </div>
-            {footerData.map((item, key) => {
-              return (
-                <div
-                  className="flex flex-col gap-5 items-start w-3/3 justify-start"
-                  key={key}
-                >
-                  <h5 className="text-first">{item?.title}</h5>
-                  <ul className="flex flex-col gap-3">
-                    <li>
-                      <Link
-                        href="#"
-                        className="text-sm text-white hover:text-first tracking-wider cursor-pointer transition colors duration-350 ease-in-out flex gap-2 items-center-safe"
-                      >
-                        <PiGreaterThanBold /> {item?.link1}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="#"
-                        className="text-sm text-white hover:text-first tracking-wider cursor-pointer transition colors duration-350 ease-in-out flex gap-2 items-center-safe"
-                      >
-                        <PiGreaterThanBold /> {item?.link2}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="#"
-                        className="text-sm text-white hover:text-first tracking-wider cursor-pointer transition colors duration-350 ease-in-out flex gap-2 items-center-safe"
-                      >
-                        <PiGreaterThanBold /> {item?.link3}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="#"
-                        className="text-sm text-white hover:text-first tracking-wider cursor-pointer transition colors duration-350 ease-in-out flex gap-2 items-center-safe"
-                      >
-                        <PiGreaterThanBold /> {item?.link4}
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="#"
-                        className="text-sm text-white hover:text-first tracking-wider cursor-pointer transition colors duration-350 ease-in-out flex gap-2 items-center-safe"
-                      >
-                        <PiGreaterThanBold /> {item?.link5}
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-              );
-            })}
-            <div className="flex flex-col gap-5 items-start w-3/3 justify-start">
-              <h5 className="text-first">Contact Details</h5>
-              <ul className="flex flex-col gap-3">
-                {[
-                  {
-                    icon: <FaHome size={16} className="text-white" />,
-                    title: "Sec 14 Sonipat Haryana",
-                  },
-                  {
-                    icon: <FaPhone size={14} className="text-white" />,
-                    title: "67867867867",
-                  },
-                  {
-                    icon: <GoClock size={16} className="text-white" />,
-                    title: "9.30AM - 7.30PM",
-                  },
-                  {
-                    icon: <MdOutlineEmail size={16} className="text-white" />,
-                    title: "mail@example.com",
-                  },
-                ].map((item, key) => (
-                  <li className="flex flex-row items-center gap-2" key={key}>
-                    {item?.icon}
-                    <span className="text-sm text-white tracking-wider cursor-default transition colors duration-350 ease-in-out">
-                      {item?.title}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+    <footer className="relative w-full bg-black text-gray-100/90 flex flex-col gap-16 pt-20 pb-6">
+      {/* Top Footer */}
+      <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 px-6 md:px-12">
+        
+        {/* About Section */}
+        <div className="flex flex-col gap-4">
+          <h5 className="text-first text-lg font-semibold">About DryBasket</h5>
+          <p className="text-sm text-gray-300 leading-relaxed">
+            At DryBasket, we bring you the finest quality dry fruits sourced directly
+            from trusted farms. Freshness, purity, and premium taste — delivered to
+            your doorstep.
+          </p>
+          <Link
+            href="/about"
+            className="text-first hover:text-white transition-all duration-300 mt-2"
+          >
+            Read More →
+          </Link>
+        </div>
+
+        {/* Dynamic Footer Columns */}
+        {footerData.map((section, i) => (
+          <div key={i} className="flex flex-col gap-4">
+            <h5 className="text-first text-lg font-semibold">{section.title}</h5>
+            <ul className="flex flex-col gap-3">
+              {section.links.map((link, idx) => (
+                <li key={idx}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-gray-300 hover:text-first flex items-center gap-2 transition-all duration-300"
+                  >
+                    <PiGreaterThanBold className="text-xs" /> {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="w-full flex flex-col md:flex-row md:justify-between gap-6 md:gap-0 items-center px-4 md:px-20 lg:px-30 pb-5">
-            <p className="text-gray-400 tracking-widest leading-loose text-center">
-              © 2025 S.R Tech Solutions. All rights reserved.
-            </p>
-            <div className="flex flex-row gap-5 items-center justify-center">
-              <FaLinkedin
-                size={20}
-                className="text-white animate-pulse cursor-pointer"
-              />
-              <FaFacebook
-                size={20}
-                className="text-white animate-pulse cursor-pointer"
-              />
-              <FaInstagram
-                size={20}
-                className="text-white animate-pulse cursor-pointer"
-              />
-              <FaTwitter
-                size={20}
-                className="text-white animate-pulse cursor-pointer"
-              />
-              <FaInstagram
-                size={20}
-                className="text-white animate-pulse cursor-pointer"
-              />
-            </div>
-          </div>
+        ))}
+
+        {/* Contact Details */}
+        <div className="flex flex-col gap-4">
+          <h5 className="text-first text-lg font-semibold">Contact Us</h5>
+          <ul className="flex flex-col gap-3 text-sm text-gray-300">
+            <li className="flex items-center gap-2">
+              <FaHome size={16} /> 21-B, Model Town, Sonipat, Haryana
+            </li>
+            <li className="flex items-center gap-2">
+              <FaPhone size={16} /> +91 98765 43210
+            </li>
+            <li className="flex items-center gap-2">
+              <GoClock size={16} /> Mon–Sat: 9:00AM - 7:00PM
+            </li>
+            <li className="flex items-center gap-2">
+              <MdOutlineEmail size={16} /> support@drybasket.in
+            </li>
+          </ul>
+          <button
+            onClick={handleContact}
+            className="mt-4 bg-first text-black font-semibold px-5 py-2 rounded-lg hover:bg-white transition-all duration-300"
+          >
+            Contact Now
+          </button>
+        </div>
       </div>
-    </section>
+
+      {/* Bottom Bar */}
+      <div className="border-t border-gray-700 pt-4 flex flex-col md:flex-row justify-between items-center px-6 md:px-12 gap-4">
+        <p className="text-gray-400 text-sm text-center md:text-left">
+          © 2025 DryBasket. All Rights Reserved.
+        </p>
+        <div className="flex gap-5 items-center justify-center">
+          <Link href="https://www.linkedin.com" target="_blank">
+            <FaLinkedin className="hover:text-first transition-colors duration-300" size={20} />
+          </Link>
+          <Link href="https://www.facebook.com" target="_blank">
+            <FaFacebook className="hover:text-first transition-colors duration-300" size={20} />
+          </Link>
+          <Link href="https://www.instagram.com" target="_blank">
+            <FaInstagram className="hover:text-first transition-colors duration-300" size={20} />
+          </Link>
+          <Link href="https://x.com" target="_blank">
+            <FaTwitter className="hover:text-first transition-colors duration-300" size={20} />
+          </Link>
+        </div>
+      </div>
+    </footer>
   );
 };
 
