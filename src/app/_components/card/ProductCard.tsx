@@ -20,6 +20,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   productName,
   variants,
   category,
+  description,
   slug,
 }) => {
   const activeRef = React.useRef<HTMLDivElement>(null);
@@ -116,7 +117,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       ref={activeRef}
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
-      className="w-full shadow-sm h-130 sm:h-86 relative animated-border px-2 bg-gray-50
+      className="w-full shadow-sm h-130 sm:h-90 relative animated-border px-2
     "
     >
       <span className="border-left"></span>
@@ -185,6 +186,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           >
             {productName}
           </Link>
+          <p>{description}</p>
           <div className="flex flex-row items-center justify-between gap-4.5">
             <p className="font-extrabold text-sm">
               Rs&nbsp;{variants[0].priceAfterDiscount}

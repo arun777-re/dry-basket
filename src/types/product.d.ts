@@ -34,6 +34,7 @@ export interface ProductCardProps {
   variants: ProductVariantDTO[];
   slug: string;
   category: string;
+  description: string;
 }
 
 export interface SearchQueryDTO {
