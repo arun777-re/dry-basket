@@ -186,7 +186,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           >
             {productName}
           </Link>
-          <p>{description.slice(0,70)}</p>
+          <p>{(description ?? "").slice(0,70)}</p>
           <div className="flex flex-row items-center justify-between gap-4.5">
             <p className="font-extrabold text-sm">
               Rs&nbsp;{variants[0].priceAfterDiscount}
