@@ -14,34 +14,34 @@ import {
 import { GoClock } from "react-icons/go";
 import { MdOutlineEmail } from "react-icons/md";
 import { PiGreaterThanBold } from "react-icons/pi";
+import { ROUTES } from "@/constants/routes";
 
 const footerData = [
   {
     title: "Quick Links",
     links: [
-      { label: "Home", href: "/" },
-      { label: "Shop", href: "/shop" },
-      { label: "About Us", href: "/about" },
-      { label: "Contact Us", href: "/contact" },
+      { label: "Home", href: `${ROUTES.HOME}` },
+      { label: "Shop", href: `${ROUTES.ALL_PRODUCTS}` },
+      { label: "About Us", href: `${ROUTES.ABOUT}` },
+      { label: "Contact Us", href: `${ROUTES.CONTACT}` },
     ],
   },
   {
     title: "Our Products",
     links: [
-      { label: "Almonds", href: "/category/almonds" },
-      { label: "Cashews", href: "/category/cashews" },
-      { label: "Raisins", href: "/category/raisins" },
-      { label: "Pistachios", href: "/category/pistachios" },
-      { label: "Walnuts", href: "/category/walnuts" },
+      { label: "Almonds", href: "/products/almonds" },
+      { label: "Cashews", href: "/products/cashews" },
+      { label: "Raisins", href: "/products/raisins" },
+      { label: "Pistachios", href: "/products/pistachios" },
+      { label: "Walnuts", href: "/products/walnuts" },
     ],
   },
   {
     title: "Information",
     links: [
-      { label: "Shipping Policy", href: "/shipping-policy" },
-      { label: "Return & Refund Policy", href: "/refund-policy" },
-      { label: "Privacy Policy", href: "/privacy-policy" },
-      { label: "Terms & Conditions", href: "/terms-and-conditions" },
+      { label: "Shipping Policy", href: `${ROUTES.SHIPPING_POLICY}` },
+      { label: "Privacy Policy", href: `${ROUTES.PRIVACY_POLICY}` },
+      { label: "Terms & Conditions", href: `${ROUTES.TERMS_AND_CONDITIONS}` },
     ],
   },
 ];
