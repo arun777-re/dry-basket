@@ -122,7 +122,7 @@ const Footer = () => {
       {/* Bottom Bar */}
       <div className="border-t border-gray-700 pt-4 flex flex-col md:flex-row justify-between items-center px-6 md:px-12 gap-4">
         <p className="text-gray-400 text-sm text-center md:text-left">
-          © 2025 DryBasket. All Rights Reserved.
+          © 2025 S.R. Tech Solutions. All Rights Reserved.
         </p>
         <div className="flex gap-5 items-center justify-center">
           <Link href="https://www.linkedin.com" target="_blank">

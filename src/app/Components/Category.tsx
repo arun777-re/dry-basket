@@ -66,6 +66,7 @@ const Category: React.FC<Props> = ({ searchValue }) => {
               variants={item.variants}
               slug={item.slug}
               category={item.category}
+              description={item.description}
             />
           ))}
         </div>
