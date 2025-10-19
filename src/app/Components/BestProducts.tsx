@@ -38,7 +38,7 @@ const BestProducts: React.FC = () => {
 const productData = (products && products.data )?? [];
 
   return (
-    <section className="w-full relative min-h-screen h-auto mx-auto border-2 border-green-500 overflow-hidden">
+    <section className="w-full relative min-h-screen h-auto mx-auto border-2 border-green-500 overflow-hidden bg-amber-200">
       {/* Background Overlay */}
       <div className="absolute w-full h-full bg-white">
         {/* Background Image (enable if needed) */}
