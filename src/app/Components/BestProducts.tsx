@@ -40,7 +40,7 @@ const productData = (products && products.data )?? [];
   return (
     <section className="w-full relative min-h-screen h-auto mx-auto overflow-hidden">
       {/* Background Overlay */}
-      <div className="absolute w-full">
+      <div className="absolute w-full h-full inset-0 z-0">
         {/* Background Image (enable if needed) */}
         <Image
           alt="best-product-background"

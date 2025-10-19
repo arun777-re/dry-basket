@@ -116,7 +116,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       ref={activeRef}
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
-      className="w-full shadow-sm h-140 sm:h-86 relative animated-border px-2 bg-gray-50
+      className="w-full shadow-sm h-130 sm:h-86 relative animated-border px-2 bg-gray-50
     "
     >
       <span className="border-left"></span>
