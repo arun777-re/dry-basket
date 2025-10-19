@@ -40,7 +40,7 @@ const productData = (products && products.data )?? [];
   return (
     <section className="w-full relative min-h-screen h-auto mx-auto overflow-hidden bg-red-600">
       {/* Background Overlay */}
-      <div className="absolute w-full h-full">
+      <div className="absolute w-full">
         {/* Background Image (enable if needed) */}
         <Image
           alt="best-product-background"
@@ -52,7 +52,7 @@ const productData = (products && products.data )?? [];
       </div>
 
       <div className="relative w-full flex flex-col items-center justify-center 
-      px-4 md:px-20 lg:px-30 py-10 bg-green-200 sm:py-16 ">
+      px-4 md:px-20 lg:px-30 py-10 sm:py-16 ">
         {/* Header */}
         <header className="w-full max-w-xl flex flex-col items-center text-center">
           <h2 className="text-2xl md:text-3xl font-semibold">Best Products</h2>
@@ -91,9 +91,8 @@ const productData = (products && products.data )?? [];
             </Button>
           </div>
         </header>
-
         {/* Product Section */}
-        <div className="w-full  relative mt-4 sm:mt-6 border-2 bg-blue-500 h-[70%]">
+        <div className="w-full relative mt-4 sm:mt-6 h-[70%]">
           {section === "kaju" && <ProductCarousel product={productData} />}
           {section === "almonds" && <ProductCarousel product={productData} />}
         </div>

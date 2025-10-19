@@ -32,7 +32,7 @@ const ProductCarousel: React.FC<DataProps> = ({ product }) => {
   };
 
   return (
-    <div className="w-full max-w-screen  border-2 border-red-800 relative mx-auto">
+    <div className="w-full max-w-screen relative mx-auto">
       <Carousel
         opts={opts}
         plugins={[autoREf]}
@@ -68,7 +68,7 @@ const ProductCarousel: React.FC<DataProps> = ({ product }) => {
             <DummyComponent />
           )}
         </CarouselContent>
-        <div className="flex justify-center items-center absolute align-middle gap-4 top-110 sm:top-104 -translate-x-1/2 left-1/2">
+        <div className="flex justify-center items-center absolute align-middle gap-4 top-140 sm:top-104 -translate-x-1/2 left-1/2">
          <CarouselPrevious className="absolute cursor-pointer border-2 border-head"/>
         <CarouselNext className="absolute  cursor-pointer border-2 border-head"/>
         </div>
