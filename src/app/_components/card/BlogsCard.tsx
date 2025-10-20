@@ -7,7 +7,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { BlogsIncomingDTO } from "@/types/blog";
 
-const PremiumCard: React.FC<BlogsIncomingDTO> = ({
+const BlogsCard: React.FC<BlogsIncomingDTO> = ({
     blogImage,
     description,
     title,
@@ -58,4 +58,4 @@ const PremiumCard: React.FC<BlogsIncomingDTO> = ({
   );
 };
 
-export default PremiumCard;
+export default BlogsCard;

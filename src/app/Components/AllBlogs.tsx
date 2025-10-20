@@ -3,6 +3,8 @@
 
 import React from 'react';
 import useBlogHook from '@/hooks/blogHook';
+import BlogsCard from '../_components/card/BlogsCard';
+import { BlogsIncomingDTO } from '@/types/blog';
 
 
 const AllBlogs = () => {
@@ -27,12 +29,8 @@ if(!blogs || !Array.isArray(blogs.data)){
     <aside className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         </aside>
         <main className="w-[70%] flex flex-col items-center justify-center gap-6">
-{blogs && blogs.data && blogs.data.map((blog:any)=>(
-    <div key={blog._id} className="w-full border border-gray-300 rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow duration-300">
-        <h2 className="text-2xl font-semibold mb-2">{blog.title}</h2>
-        <p className="text-gray-700 mb-4">{blog.description}</p>
-        <div className="text-sm text-gray-500">By {blog.author} on {new Date(blog.createdAt).toLocaleDateString()}</div>
-    </div>
+{blogs && blogs.data && blogs.data.map((blog:BlogsIncomingDTO)=>(
+   <BlogsCard key={blog.slug} {...blog}/>
 ))}
         </main>
 </div>
