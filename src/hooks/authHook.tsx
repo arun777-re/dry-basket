@@ -73,29 +73,29 @@ const authHook = () => {
     [dispatch]
   );
 
-  const useRegisterUser = React.useCallback(
-    async ({ values, route }: { values: UserPropsOutgoing; route: string }) => {
-      if (signupRef.current) return;
-      signupRef.current = true;
-      try {
-        const res = await dispatch(createUser(values)).unwrap();
-        if (hasItems) {
-          CREATECARTORADDITEMTOCART({ data: outgoingItems });
-        }
-        if(res.success){
-          toast.success("Registration successful");
-        }
-        router.push(`${route}` || ROUTES.HOME);
-        return res;
-      } catch (error) {
-        toast.error("Error in signup");
-        router.push(`${ROUTES.USER_LOGIN}`);
-      } finally {
-        signupRef.current = false;
+ const useRegisterUser = React.useCallback(
+  async ({ values }: { values: UserPropsOutgoing; route: string }) => {
+    if (signupRef.current) return null;
+    signupRef.current = true;
+
+    try {
+      const res = await dispatch(createUser(values)).unwrap();
+
+      // Add to cart if necessary
+      if (hasItems) {
+        await CREATECARTORADDITEMTOCART({ data: outgoingItems });
       }
-    },
-    [dispatch, hasItems, outgoingItems, router]
-  );
+
+      return res; // Let caller decide what to do with success or failure
+    } catch (error: any) {
+      throw error; // propagate error to caller (handleSignUp)
+    } finally {
+      signupRef.current = false;
+    }
+  },
+  [dispatch, hasItems, outgoingItems]
+);
+
 
   const useLoginUser = React.useCallback(
     async ({ values, route }: { values: LoginProps; route: string }) => {

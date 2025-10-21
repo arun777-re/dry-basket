@@ -30,7 +30,7 @@ const RegisterForm = () => {
 
   const router = useRouter();
 
-  const handleSignUp = useCallback(
+const handleSignUp = useCallback(
   async (
     values: registerProps,
     { resetForm }: FormikHelpers<registerProps>
@@ -46,20 +46,18 @@ const RegisterForm = () => {
         return;
       }
 
-      if (res.status === 201) {
+      if (res.success || res.status === 201) {
         toast.success("Registration successful! Please login.");
         resetForm();
         router.push(ROUTES.USER_LOGIN);
       } else {
-        // Gracefully handle expected server errors
         const message =
-          res.message ||
+          res?.message ||
           "Registration failed. Please check your details and try again.";
         toast.error(message);
         console.warn("Registration error:", res);
       }
     } catch (error: any) {
-      // Handle network or unexpected runtime errors safely
       console.error("Unexpected error during registration:", error);
 
       const message =
@@ -68,12 +66,13 @@ const RegisterForm = () => {
         "Something went wrong. Please try again later.";
 
       toast.error(message);
-      // optional: don't redirect on every error — only when you want to force login
-      // router.push(ROUTES.USER_LOGIN);
+      // optional: only redirect if registration actually failed
+      router.push(ROUTES.USER_LOGIN);
     }
   },
   [router, useRegisterUser]
 );
+
 
 
   return (
