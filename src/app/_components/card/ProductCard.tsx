@@ -102,7 +102,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       toast.error("Product is not in stock");
       return;
     }
-    if (!productId || !variants.length) {
+    if (!productId || !variants.length || !productName || !category || variants[0].weight <= 0 || !images.length) {
       toast.error("Product data is incomplete. Cannot add to cart.");
       return;
     }

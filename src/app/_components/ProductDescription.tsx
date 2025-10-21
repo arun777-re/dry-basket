@@ -48,6 +48,7 @@ const ProductDescription: React.FC<ProductDescriptionDTO> = ({
     setTransformOrigin(`${x}% ${y}%`);
   };
 
+  // which variant users selects
   const handleVariants = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault();
     const selectedWeight = Number(e.target.value);
@@ -55,9 +56,12 @@ const ProductDescription: React.FC<ProductDescriptionDTO> = ({
     if (selectedVariant) setVariant(selectedVariant);
   };
 
+  // hooks
   const { addToCart } = cartHook();
   const { createOrAddItemToWishlist } = useWishlistHook();
   const { getUserInteraction } = useInteractionHook();
+
+  // making payload for adding to cart for both frontend and backend
   const payload = [
     {
       productId: {
@@ -76,11 +80,13 @@ const ProductDescription: React.FC<ProductDescriptionDTO> = ({
       subtotal: variant?.priceAfterDiscount! * qty,
     },
   ];
+  // normalizing cart items for backend
   const backendpayload = React.useMemo(
     () => mapPopulatedOurgoing(payload),
     [payload]
   );
 
+  // add to cart handler
   const handleAddItem = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -113,17 +119,49 @@ const ProductDescription: React.FC<ProductDescriptionDTO> = ({
     }
   };
 
+  // buy it now handler
   const handleBuy = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    e.stopPropagation();
+
+      // stop execution when product is not in stock
+    if (variants[0].stock === 0 || variants[0].stock < 0) {
+      toast.error("Product is not in stock");
+      return;
+    }
+        if (
+      !_id ||
+      !productName ||
+      !category ||
+      !variants.length ||
+      variants[0].weight <= 0 ||
+      !images.length
+    ) {
+      toast.error("Product data is incomplete. Cannot add to cart.");
+      return;
+    }
     await Promise.all([
       handleAddItem(e),
       getUserInteraction({ productId: _id, action: "purchase" }),
     ]);
     router.push(`${ROUTES.CHECKOUT}`);
   };
+
+  // add to wishlist handler
   const handleWishlist = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+        if (
+      !_id ||
+      !productName ||
+      !category ||
+      !variants.length ||
+      variants[0].weight <= 0 ||
+      !images.length
+    ) {
+      toast.error("Product data is incomplete. Cannot add to cart.");
+      return;
+    }
     await Promise.all([
       createOrAddItemToWishlist({ productId: _id }),
       getUserInteraction({ productId: _id, action: "addToWishlist" }),
