@@ -31,29 +31,50 @@ const RegisterForm = () => {
   const router = useRouter();
 
   const handleSignUp = useCallback(
-    async (
-      values: registerProps,
-      { resetForm }: FormikHelpers<registerProps>
-    ) => {
-      try {
-       const res = await useRegisterUser({
-          values,
-          route:`${ROUTES.HOME}`,
-        });
-        if(res?.status === 201){
-          toast.success("Registration Successful! Please Login.");
-          resetForm();
-        }else if(res?.status === 400){
-          toast.error(res?.message ||"Registration Failed! Please try again.");
-          console.log("Registration error:", res?.message);
-        }
-      } catch (error: any) {
-        toast.error(error.message);
-        router.push(`${ROUTES.USER_LOGIN}`);
+  async (
+    values: registerProps,
+    { resetForm }: FormikHelpers<registerProps>
+  ) => {
+    try {
+      const res = await useRegisterUser({
+        values,
+        route: ROUTES.HOME,
+      });
+
+      if (!res) {
+        toast.error("No response from server. Please try again later.");
+        return;
       }
-    },
-    [router, useRegisterUser]
-  );
+
+      if (res.status === 201) {
+        toast.success("Registration successful! Please login.");
+        resetForm();
+        router.push(ROUTES.USER_LOGIN);
+      } else {
+        // Gracefully handle expected server errors
+        const message =
+          res.message ||
+          "Registration failed. Please check your details and try again.";
+        toast.error(message);
+        console.warn("Registration error:", res);
+      }
+    } catch (error: any) {
+      // Handle network or unexpected runtime errors safely
+      console.error("Unexpected error during registration:", error);
+
+      const message =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Something went wrong. Please try again later.";
+
+      toast.error(message);
+      // optional: don't redirect on every error — only when you want to force login
+      // router.push(ROUTES.USER_LOGIN);
+    }
+  },
+  [router, useRegisterUser]
+);
+
 
   return (
     <div className="w-full relative bg-gray-100 shadow-md py-10">
