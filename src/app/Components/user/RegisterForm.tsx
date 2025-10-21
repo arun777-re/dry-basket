@@ -43,9 +43,9 @@ const RegisterForm = () => {
         if(res?.status === 201){
           toast.success("Registration Successful! Please Login.");
           resetForm();
-        }else{
+        }else if(res?.status === 400){
           toast.error(res?.message ||"Registration Failed! Please try again.");
-          console.log("Registration error:", res);
+          console.log("Registration error:", res?.message);
         }
       } catch (error: any) {
         toast.error(error.message);
