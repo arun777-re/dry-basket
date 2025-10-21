@@ -65,7 +65,7 @@ const RegisterForm = () => {
     <section className="w-full min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-200 py-10 px-0">
       <div
         className="w-full max-w-md bg-white/80 backdrop-blur-md shadow-2xl 
-        rounded-3xl p-8 sm:p-10 border border-gray-100 transition-all duration-300"
+        rounded-3xl py-4 sm:p-10 border border-gray-100 transition-all duration-300"
       >
         <h2 className="text-2xl sm:text-3xl font-semibold text-center text-gray-800 mb-6">
           Create Your Account
