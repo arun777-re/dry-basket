@@ -65,7 +65,7 @@ const handleSignUp = useCallback(
         error?.message ||
         "Something went wrong. Please try again later.";
 
-      toast.error(message);
+      toast.error(error || message);
       // optional: only redirect if registration actually failed
       router.push(ROUTES.USER_LOGIN);
     }
