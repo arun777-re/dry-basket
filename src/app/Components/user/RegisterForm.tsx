@@ -36,11 +36,16 @@ const RegisterForm = () => {
       { resetForm }: FormikHelpers<registerProps>
     ) => {
       try {
-        useRegisterUser({
+       const res = await useRegisterUser({
           values,
           route:`${ROUTES.HOME}`,
         });
-        resetForm();
+        if(res?.status === 201){
+          toast.success("Registration Successful! Please Login.");
+          resetForm();
+        }else{
+          toast.error(res?.message ||"Registration Failed! Please try again.");
+        }
       } catch (error: any) {
         toast.error(error.message);
         router.push(`${ROUTES.USER_LOGIN}`);
