@@ -6,6 +6,7 @@ import {
   loginUser,
   logoutuser,
   updatePasswordThunk,
+  verifyUserThunk,
 } from "@/redux/slices/userSlice";
 import { AppDispatch, RootState } from "@/redux/store/store";
 import {
@@ -80,13 +81,7 @@ const authHook = () => {
 
     try {
       const res = await dispatch(createUser(values)).unwrap();
-
-      // Add to cart if necessary
-      if (hasItems) {
-        await CREATECARTORADDITEMTOCART({ data: outgoingItems });
-      }
-
-      return res; // Let caller decide what to do with success or failure
+      return res; 
     } catch (error: any) {
       throw error; // propagate error to caller (handleSignUp)
     } finally {
@@ -117,6 +112,26 @@ const authHook = () => {
     },
     [dispatch, hasItems, outgoingItems, router, CREATECARTORADDITEMTOCART]
   );
+  const verifyUserEmail  = React.useCallback(
+    async ({token}: {token:string }) => {
+      if (loginRef.current) return;
+      loginRef.current = true;
+      try {
+        const res = await dispatch(verifyUserThunk(token)).unwrap();
+        if (hasItems) {
+          CREATECARTORADDITEMTOCART({ data: outgoingItems });
+        }
+        router.push(`${ROUTES.HOME}`);
+        return res;
+      } catch (error) {
+        toast.error("Error in verify email");
+        router.push(`${ROUTES.USER_LOGIN}`);
+      } finally {
+        loginRef.current = false;
+      }
+    },
+    [dispatch, hasItems, outgoingItems, router, CREATECARTORADDITEMTOCART]
+  );
 
   const getUser = React.useCallback(async () => {
     try {
@@ -135,6 +150,7 @@ const authHook = () => {
     useLoginUser,
     getUser,
     UPDATE_USER_PASSWORD,
+    verifyUserEmail
   };
 };
 

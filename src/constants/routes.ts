@@ -24,6 +24,7 @@ export const ROUTES = {
   OPEN_CAGE_API_KEY: process.env.NEXT_PUBLIC_OPENCAGE_API_KEY,
   AUTH: {
     SIGNUP: `${SERVER_BASE_URL}/v1/public/auth/signup`,
+    VERIFY_EMAIL: `${SERVER_BASE_URL}/v1/public/auth/verify-email`,
     SIGNIN: `${SERVER_BASE_URL}/v1/public/auth/signin`,
     LOGOUT: `${SERVER_BASE_URL}/v1/public/auth/logout`,
     RESET_REQUSET: `${SERVER_BASE_URL}/v1/public/auth/reset-request`,

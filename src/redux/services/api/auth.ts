@@ -13,6 +13,11 @@ export const AuthAPI = {
       data: data,
       reject: reject,
     }),
+  verifyEmail: async (token:string,reject: (value: any) => any) =>
+    await getRequest({
+      url: `${ROUTES.AUTH.VERIFY_EMAIL}?token=${token}`,
+      reject: reject,
+    }),
   signin: async (data: LoginProps, reject: (value: any) => any) =>
     await postRequest({
       url: `${ROUTES.AUTH.SIGNIN}`,

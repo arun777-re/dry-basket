@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { CiHeart } from "react-icons/ci";
 import useInteractionHook from "@/hooks/interactionHook";
 import useWishlistHook from "@/hooks/useWhislistHook";
+import ProductCardImage from "../ProductCardImage";
 
 const ProductCard: React.FC<ProductCardProps> = ({
   productId,
@@ -61,6 +62,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   const { getUserInteraction } = useInteractionHook();
   const { createOrAddItemToWishlist } = useWishlistHook();
 
+  // add to cart handler
   const handleAddItem = async (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault()
       e.stopPropagation();
@@ -94,6 +96,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
  
   };
 
+  // add to wishlist handler
   const handleAddToWishList = async (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
       e.stopPropagation();
@@ -117,7 +120,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       ref={activeRef}
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
-      className="w-full shadow-sm h-130 sm:h-90 relative animated-border px-2
+      className="w-full shadow-sm h-130 sm:h-84 relative animated-border px-2 bg-white/96
     "
     >
       <span className="border-left"></span>
@@ -131,18 +134,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
               {variants[0].discount!}% OFF
             </span>
           )}
-        <div className="relative w-[100%] h-[60%] ">
-          <Image
-            src={
-              active && images[1]
-                ? images[1]
-                : images[0] ?? "/images/banner-1.jpg"
-            }
-            fill
-            priority
-            alt="product-image"
-            className="object-fill object-center"
-          />
+        <div className="relative w-[100%] h-[60%] transition-all duration-300 ease-in-out overflow-hidden">
+         <ProductCardImage active={active} images={images} />
           <div
             className={`absolute inset-0 flex items-center justify-center gap-6 md:${
               active ? "flex items-center justify-center gap-6" : "hidden"
@@ -179,14 +172,14 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         </div>
         <figcaption className="flex flex-col items-center justify-center gap-4">
-          <Link
+           <Link
             href={`/product/${slug}`}
             className="text-xl text-head font-normal text-center
           hover:text-first font-rice tracking-wider transition-all duration-300 ease-in-out"
           >
             {productName}
           </Link>
-          <p>{(description ?? "").slice(0,70)}</p>
+       
           <div className="flex flex-row items-center justify-between gap-4.5">
             <p className="font-extrabold text-sm">
               Rs&nbsp;{variants[0].priceAfterDiscount}

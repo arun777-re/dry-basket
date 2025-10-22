@@ -17,6 +17,7 @@ export interface UserState {
     logout:boolean;
     get:boolean;
     updatePassword:boolean;
+    verifyEmail:boolean;
 
   };
   error: ErrorProps;
@@ -31,6 +32,7 @@ const initialState: UserState = {
     logout:false,
     get:false,
     updatePassword:false,
+    verifyEmail:false,
   },
   error: defaultError
 
@@ -38,7 +40,7 @@ const initialState: UserState = {
 
 // thunk to create user
 export const createUser = createAsyncThunk<
-  IncomingAPIResponseFormat<UserPropsIncoming>,
+  IncomingAPIResponseFormat<null>,
   UserPropsOutgoing,
   { rejectValue: ErrorProps }
 >("/user/create", async (formData, { rejectWithValue }) => {
@@ -68,6 +70,23 @@ export const loginUser = createAsyncThunk<
   } catch (error: any) {
     return rejectWithValue({
       message: `Error during login user: ${error.message}`,
+      success: false,
+      status:500
+    });
+  }
+});
+// thunk for login user
+export const verifyUserThunk = createAsyncThunk<
+  IncomingAPIResponseFormat<UserPropsIncoming>,
+  string,
+  { rejectValue: ErrorProps }
+>("/user/verify", async (token, { rejectWithValue }) => {
+  try {
+  const response = await AuthAPI.verifyEmail(token,rejectWithValue)
+    return response;
+  } catch (error: any) {
+    return rejectWithValue({
+      message: `Error during verify user email: ${error.message}`,
       success: false,
       status:500
     });
@@ -159,7 +178,6 @@ const userSlice = createSlice({
     // register
       .addCase(createUser.fulfilled, (state, action) => {
         state.loading.register = false;
-        state.error = defaultError;
         state.user = action.payload;
       })
       .addCase(createUser.pending, (state) => {
@@ -188,6 +206,7 @@ const userSlice = createSlice({
       logout: false,
       get:false,
       updatePassword:false,
+      verifyEmail:false,
     };
   }
         state.loading.login = true;
@@ -202,7 +221,8 @@ const userSlice = createSlice({
       forgot: false,
       logout: false,
       get:false,
-      updatePassword:false
+      updatePassword:false,
+      verifyEmail:false,
     };
   }
 
@@ -251,12 +271,14 @@ const userSlice = createSlice({
       })
       .addCase(getUserThunk.fulfilled, (state, action) => {
         state.loading.get = false;
-        state.error = defaultError;
         state.user = action.payload;
       })
       .addCase(updatePasswordThunk.fulfilled, (state, action) => {
         state.loading.updatePassword = false;
-        state.error = defaultError;
+        state.user = action.payload;
+      })
+      .addCase(verifyUserThunk.fulfilled, (state, action) => {
+        state.loading.verifyEmail = false;
         state.user = action.payload;
       })
   },

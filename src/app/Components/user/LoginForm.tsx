@@ -7,6 +7,8 @@ import toast from "react-hot-toast";
 import Button from "@/app/_components/Button";
 import ForgotPass from "./ForgotPass";
 import authHook from "@/hooks/authHook";
+import { ROUTES } from "@/constants/routes";
+import { initialLoginSchema } from "@/app/validation/authValidation";
 
 interface loginProps {
   email: string;
@@ -18,10 +20,7 @@ const initialLoginValue: loginProps = {
   password: "",
 };
 
-const initialLoginSchema = yup.object().shape({
-  email: yup.string().email("Enter valid email type").required(),
-  password: yup.string().required(),
-});
+
 
 const LoginForm = () => {
   // state to open forgot password
@@ -37,10 +36,7 @@ const LoginForm = () => {
   ) => {
     try {
       // API call to login user
-      if(!redirect.get("redirect")){
-        router.push("/")
-      }
-      useLoginUser({ values, route: `${redirect.get("redirect")}` || `${"/"}` });
+      useLoginUser({ values, route: `${redirect.get("redirect")}` || `${ROUTES.HOME}` });
       resetForm();
     } catch (err) {
       const message = err || "Login Failed";
