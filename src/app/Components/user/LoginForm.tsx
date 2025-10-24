@@ -1,8 +1,7 @@
 "use client";
 import React from "react";
 import { Formik, FormikHelpers } from "formik";
-import * as yup from "yup";
-import {useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import Button from "@/app/_components/Button";
 import ForgotPass from "./ForgotPass";
@@ -20,14 +19,14 @@ const initialLoginValue: loginProps = {
   password: "",
 };
 
+type Props = {
+  setPage:(page:string)=>void;
+};
 
-
-const LoginForm = () => {
-  // state to open forgot password
+const LoginForm:React.FC<Props> = ({setPage}) => {
   const [pass, setPass] = React.useState<boolean>(false);
   const redirect = useSearchParams();
   const router = useRouter();
-
   const { useLoginUser } = authHook();
 
   const handleLogin = async (
@@ -35,87 +34,133 @@ const LoginForm = () => {
     { resetForm }: FormikHelpers<loginProps>
   ) => {
     try {
-      // API call to login user
-      useLoginUser({ values, route: `${redirect.get("redirect")}` || `${ROUTES.HOME}` });
+      await useLoginUser({
+        values,
+        route: redirect.get("redirect") || ROUTES.HOME,
+      });
       resetForm();
     } catch (err) {
-      const message = err || "Login Failed";
       toast.error("Login Failed");
       router.push("/user/auth-login");
-      console.error("login failed. Please check your credentials.");
+      console.error("Login failed:", err);
     }
   };
-  return (
-    <div className="max-w-[100vw] w-full relative bg-gray-100 shadow-md py-10 z-10">
-      <Formik
-        initialValues={initialLoginValue}
-        validationSchema={initialLoginSchema}
-        onSubmit={handleLogin}
-      >
-        {({
-          values,
-          errors,
-          handleBlur,
-          handleChange,
-          handleSubmit,
-          touched,
-        }) => (
-          <form
-            onSubmit={handleSubmit}
-            method="POST"
-            className="relative w-full flex flex-col px-4 z-20 
-        items-center justify-center gap-5  "
-          >
-            <div className="relative w-full h-auto flex flex-col items-start gap-5 md:px-10 ">
-              <input
-                type="email"
-                placeholder="Email:name@gmail.com"
-                name="email"
-                value={values.email}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                className="w-full py-3 px-6 focus:border-head border-1 border-transparent bg-white rounded-full placeholder:text-sm"
-              />
-              {touched.email && errors.email && (
-                <div className="text-red-500 text-sm">{errors.email}</div>
-              )}
-              <input
-                type="password"
-                placeholder="Password:Asdf@145"
-                name="password"
-                value={values.password}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                className="w-full py-3 px-6 focus:border-head border-1 border-transparent bg-white rounded-full placeholder:text-sm"
-              />
-              {touched.password && errors.password && (
-                <div className="text-red-500 text-sm">{errors.password}</div>
-              )}
 
+  return (
+    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-gray-100 px-4 py-10">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-2xl px-4 py-8 md:px-8 relative overflow-hidden">
+        <h2 className="text-2xl md:text-3xl font-normal text-center mb-6 text-gray-800">
+          Welcome Back 👋
+        </h2>
+
+        <Formik
+          initialValues={initialLoginValue}
+          validationSchema={initialLoginSchema}
+          onSubmit={handleLogin}
+        >
+          {({
+            values,
+            errors,
+            handleBlur,
+            handleChange,
+            handleSubmit,
+            touched,
+          }) => (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Email Field */}
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="example@gmail.com"
+                  value={values.email}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  className={`w-full rounded-xl border ${
+                    errors.email && touched.email
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  } bg-gray-50 focus:bg-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-300 px-4 py-3 text-sm`}
+                />
+                {touched.email && errors.email && (
+                  <p className="text-red-500 text-xs mt-1">{errors.email}</p>
+                )}
+              </div>
+
+              {/* Password Field */}
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="••••••••"
+                  value={values.password}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  className={`w-full rounded-xl border ${
+                    errors.password && touched.password
+                      ? "border-red-500"
+                      : "border-gray-300"
+                  } bg-gray-50 focus:bg-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-300 px-4 py-3 text-sm`}
+                />
+                {touched.password && errors.password && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.password}
+                  </p>
+                )}
+              </div>
+
+              {/* Login Button */}
               <button
                 type="submit"
-                className="px-6 py-2 flex items-center justify-center bg-transparent border-2 border-head
-             rounded-full cursor-pointer hover:bg-first
-             hover:border-first transition-all duration-500 ease-in-out font-medium"
+                className="w-full py-3 text-sm font-semibold text-white rounded-xl bg-indigo-600 hover:bg-indigo-700 transition-colors duration-300 shadow-md hover:shadow-lg"
               >
                 Login
               </button>
-            </div>
-          </form>
-        )}
-      </Formik>
-      <Button
-        type="button"
-        onClick={() => setPass(true)}
-        className="font-medium underline hover:text-first transition-all duration-500 ease-in-out"
-      >
-        Forgot Password ?
-      </Button>
-      {pass === true && (
-        <div className="absolute w-full h-full top-0 left-0 bg-black/60 z-50">
-          <ForgotPass setPass={setPass} />
+            </form>
+          )}
+        </Formik>
+
+        {/* Forgot Password */}
+        <div className="text-center mt-5">
+          <Button
+            type="button"
+            onClick={() => setPass(true)}
+            className="text-sm font-medium text-indigo-600 hover:text-indigo-800 underline transition-all duration-300"
+          >
+            Forgot Password?
+          </Button>
+           <p className="text-sm text-gray-600 text-center mt-4">
+                Already have an account?{" "}
+                <span
+                  onClick={() => setPage("register")}
+                  className="text-first hover:underline cursor-pointer"
+                >
+                  Sign Up
+                </span>
+              </p>
         </div>
-      )}
+
+        {/* Forgot Password Overlay */}
+        {pass && (
+          <div className="absolute inset-0 bg-black/60 z-50 flex items-center justify-center">
+            <ForgotPass setPass={setPass} />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -41,6 +41,7 @@ const authHook = () => {
   const loginRef = React.useRef(false);
   const logoutRef = React.useRef(false);
   const updatePassRef = React.useRef(false);
+  const verifyRef = React.useRef(false);
 
   const { CREATECARTORADDITEMTOCART } = cartHook();
   const dispatch = useDispatch<AppDispatch>();
@@ -114,8 +115,8 @@ const authHook = () => {
   );
   const verifyUserEmail  = React.useCallback(
     async ({token}: {token:string }) => {
-      if (loginRef.current) return;
-      loginRef.current = true;
+      if (verifyRef.current) return;
+      verifyRef.current = true;
       try {
         const res = await dispatch(verifyUserThunk(token)).unwrap();
         if (hasItems) {
@@ -127,7 +128,7 @@ const authHook = () => {
         toast.error("Error in verify email");
         router.push(`${ROUTES.USER_LOGIN}`);
       } finally {
-        loginRef.current = false;
+        verifyRef.current = false;
       }
     },
     [dispatch, hasItems, outgoingItems, router, CREATECARTORADDITEMTOCART]

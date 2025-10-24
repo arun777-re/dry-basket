@@ -22,7 +22,10 @@ const initialSignUpValue: RegisterProps = {
   password: "",
 };
 
-const RegisterForm = () => {
+type Props = {
+  setPage:(page:string)=>void
+};
+const RegisterForm:React.FC<Props> = ({setPage}) => {
   const { useRegisterUser } = authHook();
   const router = useRouter();
 
@@ -62,12 +65,11 @@ const RegisterForm = () => {
   );
 
   return (
-    <section className="w-full min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-200 py-10 px-0">
+    <section className="w-full min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-50 to-gray-200 py-10 px-4">
       <div
-        className="w-full max-w-md bg-white/80 backdrop-blur-md shadow-2xl 
-        rounded-3xl py-4 sm:p-10 border border-gray-100 transition-all duration-300"
+        className="w-full max-w-md bg-white shadow-lg rounded-2xl px-4 py-8 md:px-8 relative overflow-hidden"
       >
-        <h2 className="text-2xl sm:text-3xl font-semibold text-center text-gray-800 mb-6">
+        <h2 className="text-2xl sm:text-3xl font-normal text-center text-gray-800 mb-6">
           Create Your Account
         </h2>
 
@@ -91,6 +93,12 @@ const RegisterForm = () => {
             >
               {/* First Name */}
               <div>
+                   <label
+                  htmlFor="firstName"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  First Name
+                </label>
                 <input
                   type="text"
                   placeholder="First Name"
@@ -98,11 +106,11 @@ const RegisterForm = () => {
                   value={values.firstName}
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  className={`w-full py-3 px-5 bg-white border ${
-                    touched.firstName && errors.firstName
+                  className={`w-full rounded-xl border ${
+                    errors.email && touched.email
                       ? "border-red-500"
                       : "border-gray-300"
-                  } rounded-full text-gray-700 focus:ring-2 focus:ring-first focus:border-first transition`}
+                  } bg-gray-50 focus:bg-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-300 px-4 py-3 text-sm`}
                 />
                 {touched.firstName && errors.firstName && (
                   <p className="text-sm text-red-500 mt-1">
@@ -113,6 +121,12 @@ const RegisterForm = () => {
 
               {/* Last Name */}
               <div>
+                 <label
+                  htmlFor="lastName"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Last Name
+                </label>
                 <input
                   type="text"
                   placeholder="Last Name"
@@ -120,62 +134,75 @@ const RegisterForm = () => {
                   value={values.lastName}
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  className={`w-full py-3 px-5 bg-white border ${
-                    touched.lastName && errors.lastName
+                  className={`w-full rounded-xl border ${
+                    errors.email && touched.email
                       ? "border-red-500"
                       : "border-gray-300"
-                  } rounded-full text-gray-700 focus:ring-2 focus:ring-first focus:border-first transition`}
+                  } bg-gray-50 focus:bg-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-300 px-4 py-3 text-sm`}
                 />
                 {touched.lastName && errors.lastName && (
                   <p className="text-sm text-red-500 mt-1">{errors.lastName}</p>
                 )}
               </div>
 
-              {/* Email */}
-              <div>
+               <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Email Address
+                </label>
                 <input
                   type="email"
-                  placeholder="Email: name@example.com"
+                  id="email"
                   name="email"
+                  placeholder="example@gmail.com"
                   value={values.email}
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  className={`w-full py-3 px-5 bg-white border ${
-                    touched.email && errors.email
+                  className={`w-full rounded-xl border ${
+                    errors.email && touched.email
                       ? "border-red-500"
                       : "border-gray-300"
-                  } rounded-full text-gray-700 focus:ring-2 focus:ring-first focus:border-first transition`}
+                  } bg-gray-50 focus:bg-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-300 px-4 py-3 text-sm`}
                 />
                 {touched.email && errors.email && (
-                  <p className="text-sm text-red-500 mt-1">{errors.email}</p>
+                  <p className="text-red-500 text-xs mt-1">{errors.email}</p>
                 )}
               </div>
 
-              {/* Password */}
+              {/* Password Field */}
               <div>
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Password
+                </label>
                 <input
                   type="password"
-                  placeholder="Password: Asdf@123"
+                  id="password"
                   name="password"
+                  placeholder="••••••••"
                   value={values.password}
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  className={`w-full py-3 px-5 bg-white border ${
-                    touched.password && errors.password
+                  className={`w-full rounded-xl border ${
+                    errors.password && touched.password
                       ? "border-red-500"
                       : "border-gray-300"
-                  } rounded-full text-gray-700 focus:ring-2 focus:ring-first focus:border-first transition`}
+                  } bg-gray-50 focus:bg-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all duration-300 px-4 py-3 text-sm`}
                 />
                 {touched.password && errors.password && (
-                  <p className="text-sm text-red-500 mt-1">{errors.password}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.password}
+                  </p>
                 )}
               </div>
 
-              {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full py-3 mt-2 bg-first text-white font-medium 
-                rounded-full shadow-md hover:bg-head transition duration-300"
+                className="w-full py-3 text-sm font-semibold text-white rounded-xl bg-indigo-600 hover:bg-indigo-700 transition-colors duration-300 shadow-md hover:shadow-lg"
               >
                 Sign Up
               </button>
@@ -184,7 +211,7 @@ const RegisterForm = () => {
               <p className="text-sm text-gray-600 text-center mt-4">
                 Already have an account?{" "}
                 <span
-                  onClick={() => router.push(ROUTES.USER_LOGIN)}
+                  onClick={() => setPage("login")}
                   className="text-first hover:underline cursor-pointer"
                 >
                   Login here

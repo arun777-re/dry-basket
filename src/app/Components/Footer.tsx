@@ -60,7 +60,7 @@ const Footer = () => {
         
         {/* About Section */}
         <div className="flex flex-col gap-4">
-          <h5 className="text-first text-lg font-semibold">About DryBasket</h5>
+          <h5 className="text-first text-lg font-normal">About DryBasket</h5>
           <p className="text-sm text-gray-300 leading-relaxed">
             At DryBasket, we bring you the finest quality dry fruits sourced directly
             from trusted farms. Freshness, purity, and premium taste — delivered to
@@ -77,7 +77,7 @@ const Footer = () => {
         {/* Dynamic Footer Columns */}
         {footerData.map((section, i) => (
           <div key={i} className="flex flex-col gap-4">
-            <h5 className="text-first text-lg font-semibold">{section.title}</h5>
+            <h5 className="text-first text-lg font-normal">{section.title}</h5>
             <ul className="flex flex-col gap-3">
               {section.links.map((link, idx) => (
                 <li key={idx}>
@@ -95,7 +95,7 @@ const Footer = () => {
 
         {/* Contact Details */}
         <div className="flex flex-col gap-4">
-          <h5 className="text-first text-lg font-semibold">Contact Us</h5>
+          <h5 className="text-first text-lg font-normal">Contact Us</h5>
           <ul className="flex flex-col gap-3 text-sm text-gray-300">
             <li className="flex items-center gap-2">
               <FaHome size={16} /> 21-B, Model Town, Sonipat, Haryana
