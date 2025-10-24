@@ -5,6 +5,8 @@ import React from 'react';
 import useBlogHook from '@/hooks/blogHook';
 import BlogsCard from '../_components/card/BlogsCard';
 import { BlogsIncomingDTO } from '@/types/blog';
+import { premiumProductData } from '@/data/premiumProduct';
+import PremiumCard from '../_components/card/PremiumCard';
 
 
 const AllBlogs = () => {
@@ -30,7 +32,11 @@ const validBlogs = (blogs && Array.isArray(blogs.data) && blogs.data.filter((i:B
 <div className="py-10 sm:py-16 px-4 sm:px-10 md:px-20 w-full h-full relative flex flex-col-reverse md:flex-row items-start md:items-center justify-center gap-8">
   {/* Sidebar / Aside */}
   <aside className="w-full md:w-1/3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {/* Placeholder for future sidebar content */}
+   {
+    premiumProductData.slice(0.2).map((item)=>(
+      <PremiumCard key={item.category} category={item.category} description={item.description} image={item.image}/>
+    ))
+   }
   </aside>
 
   {/* Main Content */}
@@ -40,7 +46,7 @@ const validBlogs = (blogs && Array.isArray(blogs.data) && blogs.data.filter((i:B
         <BlogsCard key={blog.slug} {...blog} />
       ))
     ) : (
-      <h2 className="text-center text-gray-500">No Blogs to show</h2>
+      <h2 className="text-center text-lg text-gray-500">No Blogs to show</h2>
     )}
   </main>
 </div>

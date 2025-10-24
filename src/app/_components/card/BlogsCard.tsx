@@ -47,7 +47,7 @@ const BlogsCard: React.FC<BlogsIncomingDTO> = ({
             {title ?? ""}
           </h5>
           {heading && (
-            <span className="text-sm sm:text-base font-medium text-gray-600 line-clamp-1">
+            <span className="text-sm sm:text-base font-normal text-gray-600 line-clamp-1">
               {heading}
             </span>
           )}
