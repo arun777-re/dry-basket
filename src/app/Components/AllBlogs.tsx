@@ -33,7 +33,7 @@ const validBlogs = (blogs && Array.isArray(blogs.data) && blogs.data.filter((i:B
   {/* Sidebar / Aside */}
   <aside className="w-full md:w-1/3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
    {
-    premiumProductData.slice(0.2).map((item)=>(
+    premiumProductData.slice(0,2).map((item)=>(
       <PremiumCard key={item.category} category={item.category} description={item.description} image={item.image}/>
     ))
    }
