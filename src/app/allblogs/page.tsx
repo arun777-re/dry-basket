@@ -14,7 +14,7 @@ const AllBlogsPage = () => {
     <>
     <Navbar/>
     <Banner/>
-<AllBlogs/>
+     <AllBlogs/>
     <Footer/>
     </>
   )

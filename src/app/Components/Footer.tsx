@@ -57,14 +57,13 @@ const Footer = () => {
     <footer className="relative w-full bg-black text-gray-100/90 flex flex-col gap-16 pt-20 pb-6">
       {/* Top Footer */}
       <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 px-6 md:px-12">
-        
         {/* About Section */}
         <div className="flex flex-col gap-4">
           <h5 className="text-first text-lg font-normal">About DryBasket</h5>
           <p className="text-sm text-gray-300 leading-relaxed">
-            At DryBasket, we bring you the finest quality dry fruits sourced directly
-            from trusted farms. Freshness, purity, and premium taste — delivered to
-            your doorstep.
+            At DryBasket, we bring you the finest quality dry fruits sourced
+            directly from trusted farms. Freshness, purity, and premium taste —
+            delivered to your doorstep.
           </p>
           <Link
             href="/about"
@@ -126,16 +125,28 @@ const Footer = () => {
         </p>
         <div className="flex gap-5 items-center justify-center">
           <Link href="https://www.linkedin.com" target="_blank">
-            <FaLinkedin className="hover:text-first transition-colors duration-300" size={20} />
+            <FaLinkedin
+              className="hover:text-first transition-colors duration-300"
+              size={20}
+            />
           </Link>
           <Link href="https://www.facebook.com" target="_blank">
-            <FaFacebook className="hover:text-first transition-colors duration-300" size={20} />
+            <FaFacebook
+              className="hover:text-first transition-colors duration-300"
+              size={20}
+            />
           </Link>
           <Link href="https://www.instagram.com" target="_blank">
-            <FaInstagram className="hover:text-first transition-colors duration-300" size={20} />
+            <FaInstagram
+              className="hover:text-first transition-colors duration-300"
+              size={20}
+            />
           </Link>
           <Link href="https://x.com" target="_blank">
-            <FaTwitter className="hover:text-first transition-colors duration-300" size={20} />
+            <FaTwitter
+              className="hover:text-first transition-colors duration-300"
+              size={20}
+            />
           </Link>
         </div>
       </div>

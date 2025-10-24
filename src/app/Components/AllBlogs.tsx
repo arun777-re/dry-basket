@@ -8,7 +8,7 @@ import { BlogsIncomingDTO } from '@/types/blog';
 
 
 const AllBlogs = () => {
-        const [page,setPage] = React.useState<number>(1);
+    const [page,setPage] = React.useState<number>(1);
     const limit = 10;
 
     const {blogs,GET_ALL_BLOG} = useBlogHook();
@@ -23,17 +23,28 @@ const AllBlogs = () => {
 if(!blogs || !Array.isArray(blogs.data)){
     return <div>No Blogs Available</div>
 }
+
+const validBlogs = (blogs && Array.isArray(blogs.data) && blogs.data.filter((i:BlogsIncomingDTO) => i.slug !== "")) ?? [];
   return (
     <section className='max-w-screen w-full relative min-h-screen h-auto mx-auto '>
-<div className="py-10 sm:py-16 px-4 sm:px-10 md:px-20 w-full h-full relative flex flex-col-reverse md:flex-row items-center justify-center gap-8">
-    <aside className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        </aside>
-        <main className="w-[70%] flex flex-col items-center justify-center gap-6">
-{blogs && blogs.data && blogs.data.map((blog:BlogsIncomingDTO)=>(
-   <BlogsCard key={blog.slug} {...blog}/>
-))}
-        </main>
+<div className="py-10 sm:py-16 px-4 sm:px-10 md:px-20 w-full h-full relative flex flex-col-reverse md:flex-row items-start md:items-center justify-center gap-8">
+  {/* Sidebar / Aside */}
+  <aside className="w-full md:w-1/3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {/* Placeholder for future sidebar content */}
+  </aside>
+
+  {/* Main Content */}
+  <main className="w-full md:w-[70%] flex flex-col items-center justify-start gap-6">
+    {validBlogs.length > 0 ? (
+      validBlogs.map((blog: BlogsIncomingDTO) => (
+        <BlogsCard key={blog.slug} {...blog} />
+      ))
+    ) : (
+      <h2 className="text-center text-gray-500">No Blogs to show</h2>
+    )}
+  </main>
 </div>
+
     </section>
   )
 }
