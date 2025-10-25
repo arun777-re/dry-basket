@@ -39,8 +39,8 @@ const AllBlogs = () => {
     [];
 
   return (
-    <section className="w-full relative max-w-screen-xl mx-auto min-h-scree px-4 md:px-10 lg:px-20 py-10  border-2 border-green-500">
-      <div className="relative flex flex-col md:flex-row items-start justify-between gap  border-2 border-blue-500">
+    <section className="w-[100vw] relative min-h-screen  py-10  border-2 border-green-500">
+      <div className="relative flex flex-col md:flex-row items-start justify-between gap px-4 md:px-10 lg:px-20 border-2 border-blue-500">
         {/* Main Content */}
         <main className="flex-1 flex flex-col items-center justify-center w-full h-auto md:w-[70%]   border-2 border-red-500">
           <div className="w-full h-full relative flex items-center justify-center flex-wrap flex-row gap-4">
