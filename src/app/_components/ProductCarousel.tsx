@@ -31,6 +31,8 @@ const ProductCarousel: React.FC<DataProps> = ({ product }) => {
      slidesToScroll:1
   };
 
+  const validProductData = product && Array.isArray(product) ? product.filter((i)=> i._id && i._id.trim() !== "") : [];
+
   return (
     <div className="w-full max-w-screen relative mx-auto">
       <Carousel
@@ -40,8 +42,8 @@ const ProductCarousel: React.FC<DataProps> = ({ product }) => {
       >
         <CarouselContent className="-ml-0 box-border w-full flex relative h-auto
          flex-row py-2 sm:py-6">
-          {product && product.length > 0 ? (
-            product.map((item, key) => (
+          {validProductData.length > 0 ? (
+            validProductData.map((item, key) => (
               <CarouselItem
                 key={key}
                 className="

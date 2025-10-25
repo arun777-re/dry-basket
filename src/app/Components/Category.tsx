@@ -42,12 +42,11 @@ const Category: React.FC<Props> = ({ searchValue }) => {
   const hasNextPage = !!(products && products.hasNextPage);
   const hasPrevPage = !!(products && products.hasPrevPage);
 
+    const validProductData = products && Array.isArray(products.data) ? products.data.filter((i)=> i._id && i._id.trim() !== "") : [];
+
   return (
     <section className="max-w-screen-2xl mx-auto px-4 md:px-10 lg:px-20 py-10">
-      {products &&
-      products.data &&
-      Array.isArray(products.data) &&
-      products.data.length > 0 ? (
+      {validProductData.length > 0 ? (
         <div
           className="
             grid gap-6
@@ -57,7 +56,7 @@ const Category: React.FC<Props> = ({ searchValue }) => {
             lg:grid-cols-4
           "
         >
-          {products.data.map((item, index) => (
+          {validProductData.map((item, index) => (
             <ProductCard
               key={index}
               productId={item._id}

@@ -46,7 +46,7 @@ const RegisterForm:React.FC<Props> = ({setPage}) => {
         }
 
         if (res.success || res.status === 201) {
-          toast.success("Registration successful! Please login.");
+          toast.success(res.message || "Check your email!");
           resetForm();
           router.push(ROUTES.USER_LOGIN);
         } else {

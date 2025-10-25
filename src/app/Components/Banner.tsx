@@ -36,6 +36,7 @@ const Banner: React.FC<BannerProps> = ({ heading }) => {
     page: 1,
     limit: 7,
   };
+
   React.useEffect(() => {
     let isMounted = true;
     (async () => {
@@ -68,6 +69,7 @@ const Banner: React.FC<BannerProps> = ({ heading }) => {
     return <Spinner />;
   }
 
+  const validBanners = banners && Array.isArray(banners) ? banners.filter((i) => i._id && i._id.trim() !== "") : [];
   return (
     <>
       {/* Home page carousel */}
@@ -78,7 +80,7 @@ const Banner: React.FC<BannerProps> = ({ heading }) => {
       >
         <Carousel className="relative w-full" opts={opts} plugins={[autoplay]}>
           <CarouselContent className="w-full relative h-[50vh] sm:h-[60vh] md:h-[80vh] lg:h-[95vh] xl:h-screen flex gap-0 !p-0 !m-0">
-            {banners.map((item, key) => (
+            {validBanners.length > 0 && validBanners.map((item, key) => (
               <CarouselItem
                 key={key}
                 className="w-full !p-0 !m-0 relative basis-full flex-shrink-0 flex-grow-0"
