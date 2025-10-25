@@ -42,7 +42,7 @@ const AllBlogs = () => {
     <section className="w-full relative max-w-screen-xl mx-auto min-h-screen border-2 border-blue-400">
       <div className="relative flex flex-col md:flex-row items-start justify-between gap-8 border-2 border-red-400">
         {/* Main Content */}
-        <main className="flex-1 w-full md:w-[70%] flex items-center justify-center flex-wrap flex-row gap-4 border-2 border-yellow-400">
+        <main className="flex-1 w-full overflow-y-scroll h-auto md:w-[70%] flex items-center justify-center flex-wrap flex-col md:flex-row gap-4 border-2 border-yellow-400">
           {validBlogs.length > 0 ? (
             validBlogs.map((blog: BlogsIncomingDTO) => (
               <BlogsCard key={blog.slug} {...blog} />
