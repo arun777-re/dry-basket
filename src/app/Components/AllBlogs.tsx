@@ -39,8 +39,8 @@ const AllBlogs = () => {
     [];
 
   return (
-    <section className="w-full max-w-screen-xl mx-auto min-h-screen px-4  border-2 border-blue-400">
-      <div className="flex flex-col md:flex-row items-start justify-between gap-8 border-2 border-red-400">
+    <section className="w-full relative max-w-screen-xl mx-auto min-h-screen border-2 border-blue-400">
+      <div className="relative flex flex-col md:flex-row items-start justify-between gap-8 border-2 border-red-400">
         {/* Main Content */}
         <main className="flex-1 w-full md:w-[70%] flex items-center justify-center flex-wrap flex-row gap-4 border-2 border-yellow-400">
           {validBlogs.length > 0 ? (
