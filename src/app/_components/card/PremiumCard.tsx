@@ -30,13 +30,13 @@ const PremiumCard: React.FC<PremiumProductDTO> = ({
             alt={altText ?? "blog-image"}
             fill
             priority
-            className="object-cover object-center"
+            className="object-fill object-center"
           />
         </div>
 
         {/* content */}
         <article className="w-full flex flex-col items-center gap-3 p-4 text-center">
-          <h5 className="mb-0 font-semibold">{category}</h5>
+          <h5 className="mb-0 font-normal">{category}</h5>
           <p className=" line-clamp-3">{description}</p>
           <Button
             onClick={() => router.push(`/products/${category}`)}

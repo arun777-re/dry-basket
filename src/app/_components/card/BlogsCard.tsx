@@ -32,7 +32,7 @@ const BlogsCard: React.FC<BlogsIncomingDTO> = ({
             src={blogImage ?? "/images/banner-4.jpg"}
             alt={title ?? "blog-image"}
             fill
-            className="object-cover object-center"
+            className="object-fill object-center"
           />
           <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/50 to-transparent p-2">
             <span className="text-xs sm:text-sm text-white font-medium">
@@ -43,7 +43,7 @@ const BlogsCard: React.FC<BlogsIncomingDTO> = ({
 
         {/* Content */}
         <article className="flex flex-col items-start gap-2 p-4 sm:p-5 text-left">
-          <h5 className="text-lg sm:text-xl font-bold text-gray-800 line-clamp-2">
+          <h5 className="text-lg sm:text-xl font-normal text-gray-800 line-clamp-2">
             {title ?? ""}
           </h5>
           {heading && (
