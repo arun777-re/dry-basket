@@ -23,7 +23,7 @@ const BlogsCard: React.FC<BlogsIncomingDTO> = ({
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.4, ease: "easeInOut" }}
-      className="relative max-w-sm mx-auto sm:max-w-[320px] w-1/2"
+      className="relative max-w-sm mx-auto sm:max-w-[320px] w-full"
     >
       <Card className="flex flex-col h-full rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-500">
         {/* Image */}
