@@ -39,10 +39,10 @@ const AllBlogs = () => {
     [];
 
   return (
-    <section className="w-full max-w-screen-xl mx-auto min-h-screen px-4 sm:px-8 md:px-12 lg:px-20 py-10 sm:py-16">
-      <div className="flex flex-col md:flex-row items-start justify-between gap-8">
+    <section className="w-full max-w-screen-xl mx-auto min-h-screen px-4 sm:px-8 md:px-12 lg:px-20 py-10 sm:py-16 border-2 border-blue-400">
+      <div className="flex flex-col md:flex-row items-start justify-between gap-8 border-2 border-red-400">
         {/* Main Content */}
-        <main className="flex-1 w-full md:w-[70%] space-y-6 flex items-start justify-start flex-wrap flex-row gap-4">
+        <main className="flex-1 w-full md:w-[70%] flex items-center justify-center flex-wrap flex-row gap-4 border-2 border-yellow-400">
           {validBlogs.length > 0 ? (
             validBlogs.map((blog: BlogsIncomingDTO) => (
               <BlogsCard key={blog.slug} {...blog} />
@@ -63,7 +63,7 @@ const AllBlogs = () => {
         </main>
 
         {/* Sidebar */}
-        <aside className="w-full md:w-[30%] md:sticky md:top-24 space-y-6">
+        <aside className="w-full md:w-[30%] md:sticky md:top-24 space-y-6 border-2 border-green-400">
           {premiumProductData.slice(0, 2).map((item) => (
             <PremiumCard
               key={item.category}
