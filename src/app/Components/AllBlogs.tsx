@@ -42,7 +42,7 @@ const AllBlogs = () => {
     <section className="w-full max-w-screen-xl mx-auto min-h-screen px-4 sm:px-8 md:px-12 lg:px-20 py-10 sm:py-16">
       <div className="flex flex-col md:flex-row items-start justify-between gap-8">
         {/* Main Content */}
-        <main className="flex-1 w-full md:w-[70%] space-y-6">
+        <main className="flex-1 w-full md:w-[70%] space-y-6 place-items-start">
           {validBlogs.length > 0 ? (
             validBlogs.map((blog: BlogsIncomingDTO) => (
               <BlogsCard key={blog.slug} {...blog} />
