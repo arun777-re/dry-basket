@@ -41,7 +41,7 @@ const validBlogs = (blogs && Array.isArray(blogs.data) && blogs.data.filter((i:B
     <section className='max-w-screen w-full relative min-h-screen h-auto mx-auto '>
 <div className="py-10 sm:py-16 px-4 sm:px-10 md:px-20 w-full h-full relative flex flex-col-reverse md:flex-row items-start md:items-center justify-center gap-8">
   {/* Sidebar / Aside */}
-  <aside className="w-full md:w-1/3 flex flex-row md:flex-col items-start justify-start gap-6">
+  <aside className="w-full md:w-1/3 flex flex-row md:flex-col items-start justify-start gap-6 border-2 border-gray-600">
    {
     premiumProductData.slice(0,2).map((item)=>(
       <PremiumCard key={item.category} category={item.category} description={item.description} image={item.image}/>
@@ -50,7 +50,7 @@ const validBlogs = (blogs && Array.isArray(blogs.data) && blogs.data.filter((i:B
   </aside>
 
   {/* Main Content */}
-  <main className="w-full md:w-[70%] flex flex-row flex-wrap items-center justify-start gap-6">
+  <main className="w-full md:w-[70%] flex flex-row flex-wrap items-start justify-start gap-6 border-2 border-green-600">
     {validBlogs.length > 0 ? (
       validBlogs.map((blog: BlogsIncomingDTO) => (
         <BlogsCard key={blog.slug} {...blog} />
