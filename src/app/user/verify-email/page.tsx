@@ -7,7 +7,7 @@ const VerifyEmailPage = () => {
     const {verifyUserEmail} = authHook();
      const urlParams = new URLSearchParams(window.location.search);
             const token = urlParams.get('token') || '';
-
+alert(token);
     React.useEffect(()=>{
         (async()=>{
            
