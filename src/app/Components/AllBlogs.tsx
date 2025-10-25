@@ -40,10 +40,10 @@ const AllBlogs = () => {
 
   return (
     <section className="w-[100vw] relative min-h-screen  py-10  border-2 border-green-500">
-      <div className="relative flex flex-col md:flex-row items-start justify-between gap px-4 md:px-10 lg:px-20 border-2 border-blue-500">
+      <div className="relative flex flex-col md:flex-row items-start justify-between gap-4 md:gap-8 px-4 md:px-10 lg:px-20 border-2 border-blue-500">
         {/* Main Content */}
         <main className="flex-1 flex flex-col items-center justify-center w-full h-auto md:w-[70%] relative">
-          <div className="w-[100%] h-full relative flex items-center justify-center flex-row gap-4 border-2 border-red-500">
+          <div className="w-[100%] h-full relative flex items-center justify-center flex-col md:flex-row gap-4 border-2 border-red-500">
            {validBlogs.length > 0 ? (
             validBlogs.map((blog: BlogsIncomingDTO) => (
               <BlogsCard key={blog.slug} {...blog} />
@@ -52,7 +52,6 @@ const AllBlogs = () => {
             <h2 className="text-center text-lg text-gray-500">No Blogs to show</h2>
           )}
           </div>
-        
 
           {/* Pagination */}
           <div className="pt-6">
@@ -66,7 +65,7 @@ const AllBlogs = () => {
         </main>
 
         {/* Sidebar */}
-        <aside className="w-full md:w-[26%] md:sticky md:top-24 space-y-6 border-2 border-green-500">
+        <aside className="w-full md:w-[26%] relative md:sticky md:top-24 space-y-6 border-2 border-green-500">
           {premiumProductData.slice(0, 2).map((item) => (
             <PremiumCard
               key={item.category}
