@@ -25,7 +25,7 @@ const BlogsCard: React.FC<BlogsIncomingDTO> = ({
       transition={{ duration: 0.4, ease: "easeInOut" }}
       className="relative mx-auto w-full md:w-1/2"
     >
-      <Card className="flex flex-col h-full rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-500">
+      <Card className="flex flex-col h-full rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-500">
         {/* Image */}
         <div className="relative w-full h-44 sm:h-48 md:h-56 lg:h-60">
           <Image
