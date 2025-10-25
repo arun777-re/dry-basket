@@ -66,7 +66,7 @@ const AllBlogs = () => {
         </main>
 
         {/* Sidebar */}
-        <aside className="w-full md:w-[30%] md:sticky md:top-24 space-y-6 border-2 border-green-500">
+        <aside className="w-full md:w-[26%] md:sticky md:top-24 space-y-6 border-2 border-green-500">
           {premiumProductData.slice(0, 2).map((item) => (
             <PremiumCard
               key={item.category}
