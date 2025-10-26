@@ -101,7 +101,7 @@ const CompleteOrder = () => {
             <strong>Status:</strong> {order.orderStatus}
           </p>
           <p>
-            <strong>Amount:</strong> ₹{order.amount}
+            <strong>Amount:</strong> ₹{order.amount/100}
           </p>
           <p>
             <strong>Payment:</strong> {order.paymentType}
