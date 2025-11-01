@@ -38,6 +38,7 @@ const cartHook = () => {
       cartcreateRef.current = true;
       try {
         await dispatch(addItemsToCart(data));
+        toast.success("Product added to cart")
       } catch (error: any) {
         console.error(
           "Error during add item to cart or create cart",
