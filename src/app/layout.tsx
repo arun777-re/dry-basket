@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import "./styles/globals.css";
-import {Lato, Roboto, Pacifico } from "next/font/google";
+import {Nunito_Sans, Roboto, Pacifico } from "next/font/google";
 import AOSInit from "./_components/AOS";
 import Providers from "./provider";
 import Script from "next/script";
 
-export const spicyRIce = Lato({
+export const spicyRIce = Nunito_Sans({
   subsets: ["latin"],
   weight: ["400"],
   variable: "--font-spicy-rice",
