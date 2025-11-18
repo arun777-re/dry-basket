@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import "./styles/globals.css";
-import {Nunito_Sans, Roboto, Pacifico } from "next/font/google";
+import {Montserrat, Roboto, Pacifico } from "next/font/google";
 import AOSInit from "./_components/AOS";
 import Providers from "./provider";
 import Script from "next/script";
 
-export const spicyRIce = Nunito_Sans({
+export const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400","500","600","700"],
   variable: "--font-spicy-rice",
 });
 
@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${spicyRIce.variable} ${roboto.variable} ${pacifico.variable} antialiased`}
+        className={`${montserrat.variable} ${roboto.variable} ${pacifico.variable} antialiased`}
       >
         <AOSInit />
         <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="beforeInteractive"/>
