@@ -6,7 +6,7 @@
   box-sizing: border-box;
 }
 body {
-  font-family: var(--font-roboto);
+  font-family: var(--font-lato);
 }
 
 @theme inline {
@@ -121,7 +121,7 @@ body {
 }
 
 @theme {
-  --font-rice: "Spicy Rice", cursive;
+  --font-rice: "Lato", sans-serif;
   --font-roboto: "Roboto", sans-serif;
   --font-cursive:"Pacifico","cursive";
   --color-first: oklch(83.89% 0.184 77.63);
