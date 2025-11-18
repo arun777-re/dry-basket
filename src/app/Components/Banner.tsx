@@ -24,7 +24,6 @@ interface BannerProps {
 }
 
 const Banner: React.FC<BannerProps> = ({ heading }) => {
-  // get pathname
   const path = usePathname();
   const isHome = path === "/";
 
@@ -32,23 +31,15 @@ const Banner: React.FC<BannerProps> = ({ heading }) => {
     defaultBannerState,
   ]);
   const { GET_ALL_BANNER, loading } = useBannerHook();
-  const query: PaginationQuery = {
-    page: 1,
-    limit: 7,
-  };
+  const query: PaginationQuery = { page: 1, limit: 7 };
 
   React.useEffect(() => {
-    let isMounted = true;
     (async () => {
-      await GET_ALL_BANNER(query).then((res) => {
-        res && setBanners(res);
-      });
+      const res = await GET_ALL_BANNER(query);
+      res && setBanners(res);
     })();
-    return () => {
-      isMounted = false;
-    };
   }, [GET_ALL_BANNER]);
-  // autoplay configuration of banner
+
   const autoplay = React.useMemo(
     () =>
       Autoplay({
@@ -59,17 +50,18 @@ const Banner: React.FC<BannerProps> = ({ heading }) => {
     []
   );
 
-  // options for carousel
   const opts: Partial<EmblaOptionsType> = {
-    align: "start" as const,
-    containScroll: "trimSnaps" as const,
+    align: "start",
+    containScroll: "trimSnaps",
   };
 
-  if (loading) {
-    return <Spinner />;
-  }
+  if (loading) return <Spinner />;
 
-  const validBanners = banners && Array.isArray(banners) ? banners.filter((i) => i._id && i._id.trim() !== "") : [];
+  const validBanners =
+    banners && Array.isArray(banners)
+      ? banners.filter((i) => i._id && i._id.trim() !== "")
+      : [];
+
   return (
     <>
       {/* Home page carousel */}
@@ -80,22 +72,31 @@ const Banner: React.FC<BannerProps> = ({ heading }) => {
       >
         <Carousel className="relative w-full" opts={opts} plugins={[autoplay]}>
           <CarouselContent className="w-full relative h-[50vh] sm:h-[60vh] md:h-[80vh] lg:h-[95vh] xl:h-screen flex gap-0 !p-0 !m-0">
-            {validBanners.length > 0 && validBanners.map((item, key) => (
-              <CarouselItem
-                key={key}
-                className="w-full !p-0 !m-0 relative basis-full flex-shrink-0 flex-grow-0"
-                style={{ flex: "0 0 100%" }}
-              >
-                <BannerCard {...item} />
-              </CarouselItem>
-            ))}
+            {validBanners.length > 0 &&
+              validBanners.map((item, key) => (
+                <CarouselItem
+                  key={key}
+                  className="w-full !p-0 !m-0 relative basis-full flex-shrink-0 flex-grow-0"
+                  style={{ flex: "0 0 100%" }}
+                >
+                  <BannerCard {...item} />
+                </CarouselItem>
+              ))}
           </CarouselContent>
 
           {/* Prev / Next buttons */}
-          <CarouselPrevious className="hidden sm:flex sm:absolute border-none left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 bg-white p-2 rounded-full shadow-md cursor-pointer" />
+          <CarouselPrevious
+            className="hidden sm:flex sm:absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 
+            z-20 bg-[var(--color-first)] hover:bg-[var(--color-prdct)] 
+            border border-[var(--color-border)] p-2 rounded-full shadow-lg cursor-pointer
+            text-[var(--color-head)]"
+          />
+
           <CarouselNext
-            className="absolute right-2 sm:right-4 top-[90%] sm:top-1/2 -translate-y-1/2 z-20 bg-white p-2
-           rounded-sm border-none sm:rounded-full shadow-md cursor-pointer"
+            className="absolute right-2 sm:right-4 top-[90%] sm:top-1/2 -translate-y-1/2 
+            z-20 bg-[var(--color-first)] hover:bg-[var(--color-prdct)] 
+            border border-[var(--color-border)] p-2 rounded-full shadow-lg cursor-pointer
+            text-[var(--color-head)]"
           />
         </Carousel>
       </section>
@@ -103,25 +104,25 @@ const Banner: React.FC<BannerProps> = ({ heading }) => {
       {/* Non-home hero banner */}
       <section
         className={`${
-          path === "/" ? "hidden" : "block"
+          !isHome ? "block" : "hidden"
         } w-full relative mx-auto -mt-24`}
       >
         <div className="relative w-full h-[50vh] sm:h-[50vh] md:h-[55vh] lg:h-[70vh]">
-          <div className="relative w-full h-full bg-black/30">
+          <div className="relative w-full h-full bg-[var(--color-body)]/60">
             <Image
-              src="/images/banner-6.jpg"
+              src="/images/banner-001.jpg"
               alt="banner-image"
               fill
               priority
-              className="object-center object-cover"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
+              className="object-center object-cover opacity-80"
             />
           </div>
-          <article className="absolute inset-0 flex items-center justify-center z-40 bg-black/20">
+
+          <article className="absolute inset-0 flex items-center justify-center z-40 bg-[var(--color-body)]/50 backdrop-blur-sm">
             <div className="w-full text-center px-4 top-[28%] relative">
-              <h3 className="text-white ">
+              <h2 className="text-[var(--color-head)] drop-shadow-lg">
                 {heading}
-              </h3>
+              </h2>
             </div>
           </article>
         </div>

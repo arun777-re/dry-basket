@@ -19,16 +19,11 @@ const Navbar = () => {
   const [search, setSearch] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-
   const cartItemsLength = useSelector(totalCartItems);
-
   const router = useRouter();
 
-  // Scroll logic to activate navbar
   useEffect(() => {
-    const handleScroll = () => {
-      setActive(window.scrollY > 0);
-    };
+    const handleScroll = () => setActive(window.scrollY > 0);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -41,20 +36,19 @@ const Navbar = () => {
   const handleLoginAndUserDashBoard = React.useCallback(
     (e: React.MouseEvent<SVGElement>) => {
       e.preventDefault();
-      if (!user.success) {
-        router.push(`${ROUTES.LOGIN}`);
-      } else {
-        router.push(`${ROUTES.USER_DASHBOARD}`);
-      }
+      !user.success
+        ? router.push(ROUTES.LOGIN)
+        : router.push(ROUTES.USER_DASHBOARD);
     },
     [user]
   );
 
   return (
     <div className="w-full flex flex-col items-center justify-center">
+      {/* SITE TITLE */}
       <h1
         data-aos="fade-down"
-        className="text-center text-first relative py-6 z-50"
+        className="text-center relative py-6 z-50 text-[color:var(--color-head)]"
       >
         Dry Basket
       </h1>
@@ -66,17 +60,20 @@ const Navbar = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -60, opacity: 0 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
-          className={`fixed top-0 z-50 bg-black transition-all duration-300 ${
-            active
-              ? "shadow-md px-0 md:px-20 lg:px-36 w-full"
-              : "w-[86%] sm:w-[80%] lg:w-[76%] mx-auto top-22"
-          } text-white`}
+          className={`fixed top-0 z-50 backdrop-blur-md transition-all duration-300
+            bg-[color:var(--color-background)]/90 border-b border-[color:var(--color-border)]
+            ${
+              active
+                ? "shadow-md px-0 md:px-20 lg:px-36 w-full"
+                : "w-[86%] sm:w-[80%] lg:w-[76%] mx-auto top-22"
+            }
+          `}
         >
           <div className="max-w-screen-xl mx-auto py-4 md:py-6 px-6 flex justify-between items-center">
-            {/* Hamburger on small screens */}
+            {/* Hamburger */}
             <div className="flex items-center gap-4">
               <button
-                className="md:hidden text-2xl"
+                className="md:hidden text-2xl text-[color:var(--color-head)]"
                 onClick={() => setMobileOpen((prev) => !prev)}
                 aria-label="Toggle Menu"
               >
@@ -85,70 +82,70 @@ const Navbar = () => {
 
               {/* Desktop Links */}
               <ul className="hidden md:flex gap-8">
-                {["Home", "Shop", "About", "Contact", "Faq","Blogs"].map((item) => {
-                  let href = `/${item.toLowerCase().replace(/\s+/g, "")}`;
+                {["Home", "Shop", "About", "Contact", "Faq", "Blogs"].map(
+                  (item) => {
+                    let href = "/";
+                    if (item === "Shop") href = "/allproducts";
+                    else if (item === "About") href = "/about";
+                    else if (item === "Contact") href = "/contact";
+                    else if (item === "Faq") href = "/faq";
+                    else if (item === "Blogs") href = "/allblogs";
 
-                  if (item === "Home") {
-                    href = "/";
-                  } else if (item === "Shop") {
-                    href = "/allproducts";
-                  }else if(item==="Blogs"){
-                    href="/allblogs";
+                    return (
+                      <li key={item}>
+                        <Link
+                          href={href}
+                          className="text-sm font-roboto text-[color:var(--color-body)] hover:text-[color:var(--color-first)] transition"
+                        >
+                          {item}
+                        </Link>
+                      </li>
+                    );
                   }
-                  return (
-                    <li key={item}>
-                      <Link
-                        href={href}
-                        className="text-sm font-roboto hover:text-[color:var(--color-first)] transition"
-                      >
-                        {item}
-                      </Link>
-                    </li>
-                  );
-                })}
+                )}
               </ul>
             </div>
 
             {/* Icons */}
-            <div className="flex gap-4 items-center">
+            <div className="flex gap-4 items-center text-[color:var(--color-head)]">
               <IoSearchOutline
-                className="text-2xl cursor-pointer"
+                className="text-2xl cursor-pointer hover:text-[color:var(--color-first)]"
                 onClick={() => setSearch((prev) => !prev)}
               />
+
               <CartDrawer />
+
               <FaUser
                 onClick={handleLoginAndUserDashBoard}
-                className="text-xl cursor-pointer"
+                className="text-xl cursor-pointer hover:text-[color:var(--color-first)]"
               />
             </div>
           </div>
 
-          {/* Mobile menu */}
+          {/* Mobile Menu */}
           {mobileOpen && (
-            <div className="md:hidden bg-black/95 px-6 pb-4">
+            <div className="md:hidden bg-[color:var(--color-background)]/95 px-6 pb-4 border-t border-[color:var(--color-border)]">
               <ul className="flex flex-col gap-4 mt-2">
-                {["Home", "Shop", "About", "Contact", "Faq","Blogs"].map((item) => {
-                    let href = `/${item.toLowerCase().replace(/\s+/g, "")}`;
-                    if (item === "Home") {
-                    href = "/";
-                  } else if (item === "Shop") {
-                    href = "/allproducts";
-                  }else if(item==="Blogs"){
-                    href = "/allblogs"
+                {["Home", "Shop", "About", "Contact", "Faq", "Blogs"].map(
+                  (item) => {
+                    let href = "/";
+                    if (item === "Shop") href = "/allproducts";
+                    else if (item === "Blogs") href = "/allblogs";
+                    else href = `/${item.toLowerCase()}`;
+
+                    return (
+                      <li key={item}>
+                        <Link
+                          href={href}
+                          className="block text-sm font-roboto text-[color:var(--color-body)] hover:text-[color:var(--color-first)] transition"
+                          onClick={() => setMobileOpen(false)}
+                        >
+                          {item}
+                        </Link>
+                      </li>
+                    );
                   }
-                  
-                  return <li key={item}>
-                    <Link
-                      href={
-                        href
-                      }
-                      className="block text-sm font-roboto hover:text-[color:var(--color-first)] transition"
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      {item}
-                    </Link>
-                  </li>
-})}
+                )}
               </ul>
             </div>
           )}

@@ -50,7 +50,7 @@ body {
 }
 
 :root {
-  --font-rice: "Spicy Rice", cursive;
+  --font-rice: "Montserrat", cursive;
   --font-roboto: "Roboto", sans-serif;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -121,14 +121,63 @@ body {
 }
 
 @theme {
-  --font-rice: "Nunito_Sans", sans-serif;
+  --font-rice: "Montserrat", sans-serif;
   --font-roboto: "Roboto", sans-serif;
   --font-cursive:"Pacifico","cursive";
-  --color-first: oklch(83.89% 0.184 77.63);
-  --color-body: oklch(28.09% 0 0);
-  --color-head: oklch(49.52% 0.139 45.27);
-  --color-border: oklch(57.13% 0.206 54.87);
-  --color-prdct:oklch(62.58% 0.092 195.07);
+
+  /* ---- Modern TEAL palette ---- */
+  --color-first: #329999;         /* primary  buttons + highlights*/ 
+  --color-body: #0f1214;          /* dark bg body text*/
+  --color-head: #92e1e1;          /* heading - lighter teal headings + button bg*/
+  --color-border: #3cbebe;        /* border - slightly bright borders*/
+  --color-prdct: #1f6f6f;         /* product dark tone accent secondary*/
+}
+
+
+
+
+
+
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-body text-first;
+  }
+   h1, h2, h3, h4, h5 {
+    color: var(--color-head);
+    font-family: var(--font-rice);
+  }
+  h1 {
+    @apply text-3xl sm:text-4xl md:text-5xl text-head font-semibold tracking-wide;
+    
+  }
+  h2 {
+    @apply text-2xl sm:text-3xl md:text-4xl text-head font-semibold tracking-wide mb-2;
+    
+  
+  }
+  h3 {
+    @apply text-xl sm:text-2xl md:text-3xl text-head font-semibold tracking-wide mb-2;
+    
+  
+  }
+  h4 {
+    @apply text-lg sm:text-xl md:text-2xl text-head font-semibold tracking-wide mb-2;
+    
+  
+  }
+  h5 {
+    @apply text-base sm:text-lg md:text-xl text-head font-semibold tracking-wide hover:text-head cursor-pointer;
+    
+  }
+
+  p {
+    @apply text-body text-sm font-normal leading-loose;
+  }
 }
 
 .animated-border {
@@ -223,7 +272,6 @@ body {
 }
 
 
-
 @keyframes removeRadius {
   from {
     border-radius: 50px;
@@ -233,40 +281,5 @@ body {
   }
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-  h1 {
-    @apply text-3xl  sm:text-4xl md:text-5xl text-white font-normal tracking-wider;
-    font-family: var(--font-rice);
-  }
-  h2 {
-    @apply text-2xl sm:text-3xl md:text-4xl text-head font-normal tracking-wider mb-2;
-    font-family: var(--font-rice);
-    color: var(--color-head);
-  }
-  h3 {
-    @apply text-xl sm:text-2xl md:text-3xl text-head font-normal tracking-wider mb-2;
-    font-family: var(--font-rice);
-    color: var(--color-head);
-  }
-  h4 {
-    @apply text-lg sm:text-xl md:text-2xl text-head font-normal tracking-wider mb-2;
-    font-family: var(--font-rice);
-    color: var(--color-head);
-  }
-  h5 {
-    @apply text-base sm:text-lg md:text-xl text-body font-normal tracking-wider hover:text-head cursor-pointer;
-    font-family: var(--font-rice);
-  }
-
-  p {
-    @apply text-body text-sm font-normal leading-loose;
-  }
-}
 
 

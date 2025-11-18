@@ -13,7 +13,7 @@ const AllProducts = () => {
   return (
     <>
       <Navbar/>
-      <Banner heading={pathName.startsWith("/") ? pathName.slice(1) : pathName}/>
+      <Banner heading={"Shop"}/>
       <ShopProducts/>
       <Footer/>
     </>

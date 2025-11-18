@@ -22,10 +22,11 @@ const BlogCard: React.FC<BlogsIncomingDTO> = ({
 
   const handleClick = () => router.push(`/blog/${slug}`);
 
-  // Slice text only if needed
   const displayTitle = title.length > 60 ? title.slice(0, 60) + "..." : title;
   const displayDescription =
-    description && description.length > 150 ? description.slice(0, 150) + "..." : description;
+    description && description.length > 150
+      ? description.slice(0, 150) + "..."
+      : description;
 
   return (
     <motion.div
@@ -34,28 +35,37 @@ const BlogCard: React.FC<BlogsIncomingDTO> = ({
       whileHover={!shouldReduceMotion ? "hover" : "rest"}
       animate="rest"
     >
-      <Card className="relative w-full h-full">
-        <div className="w-full h-full flex items-center flex-col lg:flex-row gap-6 justify-center relative">
+      <Card
+        className="
+          relative w-full h-full 
+          border-2 border-border 
+          rounded-lg 
+          bg-body 
+          text-white shadow-sm
+        "
+      >
+        <div className="w-full h-full flex flex-col lg:flex-row items-center gap-6 relative">
+
           {/* Image Section */}
           <div className="relative h-full w-full lg:w-[40%] z-20">
-            <div className="w-full h-60 lg:h-full relative">
+            <div className="w-full h-60 lg:h-full relative rounded-md overflow-hidden">
               <Image
                 src={blogImage || "/images/card1.jpg"}
                 alt={`Blog cover image for ${title}`}
                 fill
                 loading="lazy"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-fill object-center "
+                sizes="100%"
+                className="object-cover"
               />
             </div>
 
-            {/* Single overlay for hover */}
+            {/* Hover Overlay */}
             <motion.div
-              className="absolute top-0 left-0 w-full h-full bg-black/10"
+              className="absolute top-0 left-0 w-full h-full bg-black/20"
               variants={{
                 rest: { opacity: 0 },
                 hover: {
-                  opacity: 0.3,
+                  opacity: 0.25,
                   transition: { duration: 0.3, ease: "easeInOut" },
                 },
               }}
@@ -64,31 +74,42 @@ const BlogCard: React.FC<BlogsIncomingDTO> = ({
 
           {/* Text Section */}
           <div className="relative h-full w-full lg:w-[60%] flex flex-col items-start justify-center gap-4">
-            <h5 className="mb-0 hover:text-first cursor-pointer">{displayTitle}</h5>
+
+            <h5 className="mb-0 text-head hover:text-first transition-all cursor-pointer">
+              {displayTitle}
+            </h5>
 
             <div className="relative flex items-center justify-between w-full sm:w-[60%]">
+
+              {/* Author */}
               <article className="flex gap-1 items-center">
                 <FaRegUserCircle size={20} className="text-head" />
-                <p className="text-base">By&nbsp;{authorName}</p>
+                <p className="text-base text-head">By&nbsp;{authorName}</p>
               </article>
 
-              <div className="h-4 w-[1px] bg-body"></div>
+              <div className="h-4 w-[1px] bg-border"></div>
 
+              {/* Date */}
               <article className="flex gap-1 items-center">
                 <SlCalender size={20} className="text-head" />
-                <p className="text-base">
-                  {new Date(createdAt).toLocaleDateString() ?? "November 13, 2018"}
+                <p className="text-base text-head">
+                  {new Date(createdAt).toLocaleDateString()}
                 </p>
               </article>
             </div>
 
-            <p className="text-sm">{displayDescription}</p>
+            <p className="text-sm text-white/80">{displayDescription}</p>
 
             <Button
               onClick={handleClick}
-              className="bg-white border-2 border-head rounded-full px-7 py-6
-                text-body tracking-wide hover:border-first hover:bg-first hover:drop-shadow-xs
-                hover:drop-shadow-black/30 transition-all duration-500 ease-in-out cursor-pointer"
+              className="
+                bg-transparent 
+                border-2 border-head 
+                rounded-full px-7 py-6
+                text-head tracking-wide
+                hover:border-first hover:bg-first hover:text-body
+                transition-all duration-500 ease-in-out cursor-pointer
+              "
             >
               Read More
             </Button>

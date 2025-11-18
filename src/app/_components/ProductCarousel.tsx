@@ -28,53 +28,73 @@ const ProductCarousel: React.FC<DataProps> = ({ product }) => {
   const opts: Partial<EmblaOptionsType> = {
     align: "start" as const,
     containScroll: "trimSnaps" as const,
-     slidesToScroll:1
+    slidesToScroll: 1
   };
 
-  const validProductData = product && Array.isArray(product) ? product.filter((i)=> i._id && i._id.trim() !== "") : [];
+  const validProductData = product && Array.isArray(product)
+    ? product.filter(i => i._id && i._id.trim() !== "")
+    : [];
 
   return (
-    <div className="w-full max-w-screen relative mx-auto">
+    <div className="w-full max-w-screen mx-auto relative">
       <Carousel
         opts={opts}
         plugins={[autoREf]}
         className="w-full relative h-auto flex flex-col"
       >
-        <CarouselContent className="-ml-0 box-border w-full flex relative h-auto
-         flex-row py-2 sm:py-6">
+        <CarouselContent
+          className="w-full flex relative h-auto py-4 sm:py-6 gap-2"
+        >
           {validProductData.length > 0 ? (
             validProductData.map((item, key) => (
               <CarouselItem
                 key={key}
                 className="
                   basis-full 
-                  max-w-full:basis-full 
                   sm:basis-1/2 
                   md:basis-1/3 
                   lg:basis-1/4 
-                  xl:basis-1/5 
-                  px-1 
+                  xl:basis-1/5
+                  px-2
                 "
               >
-                <div className="mx-auto w-full relative h-auto md:w-[90%]">
-                <ProductCard
-                  key={item._id}
-                  productId={item?._id}
-                  {...item}
-                />
+                <div className="mx-auto w-full md:w-[90%] relative">
+                  <ProductCard
+                    key={item._id}
+                    productId={item._id}
+                    {...item}
+                  />
                 </div>
-
               </CarouselItem>
             ))
           ) : (
             <DummyComponent />
           )}
         </CarouselContent>
-        <div className="flex justify-center items-center absolute align-middle gap-4 top-140 sm:top-104 -translate-x-1/2 left-1/2">
-         <CarouselPrevious className="absolute cursor-pointer border-2 border-head"/>
-        <CarouselNext className="absolute  cursor-pointer border-2 border-head"/>
-        </div>
 
+        {/* ==== Updated navigation buttons ==== */}
+        <div className="flex justify-center items-center absolute gap-4 top-140 sm:top-104 -translate-x-1/2 left-1/2">
+          <CarouselPrevious
+            className="
+              absolute cursor-pointer 
+              border-2 border-[var(--color-border)] 
+              bg-[var(--color-head)]
+              hover:bg-[var(--color-first)]
+              text-[var(--color-body)]
+              transition-all
+            "
+          />
+          <CarouselNext
+            className="
+              absolute cursor-pointer 
+              border-2 border-[var(--color-border)] 
+              bg-[var(--color-head)]
+              hover:bg-[var(--color-first)]
+              text-[var(--color-body)]
+              transition-all
+            "
+          />
+        </div>
       </Carousel>
     </div>
   );

@@ -14,6 +14,7 @@ const PremiumCard: React.FC<PremiumProductDTO> = ({
   altText,
 }) => {
   const router = useRouter();
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.96 }}
@@ -22,26 +23,33 @@ const PremiumCard: React.FC<PremiumProductDTO> = ({
       transition={{ duration: 0.4, ease: "easeInOut" }}
       className="w-full max-w-[320px]"
     >
-      <Card className="relative flex flex-col h-full">
-        {/* image */}
+      <Card className="relative flex flex-col h-full border border-border shadow-sm">
+
+        {/* Image */}
         <div className="relative w-full h-36 sm:h-44 md:h-48">
           <Image
             src={image ?? "/images/banner-4.jpg"}
-            alt={altText ?? "blog-image"}
+            alt={altText ?? "premium-image"}
             fill
             priority
             className="object-fill object-center"
           />
         </div>
 
-        {/* content */}
+        {/* Content */}
         <article className="w-full flex flex-col items-center gap-3 p-4 text-center">
-          <h5 className="mb-0 font-normal">{category}</h5>
-          <p className=" line-clamp-3">{description}</p>
+          <h5 className="mb-0 font-normal text-head">{category}</h5>
+
+          <p className="line-clamp-3 text-body/80">{description}</p>
+
           <Button
             onClick={() => router.push(`/products/${category}`)}
-            className="bg-transparent border-2 border-head rounded-full px-5 py-3
-              text-body tracking-wide hover:border-first hover:bg-first transition-all duration-500 ease-in-out cursor-pointer"
+            className="
+              bg-transparent border-2 border-border 
+              rounded-full px-5 py-3 text-body tracking-wide
+              hover:border-first hover:bg-first hover:text-white 
+              transition-all duration-500 ease-in-out cursor-pointer
+            "
           >
             View More
           </Button>

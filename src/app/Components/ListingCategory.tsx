@@ -33,8 +33,12 @@ const ListingCategory: React.FC<CategoryProps> = ({
 
   return (
     <section
-      className={`relative max-w-screen w-full mx-auto`}
-      style={{backgroundColor : drxn ? '#f3f4f6' : ''}}
+      className={`relative max-w-screen w-full mx-auto ${
+  drxn ? "bg-prdct/10" : "bg-body"
+}`}
+style={{
+  backgroundColor:drxn ? "#1f6f6f1a" : "#0f1214/80"
+}}
     >
       <div
         className={`relative w-full flex gap-6 flex-col lg:flex-row px-4 md:px-20 lg:px-30  py-10 sm:py-16
@@ -59,13 +63,13 @@ const ListingCategory: React.FC<CategoryProps> = ({
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="absolute inset-0 z-20 flex items-start justify-start p-8"
           >
-            <article className={`flex flex-col gap-2 ${drxn ? 'bg-gray-100' : 'bg-black/80'} p-4 h-40 lg:h-32 w-full max-w-md`}>
-              <h5 className={`${drxn ? 'text-head' : 'text-white'}`}>{data?.[0]?.category}</h5>
+            <article className={`flex flex-col gap-2 ${drxn ? 'bg-white/80' : 'bg-body/70'} p-4 h-40 lg:h-32 w-full max-w-md`}>
+              <h5 className={`${drxn ? 'text-first' : 'text-head'}`}>{data?.[0]?.category}</h5>
               <Button
                 type="button"
                 onClick={handleCard}
-                className={`bg-transparent border-2 ${drxn ? 'text-black border-first' : "text-white border-head"}
-                  tracking-wide hover:border-first hover:bg-first transition-all duration-500 ease-in-out w-3/4`}
+                className={`bg-transparent border-2 ${drxn ? 'text-first border-first' : "text-head border-border"}
+                  tracking-wide hover:border-first hover:bg-first transition-all duration-300 ease-in-out w-3/4`}
               >
                 Shop Now
               </Button>
@@ -92,15 +96,15 @@ const ListingCategory: React.FC<CategoryProps> = ({
                       />
                     </div>
 
-                    <div className="absolute inset-0 z-20 bg-black/30 p-4 flex items-end justify-end">
-                      <article className="flex items-center flex-col gap-2 bg-black/80 p-3 w-3/4">
+                    <div className="absolute inset-0 z-20 bg-body/40 p-4 flex items-end justify-end">
+                      <article className="flex items-center flex-col gap-2 bg-body/70 p-3 w-3/4">
                         <h5 className="text-white">{item.category}</h5>
                         <Button
                           type="button"
                           onClick={() =>
                             router.push(`/products/${item?.category}`)
                           }
-                          className="bg-transparent border-2 border-head text-white tracking-wide hover:border-first hover:bg-first transition-all duration-500 ease-in-out"
+                          className="bg-transparent border-2 border-border text-head tracking-wide hover:border-first hover:bg-first transition-all duration-500 ease-in-out"
                         >
                           Shop Now
                         </Button>

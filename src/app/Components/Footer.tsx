@@ -54,103 +54,82 @@ const Footer = () => {
   }, [router]);
 
   return (
-    <footer className="relative w-full bg-black text-gray-100/90 flex flex-col gap-16 pt-20 pb-6">
-      {/* Top Footer */}
-      <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 px-6 md:px-12">
-        {/* About Section */}
-        <div className="flex flex-col gap-4">
-          <h5 className="text-first text-lg font-normal">About DryBasket</h5>
-          <p className="text-sm text-gray-300 leading-relaxed">
-            At DryBasket, we bring you the finest quality dry fruits sourced
-            directly from trusted farms. Freshness, purity, and premium taste —
-            delivered to your doorstep.
-          </p>
-          <Link
-            href="/about"
-            className="text-first hover:text-white transition-all duration-300 mt-2"
-          >
-            Read More →
-          </Link>
-        </div>
+ <footer className="relative w-full bg-body text-head/90 flex flex-col gap-16 pt-20 pb-6">
+  
+  {/* Top Footer */}
+  <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 px-6 md:px-12">
 
-        {/* Dynamic Footer Columns */}
-        {footerData.map((section, i) => (
-          <div key={i} className="flex flex-col gap-4">
-            <h5 className="text-first text-lg font-normal">{section.title}</h5>
-            <ul className="flex flex-col gap-3">
-              {section.links.map((link, idx) => (
-                <li key={idx}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-gray-300 hover:text-first flex items-center gap-2 transition-all duration-300"
-                  >
-                    <PiGreaterThanBold className="text-xs" /> {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+    {/* About */}
+    <div className="flex flex-col gap-4">
+      <h5 className="text-first text-lg font-normal">About DryBasket</h5>
+      <p className="text-sm text-head/80 leading-relaxed">
+        At DryBasket, we bring you the finest quality dry fruits sourced
+        directly from trusted farms. Freshness, purity, and premium taste — 
+        delivered to your doorstep.
+      </p>
+      <Link
+        href="/about"
+        className="text-first hover:text-head transition-all duration-300 mt-2"
+      >
+        Read More →
+      </Link>
+    </div>
 
-        {/* Contact Details */}
-        <div className="flex flex-col gap-4">
-          <h5 className="text-first text-lg font-normal">Contact Us</h5>
-          <ul className="flex flex-col gap-3 text-sm text-gray-300">
-            <li className="flex items-center gap-2">
-              <FaHome size={16} /> 21-B, Model Town, Sonipat, Haryana
+    {/* Dynamic Columns */}
+    {footerData.map((section, i) => (
+      <div key={i} className="flex flex-col gap-4">
+        <h5 className="text-first text-lg font-normal">{section.title}</h5>
+        <ul className="flex flex-col gap-3">
+          {section.links.map((link, idx) => (
+            <li key={idx}>
+              <Link
+                href={link.href}
+                className="text-sm text-head/80 hover:text-first flex items-center gap-2 transition-all duration-300"
+              >
+                <PiGreaterThanBold className="text-xs" /> {link.label}
+              </Link>
             </li>
-            <li className="flex items-center gap-2">
-              <FaPhone size={16} /> +91 98765 43210
-            </li>
-            <li className="flex items-center gap-2">
-              <GoClock size={16} /> Mon–Sat: 9:00AM - 7:00PM
-            </li>
-            <li className="flex items-center gap-2">
-              <MdOutlineEmail size={16} /> support@drybasket.in
-            </li>
-          </ul>
-          <button
-            onClick={handleContact}
-            className="mt-4 bg-first text-black font-semibold px-5 py-2 rounded-lg hover:bg-white transition-all duration-300"
-          >
-            Contact Now
-          </button>
-        </div>
+          ))}
+        </ul>
       </div>
+    ))}
 
-      {/* Bottom Bar */}
-      <div className="border-t border-gray-700 pt-4 flex flex-col md:flex-row justify-between items-center px-6 md:px-12 gap-4">
-        <p className="text-gray-400 text-sm text-center md:text-left">
-          © 2025 S.R. Tech Solutions. All Rights Reserved.
-        </p>
-        <div className="flex gap-5 items-center justify-center">
-          <Link href="https://www.linkedin.com" target="_blank">
-            <FaLinkedin
-              className="hover:text-first transition-colors duration-300"
-              size={20}
-            />
-          </Link>
-          <Link href="https://www.facebook.com" target="_blank">
-            <FaFacebook
-              className="hover:text-first transition-colors duration-300"
-              size={20}
-            />
-          </Link>
-          <Link href="https://www.instagram.com" target="_blank">
-            <FaInstagram
-              className="hover:text-first transition-colors duration-300"
-              size={20}
-            />
-          </Link>
-          <Link href="https://x.com" target="_blank">
-            <FaTwitter
-              className="hover:text-first transition-colors duration-300"
-              size={20}
-            />
-          </Link>
-        </div>
-      </div>
-    </footer>
+    {/* Contact */}
+    <div className="flex flex-col gap-4">
+      <h5 className="text-first text-lg font-normal">Contact Us</h5>
+      <ul className="flex flex-col gap-3 text-sm text-head/80">
+        <li className="flex items-center gap-2"><FaHome size={16} /> 21-B, Model Town, Sonipat</li>
+        <li className="flex items-center gap-2"><FaPhone size={16} /> +91 98765 43210</li>
+        <li className="flex items-center gap-2"><GoClock size={16} /> Mon–Sat: 9AM - 7PM</li>
+        <li className="flex items-center gap-2"><MdOutlineEmail size={16} /> support@drybasket.in</li>
+      </ul>
+
+      <button
+        onClick={handleContact}
+        className="mt-4 bg-head text-body px-5 py-2 rounded-lg font-semibold cursor-pointer
+        hover:bg-first transition-all duration-300"
+      >
+        Contact Now
+      </button>
+    </div>
+  </div>
+
+  {/* Bottom */}
+  <div className="border-t border-border pt-4 flex flex-col md:flex-row justify-between items-center px-6 md:px-12 gap-4">
+    <p className="text-head/70 text-sm text-center md:text-left">
+      © 2025 S.R. Tech Solutions. All Rights Reserved.
+    </p>
+
+    <div className="flex gap-5 items-center">
+      <FaLinkedin className="hover:text-first transition-colors duration-300" size={20} />
+      <FaFacebook className="hover:text-first transition-colors duration-300" size={20} />
+      <FaInstagram className="hover:text-first transition-colors duration-300" size={20} />
+      <FaTwitter className="hover:text-first transition-colors duration-300" size={20} />
+    </div>
+  </div>
+
+</footer>
+
   );
 };
 
