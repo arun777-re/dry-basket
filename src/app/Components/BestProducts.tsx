@@ -40,8 +40,7 @@ const productData = (products && products.data )?? [];
   return (
     <section className="w-full relative min-h-screen h-auto mx-auto overflow-hidden">
       {/* Background Overlay */}
-      <div className="absolute w-full h-full inset-0 z-0 hidden md:block">
-        {/* Background Image (enable if needed) */}
+      {/* <div className="absolute w-full h-full inset-0 z-0 hidden md:block">
         <Image
           alt="best-product-background"
           src={"/images/best-produ-bg.png"}
@@ -49,7 +48,7 @@ const productData = (products && products.data )?? [];
           className="object-fill object-center opacity-40"
         />
         <div className="absolute w-full h-full bg-black/20"/>
-      </div>
+      </div> */}
 
       <div className="relative w-full flex flex-col items-center justify-center 
       px-4 md:px-20 lg:px-30 py-10 sm:py-16 ">
