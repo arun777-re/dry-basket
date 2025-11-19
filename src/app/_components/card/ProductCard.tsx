@@ -184,8 +184,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
       <Link
         href={`/product/${slug}`}
         className="
-          text-xl font-normal tracking-wide text-head 
-          hover:text-first transition-all duration-300 
+          text-lg font-semibold tracking-wide text-first 
+          hover:text-prdct transition-all duration-300 
           font-rice text-center
         "
       >

@@ -72,19 +72,12 @@ const Blog = () => {
   return (
     <section className="max-w-screen w-full h-auto relative bg-white">
       <div className="relative w-full px-4 md:px-20 lg:px-30 flex flex-col items-center justify-center gap-10 pt-10 pb-10 sm:py-16 md:py-20">
-
         {/* Header */}
         <header className="relative w-full sm:max-w-md flex flex-col items-center justify-center text-center">
           <h2 className="text-3xl font-semibold text-head">Blog Post</h2>
           <p className="text-body mt-2">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit.
           </p>
-
-          <div className="flex gap-2 items-center p-2">
-            <FaStar size={18} className="text-first" />
-            <FaStar size={25} className="text-body" />
-            <FaStar size={18} className="text-first" />
-          </div>
         </header>
 
         {/* Blog Slider */}

@@ -64,14 +64,6 @@ const BestProducts: React.FC = () => {
           <p className="mt-2 text-sm md:text-base text-body/70">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit.
           </p>
-
-          {/* Stars */}
-          <div className="flex gap-2 items-center p-2">
-            <FaStar size={16} className="text-first" />
-            <FaStar size={22} className="text-border" />
-            <FaStar size={16} className="text-first" />
-          </div>
-
           {/* Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8 py-6">
 

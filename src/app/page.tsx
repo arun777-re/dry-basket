@@ -54,12 +54,7 @@ const isMounted = React.useRef<boolean>(false)
           paddingBottom={true}
           paddingTop={true}
         />
-        <BgFixed
-          image={"/images/banner-6.jpg"}
-          title="Best Almonds"
-          heading="Get 10% off On all Spicy & Herbs"
-          subHeading="Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum quidem tenetur doloremque praesentium impedit alias eveniet aliquam quaerat corrupti possimus!"
-        />
+      
         <ListingCategory
           data={category2 as { category: string; image: string }[]}
           drxn={true}

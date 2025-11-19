@@ -38,9 +38,8 @@ const BlogCard: React.FC<BlogsIncomingDTO> = ({
       <Card
         className="
           relative w-full h-full 
-          border-2 border-border 
+          
           rounded-lg 
-          bg-body 
           text-white shadow-sm
         "
       >
@@ -48,7 +47,7 @@ const BlogCard: React.FC<BlogsIncomingDTO> = ({
 
           {/* Image Section */}
           <div className="relative h-full w-full lg:w-[40%] z-20">
-            <div className="w-full h-60 lg:h-full relative rounded-md overflow-hidden">
+            <div className="w-full h-60 lg:h-full relative rounded-md overflow-hidden border-2 border-border ">
               <Image
                 src={blogImage || "/images/card1.jpg"}
                 alt={`Blog cover image for ${title}`}
@@ -73,7 +72,8 @@ const BlogCard: React.FC<BlogsIncomingDTO> = ({
           </div>
 
           {/* Text Section */}
-          <div className="relative h-full w-full lg:w-[60%] flex flex-col items-start justify-center gap-4">
+          <div className="relative h-full w-full lg:w-[60%] flex flex-col items-start justify-center gap-4 bg-body px-4 rounded-lg border-2
+          border-border">
 
             <h5 className="mb-0 text-head hover:text-first transition-all cursor-pointer">
               {displayTitle}

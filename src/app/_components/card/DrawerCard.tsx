@@ -33,19 +33,17 @@ const DrawerCard: React.FC<DrawerCardProps> = ({
   image,
   quantity,
 }) => {
-  const [active, setActive] = useState<boolean>(false);
-  const [userCart, setUserCart] = React.useState<PopulatedIncomingCartDTO>(
-    defaultPopulatedCartResponse
-  );
+  const [active, setActive] = useState(false);
+  const [userCart, setUserCart] =
+    React.useState<PopulatedIncomingCartDTO>(defaultPopulatedCartResponse);
 
-  const [fallBackImage, setFallBackImage] = React.useState<string>("");
+  const [fallBackImage, setFallBackImage] = React.useState("");
 
   const dispatch = useDispatch<AppDispatch>();
-
   const user = useSelector((state: RootState) => state?.user.user.success);
+
   const { REMOVE_ITEM_FROM_CART, UPDATE_ITEM_QTY } = cartHook();
 
-  // function to remove item from cart
   const removeItem = (productId: string) => {
     if (user) {
       dispatch(removeItemOptimistic(productId));
@@ -54,73 +52,100 @@ const DrawerCard: React.FC<DrawerCardProps> = ({
     dispatch(removeItemGuestCart(productId));
   };
 
-  // function to updateqty
   const handleQuantityChange = (delta: number) => {
     if (user) {
-      const payload = {
-        productId,
-        delta,
-      };
       dispatch(updateQtyOptimistic({ productId, delta }));
-      UPDATE_ITEM_QTY({ payload, setUserCart });
+      UPDATE_ITEM_QTY({ payload: { productId, delta }, setUserCart });
       setFallBackImage(image);
     } else {
       dispatch(updateQtyGuestCart({ productId, delta }));
     }
   };
+
   return (
     <Card
-      className="w-full h-auto relative"
+      className="
+        w-full bg-body/60 backdrop-blur-sm 
+        border border-border/60 rounded-xl 
+        transition-all duration-300
+      "
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
     >
-      <div className="w-full h-full relative p-2 shadow-xs py-4 flex items-center gap-6 justify-center border border-body/20">
-        <div style={{ borderRadius: "50%" }} className="h-20 w-24 relative">
+      <div className="flex items-center gap-6 p-4">
+
+        {/* IMAGE */}
+        <div className="relative w-28 h-28 rounded-lg overflow-hidden border border-border/60">
           <Image
             src={image || fallBackImage}
             fill
-            alt="cart-image"
-            style={{ borderRadius: "50%" }}
-            className="w-full h-full object-fill object-center"
+            loading="lazy"
+            alt="cart-img"
+            className="object-cover"
           />
 
+       
+        </div>
+
+        {/* RIGHT DETAIL AREA */}
+        <article className="flex-1 flex flex-col gap-1">
+          <p className="font-semibold text-head tracking-wide leading-tight">
+            {productName}
+          </p>
+
+          <p className="text-first text-sm">{weight / 1000} Kg</p>
+
+          <p className="text-head font-semibold text-base">
+            ₹ {priceAfterDiscount}
+          </p>
+
+          {/* CONTROLLER */}
+          <div className="relative w-fit flex items-center border border-border/40 rounded-md ">
+
+            {/* + */}
+            <button
+              onClick={() => handleQuantityChange(+1)}
+              className="
+                h-8 w-9 flex items-center justify-center 
+                hover:bg-first/20 transition-all
+              "
+            >
+              <FaPlus size={12} className="text-head" />
+            </button>
+
+            {/* QTY */}
+            <div
+              className="
+                h-8 w-10 flex items-center justify-center 
+                border-x border-border/40 text-first
+              "
+            >
+              {quantity > 0 ? quantity : <span className="text-red-400">NA</span>}
+            </div>
+
+            {/* - */}
+            <button
+              onClick={() => handleQuantityChange(-1)}
+              className="
+                h-8 w-9 flex items-center justify-center 
+                hover:bg-first/20 transition-all
+              "
+            >
+              <FaMinus size={12} className="text-head" />
+            </button>
+          </div>
+        </article>
+           {/* DELETE ICON */}
           <MdCancel
             size={26}
             onClick={() => removeItem(productId)}
-            // style={{ borderRadius: "50%" }}
-            className={`absolute -top-8 left-0  ${
-              active ? "visible" : "hidden"
-            } 
-                  hover:text-head  transition-all rounded-full cursor-pointer
-                     duration-500 ease-in-out`}
+            className={`
+              absolute -top-2 -left-2 text-head cursor-pointer
+              transition-all duration-300
+              ${active ? "opacity-100" : "opacity-0"}
+              hover:text-first
+            `}
           />
-        </div>
-        <article className="w-full h-auto relative flex items-start justify-start flex-col gap-2">
-          <h5 className="text-body font-normal">{productName}</h5>
-          <p>{weight / 1000} Kg</p>
-          <p className="text-black">Rs&nbsp;{priceAfterDiscount}</p>
-          <div className="relative flex items-center justify-center border-1 border-gray-200">
-            <div
-              onClick={() => handleQuantityChange(+1)}
-              className="relative h-8 w-10 flex items-center justify-center cursor-pointer hover:bg-first transition-all duration-500 ease-in-out"
-            >
-              <FaPlus size={12} className="text-head hover:text-body" />
-            </div>
-            <div className="relative h-8 w-10 flex items-center justify-center border-1  border-x-gray-200 border-y-gray-50">
-              {typeof quantity === "number" && quantity > 0 ? (
-                <p>{quantity}</p>
-              ) : (
-                <p className="text-red-500">NA</p>
-              )}
-            </div>
-            <div
-              onClick={() => handleQuantityChange(-1)}
-              className="relative h-8 w-10 flex items-center justify-center cursor-pointer hover:bg-first transition-all duration-500 ease-in-out"
-            >
-              <FaMinus size={12} className="text-head hover:text-body" />
-            </div>
-          </div>
-        </article>
       </div>
     </Card>
   );

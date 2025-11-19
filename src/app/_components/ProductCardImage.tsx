@@ -16,7 +16,7 @@ const ProductCardImage: React.FC<Props> = ({ active, images }) => {
         fill
         alt="product-image"
         priority
-        className={`object-fill object-center transition-all duration-500 ease-in-out ${
+        className={`object-fill object-center transition-all duration-500 ease-in-out rounded-lg ${
           active ? "opacity-0 scale-105" : "opacity-100 scale-100"
         }`}
       />
@@ -27,7 +27,7 @@ const ProductCardImage: React.FC<Props> = ({ active, images }) => {
         fill
         alt="product-image-active"
         priority
-        className={`absolute top-0 left-0 object-fill object-center transition-all duration-500 ease-in-out ${
+        className={`absolute top-0 left-0 object-fill object-center transition-all duration-500  ease-in-out rounded-lg ${
           active ? "opacity-100 scale-100" : "opacity-0 scale-105"
         }`}
       />

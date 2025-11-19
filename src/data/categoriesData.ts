@@ -1,45 +1,45 @@
 
 export  const category1 = [
-    {
+   {
       category: "Nuts",
-      image: "/images/banner7.jpg",
+      image: "/images/nuts-listing.jpg",
     },
     {
       category: "almonds",
-      image: "/images/category-1.jpg",
+      image: "/images/almond-listing.webp",
     },
     {
       category: "cashews",
-      image: "/images/category-2.jpg",
+      image: "/images/cashews.webp",
     },
     {
       category: "jaggery",
-      image: "/images/category-3.jpg",
+      image: "/images/jaggery-listing.jpg",
     },
     {
       category: "desi ghee",
-      image: "/images/category-4.jpg",
+      image: "/images/ghee-listing.webp",
     },
   ];
 export  const category2 = [
     {
       category: "Nuts",
-      image: "/images/banner7.jpg",
+      image: "/images/nuts-listing.jpg",
     },
     {
       category: "almonds",
-      image: "/images/category-1.jpg",
+      image: "/images/almond-listing.webp",
     },
     {
       category: "cashews",
-      image: "/images/category-2.jpg",
+      image: "/images/cashews.webp",
     },
     {
       category: "jaggery",
-      image: "/images/category-3.jpg",
+      image: "/images/jaggery-listing.jpg",
     },
     {
       category: "desi ghee",
-      image: "/images/category-4.jpg",
+      image: "/images/ghee-listing.webp",
     },
   ];

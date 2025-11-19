@@ -36,14 +36,14 @@ const Process = () => {
           <Card
             key={key}
             className="w-full lg:w-[25vw] h-55 rounded-lg 
-            border border-[#1f6f6f33] bg-[#0f0f0f] shadow-[0px_0px_20px_rgba(0,0,0,0.35)]
+            border border-border
             flex flex-col items-center justify-start"
           >
             {/* ICON WRAPPER */}
             <div
-              className="w-[70px] h-[70px] rounded-full bg-primary flex items-center justify-center 
-              -mt-9 border border-primary/40 cursor-pointer transition-all duration-500
-              hover:bg-accent hover:border-accent"
+              className="w-[70px] h-[70px] rounded-full bg-first flex items-center justify-center 
+              -mt-9 border border-border cursor-pointer transition-all duration-300
+              hover:bg-prdct hover:border-prdct"
             >
               {item.icon}
             </div>
@@ -51,7 +51,7 @@ const Process = () => {
             {/* TEXT BLOCK */}
             <article className="flex flex-col items-center justify-center gap-2 px-4 py-5">
               <h5 className="text-primary text-lg font-medium tracking-wide
-                hover:text-accent transition-all duration-500">
+                hover:text-prdct transition-all duration-500">
                 {item.title}
               </h5>
               <p className="text-body/80 text-center leading-relaxed">

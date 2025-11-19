@@ -12,132 +12,217 @@ interface Category {
 }
 
 interface CategoryProps {
-  drxn: boolean;
+  drxn?: boolean;
   data: Category[];
   paddingTop?: boolean;
   paddingBottom?: boolean;
 }
 
+const containerVariants = {
+  hidden: { opacity: 0, y: 12 },
+  show: { opacity: 1, y: 0, transition: { staggerChildren: 0.06, ease: "easeOut" } },
+};
+
+const cardHover = {
+  hover: { scale: 1.03, y: -6, boxShadow: "0 20px 40px rgba(0,0,0,0.45)" },
+};
+
 const ListingCategory: React.FC<CategoryProps> = ({
   drxn = false,
-  data,
-  paddingBottom,
-  paddingTop,
+  data = [],
+  paddingBottom = true,
+  paddingTop = true,
 }) => {
   const router = useRouter();
 
-  const handleCard = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    router.push(`/products/${data[0]?.category}`);
+  const handleCard = (slug?: string) => {
+    if (!slug) return;
+    router.push(`/products/${slug}`);
   };
+
+  const first = data?.[0];
+  const rest = data?.length > 1 ? data.slice(1, 5) : [];
 
   return (
     <section
-      className={`relative max-w-screen w-full mx-auto ${
-  drxn ? "bg-prdct/10" : "bg-body"
-}`}
-style={{
-  backgroundColor:drxn ? "#1f6f6f1a" : "#0f1214/80"
-}}
+      aria-label="Category listing"
+      className={`relative w-full mx-auto max-w-screen ${paddingTop ? "pt-10 sm:pt-16" : ""} ${
+        paddingBottom ? "pb-10 sm:pb-20" : ""} ${drxn ? 'bg-[#1f6f6f10]' : 'bg-[#fff]'}
+      `}
+      // style={{ backgroundColor: drxn ? "#1f6f6f1a" : "#0f1214" }}
     >
       <div
-        className={`relative w-full flex gap-6 flex-col lg:flex-row px-4 md:px-20 lg:px-30  py-10 sm:py-16
-      ${drxn ? 'flex-col-reverse lg:flex-row-reverse' : 'flex-col lg:flex-row'}
-        `}
-       
+        className={`relative w-full flex gap-6 flex-col lg:flex-row px-4 md:px-12 lg:px-24 ${
+          drxn ? "flex-col-reverse lg:flex-row-reverse" : "flex-col lg:flex-row"
+        }`}
       >
-        {/* Left big card */}
-        <Card className="relative w-full lg:w-1/3 h-[360px] lg:h-[582px] product-card">
-          <div className="h-full w-full relative">
-            <Image
-              src={data?.[0]?.image ?? "/images/card1-1.jpg"}
-              alt="listingcard"
-              fill
-              priority
-              className="object-center object-fill"
-            />
-          </div>
-          <motion.div
-            initial={{ backgroundColor: "rgba(0,0,0,0.3)" }}
-            whileHover={{ backgroundColor: "rgba(0,0,0,0.6)" }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="absolute inset-0 z-20 flex items-start justify-start p-8"
-          >
-            <article className={`flex flex-col gap-2 ${drxn ? 'bg-white/80' : 'bg-body/70'} p-4 h-40 lg:h-32 w-full max-w-md`}>
-              <h5 className={`${drxn ? 'text-first' : 'text-head'}`}>{data?.[0]?.category}</h5>
-              <Button
-                type="button"
-                onClick={handleCard}
-                className={`bg-transparent border-2 ${drxn ? 'text-first border-first' : "text-head border-border"}
-                  tracking-wide hover:border-first hover:bg-first transition-all duration-300 ease-in-out w-3/4`}
+        {/* LEFT: Hero Card */}
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={containerVariants}
+          className="relative w-full lg:w-1/3 h-[360px] lg:h-[582px] rounded-lg overflow-hidden"
+        >
+          <Card asChild className="relative h-full w-full">
+            <motion.div
+              onClick={() => handleCard(first?.category)}
+              aria-label={`Open ${first?.category ?? "category"}`}
+              className="relative h-full w-full p-0 m-0 block text-left"
+              whileHover={{ scale: 1.0 }}
+              style={{ WebkitTapHighlightColor: "transparent" }}
+            >
+              <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent to-black/40 pointer-events-none" />
+              <motion.div
+                className="absolute inset-0 z-20 flex items-start justify-start p-8"
+                initial={{ opacity: 0 }}
+                whileHover={{ opacity: 1 }}
+                transition={{ duration: 0.35, ease: "easeInOut" }}
               >
-                Shop Now
-              </Button>
-            </article>
-          </motion.div>
-        </Card>
-
-        {/* Grid of other cards */}
-        <div className="relative w-full lg:w-[70%] ">
-          <div className="relative w-full  grid grid-cols-1 sm:grid-cols-2  gap-6">
-            {data && data.length > 1
-              ? data.slice(1).map((item, index) => (
-                  <div
-                    key={index}
-                    className="relative w-full h-[280px] sm:h-[250px] md:h-[280px] product-card"
+                <article
+                  className={`flex flex-col gap-3 p-4 rounded-md max-w-xs ${
+                    drxn ? "bg-white/90" : "bg-body/70"
+                  }`}
+                >
+                  <h5 className={`${drxn ? "text-first" : "text-head"} text-lg text-center font-semibold`}>
+                    {first?.category ?? "Category"}
+                  </h5>
+                  <Button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCard(first?.category);
+                    }}
+                    className={`w-36 text-sm font-semibold tracking-wide bg-transparent border-2 ${
+                      drxn ? "text-first border-first" : "text-head border-border"
+                    } hover:bg-first hover:text-background transition`}
                   >
-                    <div className="relative h-full w-full">
-                      <Image
-                        src={item.image ?? "/images/card-2.jpg"}
-                        alt="listingcard"
-                        fill
-                        priority
-                        className="object-center object-fill"
-                      />
-                    </div>
+                    Shop Now
+                  </Button>
+                </article>
+              </motion.div>
 
-                    <div className="absolute inset-0 z-20 bg-body/40 p-4 flex items-end justify-end">
-                      <article className="flex items-center flex-col gap-2 bg-body/70 p-3 w-3/4">
-                        <h5 className="text-white">{item.category}</h5>
-                        <Button
-                          type="button"
-                          onClick={() =>
-                            router.push(`/products/${item?.category}`)
-                          }
-                          className="bg-transparent border-2 border-border text-head tracking-wide hover:border-first hover:bg-first transition-all duration-500 ease-in-out"
-                        >
-                          Shop Now
-                        </Button>
-                      </article>
-                    </div>
-                  </div>
+              {/* Image with subtle parallax on hover */}
+              <motion.div
+                className="absolute inset-0"
+                whileHover={{ scale: 1.02 }}
+                transition={{ ease: "easeOut", duration: 0.6 }}
+                aria-hidden
+              >
+                <Image
+                  src={first?.image ?? "/images/card1-1.jpg"}
+                  alt={first?.category ?? "category image"}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 33vw"
+                  className="object-fill object-center"
+                />
+              </motion.div>
+            </motion.div>
+          </Card>
+        </motion.div>
+
+        {/* RIGHT: Grid */}
+        <motion.div
+          className="relative w-full lg:w-[70%]"
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={containerVariants}
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {rest && rest.length > 0
+              ? rest.map((item, i) => (
+                  <motion.div
+                    key={i}
+                    className="relative w-full h-[280px] sm:h-[260px] md:h-[280px] rounded-lg overflow-hidden product-card"
+                    variants={{
+                      hidden: { opacity: 0, y: 10 },
+                      show: { opacity: 1, y: 0 },
+                    }}
+                    whileHover="hover"
+                    transition={{ duration: 0.4 }}
+                    {...cardHover}
+                  >
+                    <button
+                      onClick={() => handleCard(item.category)}
+                      className="relative h-full w-full p-0 m-0 block text-left"
+                      aria-label={`Open ${item.category}`}
+                    >
+                      <div className="absolute inset-0 z-10 bg-gradient-to-b from-transparent to-black/30 pointer-events-none" />
+                      <motion.div
+                        className="absolute inset-0 z-20 flex items-end justify-end p-4"
+                        initial={{ opacity: 0 }}
+                        whileHover={{ opacity: 1 }}
+                        transition={{ duration: 0.25 }}
+                      >
+                        <article className="flex flex-col items-center justify-center gap-2 bg-body/60 p-3 rounded-md w-3/4">
+                          <h5 className="text-white text-center text-sm font-semibold">{item.category}</h5>
+                          <Button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleCard(item.category);
+                            }}
+                            className="bg-transparent border-2 border-border text-head text-sm tracking-wide hover:border-first hover:bg-first transition"
+                          >
+                            Shop Now
+                          </Button>
+                        </article>
+                      </motion.div>
+
+                      <motion.div
+                        className="absolute inset-0"
+                        whileHover={{ scale: 1.04 }}
+                        transition={{ duration: 0.6 }}
+                      >
+                        <Image
+                          src={item.image ?? "/images/card-2.jpg"}
+                          alt={item.category}
+                          fill
+                          priority
+                          sizes="(max-width: 1024px) 50vw, 33vw"
+                          className="object-fill object-center"
+                        />
+                      </motion.div>
+                    </button>
+                  </motion.div>
                 ))
-              : [...Array(4)].map((_, index) => (
-                  <div
-                    key={index}
-                    className="relative w-full h-[250px] md:h-[300px] product-card"
+              : // skeleton / placeholders (4)
+                [...Array(4)].map((_, idx) => (
+                  <motion.div
+                    key={idx}
+                    className="relative w-full h-[250px] md:h-[300px] rounded-lg overflow-hidden
+                     product-card bg-gradient-to-b from-black/20 to-black/10"
+                    variants={{
+                      hidden: { opacity: 0, y: 10 },
+                      show: { opacity: 1, y: 0 },
+                    }}
+                    transition={{ duration: 0.3, delay: idx * 0.05 }}
+                    whileHover={{ scale: 1.02 }}
                   >
-                    <div className="relative h-full w-full">
+                    <div className="absolute inset-0">
                       <Image
                         src={"/images/card-2.jpg"}
-                        alt="listingcard"
+                        alt="placeholder"
                         fill
                         priority
-                        className="object-center object-cover"
+                        sizes="(max-width: 1024px) 50vw, 33vw"
+                        className="object-fill object-center"
                       />
                     </div>
-                    <div className="absolute inset-0 z-20 bg-black/20 p-4 flex items-end justify-end">
-                      <article className="flex items-center flex-col gap-2 bg-black/80 p-3 w-3/4">
+                    <div className="absolute inset-0 z-20 p-4 flex items-end justify-end">
+                      <article className="flex items-center flex-col gap-2 bg-black/80 p-3 w-3/4 rounded-md">
                         <h3 className="text-white">Nuts</h3>
-                        <Button className="bg-transparent border-2 border-head text-white tracking-wide hover:border-first hover:bg-first transition-all duration-500 ease-in-out">
+                        <Button className="bg-transparent border-2 border-head text-white tracking-wide hover:border-first hover:bg-first transition">
                           Shop Now
                         </Button>
                       </article>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

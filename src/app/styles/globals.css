@@ -128,7 +128,7 @@ body {
   /* ---- Modern TEAL palette ---- */
   --color-first: #329999;         /* primary  buttons + highlights*/ 
   --color-body: #0f1214;          /* dark bg body text*/
-  --color-head: #92e1e1;          /* heading - lighter teal headings + button bg*/
+  --color-head: #5ed1d1;          /* heading - lighter teal headings + button bg*/
   --color-border: #3cbebe;        /* border - slightly bright borders*/
   --color-prdct: #1f6f6f;         /* product dark tone accent secondary*/
 }
@@ -144,41 +144,43 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-body text-first;
   }
-   h1, h2, h3, h4, h5 {
-    color: var(--color-head);
+
+  h1, h2, h3, h4, h5 {
+    color: var(--color-first);
     font-family: var(--font-rice);
   }
+
+  /* ---- HEADINGS ---- */
   h1 {
-    @apply text-3xl sm:text-4xl md:text-5xl text-head font-semibold tracking-wide;
-    
-  }
-  h2 {
-    @apply text-2xl sm:text-3xl md:text-4xl text-head font-semibold tracking-wide mb-2;
-    
-  
-  }
-  h3 {
-    @apply text-xl sm:text-2xl md:text-3xl text-head font-semibold tracking-wide mb-2;
-    
-  
-  }
-  h4 {
-    @apply text-lg sm:text-xl md:text-2xl text-head font-semibold tracking-wide mb-2;
-    
-  
-  }
-  h5 {
-    @apply text-base sm:text-lg md:text-xl text-head font-semibold tracking-wide hover:text-head cursor-pointer;
-    
+    @apply text-4xl md:text-5xl font-semibold tracking-tight mb-4;
   }
 
+  h2 {
+    @apply text-3xl md:text-4xl font-semibold tracking-tight mb-3;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl font-semibold tracking-tight mb-2;
+  }
+
+  h4 {
+    @apply text-xl md:text-2xl font-semibold tracking-tight mb-2;
+  }
+
+  h5 {
+    @apply text-base md:text-lg font-semibold tracking-tight;
+  }
+
+  /* ---- PARAGRAPH ---- */
   p {
-    @apply text-body text-sm font-normal leading-loose;
+    @apply text-[15px] text-body leading-relaxed font-normal;
   }
 }
+
 
 .animated-border {
   position: relative;

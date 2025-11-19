@@ -18,12 +18,6 @@ const PremiumProduct = () => {
           <p className="text-sm md:text-base mt-2 text-body/80">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit.
           </p>
-
-          <div className="flex gap-2 items-center p-2">
-            <FaStar size={18} className="text-first" />
-            <FaStar size={25} className="text-body" />
-            <FaStar size={18} className="text-first" />
-          </div>
         </header>
 
         {/* grid */}

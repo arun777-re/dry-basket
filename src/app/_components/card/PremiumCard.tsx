@@ -38,7 +38,7 @@ const PremiumCard: React.FC<PremiumProductDTO> = ({
 
         {/* Content */}
         <article className="w-full flex flex-col items-center gap-3 p-4 text-center">
-          <h5 className="mb-0 font-normal text-head">{category}</h5>
+          <h5 className="mb-0 font-semibold text-first">{category}</h5>
 
           <p className="line-clamp-3 text-body/80">{description}</p>
 
