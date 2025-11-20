@@ -99,8 +99,8 @@ export function CartDrawer() {
       </div>
 
       {/* CART ITEMS */}
-      {(guestCart?.items ?? []).length > 0 ? (
-        guestCart.items.map((item, key) => {
+      {guestCart?.items && (guestCart?.items ?? []).length > 0 ? (
+        guestCart?.items.map((item, key) => {
           if (
             !item.productId ||
             typeof item.productId === "string" ||
