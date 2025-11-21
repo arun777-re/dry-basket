@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import LoginForm from "@/app/Components/user/LoginForm";
-import RegisterForm from "@/app/Components/user/RegisterForm";
+import LoginForm from "@/app/_components/form/user/LoginForm";
+import RegisterForm from "@/app/_components/form/user/RegisterForm";
 import Banner from "@/app/Components/Banner";
 import Navbar from "@/app/Components/Navbar";
 import Footer from "@/app/Components/Footer";
