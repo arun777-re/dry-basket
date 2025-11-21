@@ -63,9 +63,6 @@ src/
 ```
 
 
-
-
-
 ## 🧩 High-Level Design (HLD)
 
                    ┌───────────────┐
@@ -174,5 +171,20 @@ npm run dev
 # build
 npm run build
 # compiled output: .next/
+
+## Credits
+
+- React (https://reactjs.org/)
+- Next.js (https://nextjs.org/)
+- Redux (https://redux.js.org/)
+- Redux Toolkit (https://redux-toolkit.js.org/rtk-query)
+- Redux Persist (https://react-redux-firebase.com/docs/integrations/redux-persist.html)
+- TailwindCSS (https://tailwindcss.com/)
+- Formik + Yup (https://formik.org/)
+- Framer Motion (https://motion.dev/)
+- AOS Animations (https://michalsnik.github.io/aos/)
+- React Hot Toast (https://react-hot-toast.com/)
+- Shadcn UI (https://ui.shadcn.com/docs/components/carousel)
+- Radix UI (https://www.radix-ui.com/)
 
 
