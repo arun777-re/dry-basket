@@ -40,6 +40,7 @@ I use a custom loader for fallback states (empty data, delays) and gracefully ha
 
 ## Project Structure (recommended / what this repo uses)
 
+```
 src/
 ├── app/                      # App Router pages (all client components)
 │   ├── components/           # smaller reusable UI components
@@ -59,6 +60,7 @@ src/
 ├── validation/               # yup schemas for outgoing POST request validation
 ├── public/                   # Static assets (images/icons)
 └── styles/                   # Tailwind + global css
+```
 
 
 
