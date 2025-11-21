@@ -1,3 +1,10 @@
+![GitHub License](https://img.shields.io/github/license/arun777-re/dry-basket)
+![GitHub Stars](https://img.shields.io/github/stars/arun777-re/dry-basket)
+![GitHub Forks](https://img.shields.io/github/forks/arun777-re/dry-basket)
+![GitHub Last Commit](https://img.shields.io/github/last-commit/arun777-re/dry-basket)
+![GitHub Repo Size](https://img.shields.io/github/repo-size/arun777-re/dry-basket)
+
+
 # E-Commerce Frontend — Modern Full-Stack (Next.js)
 
 Tech: Next.js (App Router) · TypeScript · Redux Toolkit · TailwindCSS · Framer Motion · Embla · Axios - React Hot Toast - shadcn/ui - radixui.
