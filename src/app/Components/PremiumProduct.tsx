@@ -15,7 +15,7 @@ const PremiumProduct = () => {
             Premium Quality Products
           </h2>
 
-          <p className="text-sm md:text-base mt-2 text-body/80">
+          <p className="text-sm md:text-base mt-2 ">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit.
           </p>
         </header>

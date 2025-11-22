@@ -152,11 +152,11 @@ body {
 
   /* ---- HEADINGS ---- */
   h1 {
-    @apply text-4xl md:text-5xl font-semibold tracking-tight ;
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight ;
   }
 
   h2 {
-    @apply text-3xl md:text-4xl font-semibold tracking-tight ;
+    @apply text-3xl md:text-4xl  lg:text-5xl font-bold  tracking-tight ;
   }
 
   h3 {
@@ -173,7 +173,7 @@ body {
 
   /* ---- PARAGRAPH ---- */
   p {
-    @apply text-[15px] text-text leading-relaxed font-normal font-roboto;
+    @apply text-[15px] text-text leading-relaxed tracking-wide font-normal font-roboto;
   }
 
   a {

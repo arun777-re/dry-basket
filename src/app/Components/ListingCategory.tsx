@@ -81,7 +81,7 @@ const ListingCategory: React.FC<CategoryProps> = ({
               >
                 <article
                   className={`flex flex-col gap-3 p-4 rounded-md max-w-xs ${
-                    drxn ? "bg-white/90" : "bg-body/70"
+                    drxn ? "bg-black/70" : "bg-black/70"
                   }`}
                 >
                   <h5 className={`${drxn ? "text-first" : "text-head"} text-lg text-center font-semibold`}>
@@ -156,7 +156,7 @@ const ListingCategory: React.FC<CategoryProps> = ({
                         whileHover={{ opacity: 1 }}
                         transition={{ duration: 0.25 }}
                       >
-                        <article className="flex flex-col items-center justify-center gap-2 bg-body/60 p-3 rounded-md w-3/4">
+                        <article className="flex flex-col items-center justify-center gap-2 bg-black/60 p-3 rounded-md w-3/4">
                           <h5 className="text-white text-center text-sm font-semibold">{item.category}</h5>
                           <Button
                             type="button"
@@ -164,7 +164,8 @@ const ListingCategory: React.FC<CategoryProps> = ({
                               e.stopPropagation();
                               handleCard(item.category);
                             }}
-                            className="bg-transparent border-2 border-border text-head text-sm tracking-wide hover:border-first hover:bg-first transition"
+                            className="bg-transparent border-2 border-border text-head text-sm tracking-wide hover:border-first hover:bg-first
+                            hover:text-white transition"
                           >
                             Shop Now
                           </Button>

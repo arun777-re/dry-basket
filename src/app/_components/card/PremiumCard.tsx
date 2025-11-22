@@ -37,16 +37,16 @@ const PremiumCard: React.FC<PremiumProductDTO> = ({
         </div>
 
         {/* Content */}
-        <article className="w-full flex flex-col items-center gap-3 p-4 text-center">
+        <article className="w-full flex flex-col items-center gap-2 p-4 text-center">
           <h5 className="mb-0 font-semibold text-first">{category}</h5>
 
-          <p className="line-clamp-3 text-body/80">{description}</p>
+          <p className="line-clamp-3 ">{description}</p>
 
           <Button
             onClick={() => router.push(`/products/${category}`)}
             className="
-              bg-transparent border-2 border-border 
-              rounded-full px-5 py-3 text-body tracking-wide
+              bg-transparent border-2 border-first
+              rounded-full px-5 py-3 text-first tracking-wide
               hover:border-first hover:bg-first hover:text-white 
               transition-all duration-500 ease-in-out cursor-pointer
             "

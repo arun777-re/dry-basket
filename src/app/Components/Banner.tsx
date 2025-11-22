@@ -68,10 +68,10 @@ const Banner: React.FC<BannerProps> = ({ heading }) => {
       <section
         className={`${
           isHome ? "block" : "hidden"
-        } w-full relative mx-auto -mt-24 cursor-grab`}
+        } w-full relative mx-auto -mt-24 cursor-grab top-0`}
       >
         <Carousel className="relative w-full" opts={opts} plugins={[autoplay]}>
-          <CarouselContent className="w-full relative h-[50vh] sm:h-[60vh] md:h-[80vh] lg:h-[95vh] xl:h-screen flex gap-0 !p-0 !m-0">
+          <CarouselContent className="w-full relative h-[60vh] sm:h-[60vh] md:h-[80vh] lg:h-[95vh] xl:h-screen flex gap-0 !p-0 !m-0 ">
             {validBanners.length > 0 &&
               validBanners.map((item, key) => (
                 <CarouselItem
@@ -89,14 +89,14 @@ const Banner: React.FC<BannerProps> = ({ heading }) => {
             className="hidden sm:flex sm:absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 
             z-20 bg-[var(--color-first)] hover:bg-[var(--color-prdct)] 
             border border-[var(--color-border)] p-2 rounded-full shadow-lg cursor-pointer
-            text-[var(--color-head)]"
+            text-head"
           />
 
           <CarouselNext
             className="absolute right-2 sm:right-4 top-[90%] sm:top-1/2 -translate-y-1/2 
             z-20 bg-[var(--color-first)] hover:bg-[var(--color-prdct)] 
-            border border-[var(--color-border)] p-2 rounded-full shadow-lg cursor-pointer
-            text-[var(--color-head)]"
+            border border-border p-2 rounded-full shadow-lg cursor-pointer
+            text-head"
           />
         </Carousel>
       </section>

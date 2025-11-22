@@ -21,12 +21,12 @@ const BannerCard: React.FC<BannerIncomingDTO> = ({
           priority
           className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-[var(--color-body)]/50" />
+        <div className="absolute inset-0 bg-black/50" />
       </div>
 
       <div className="relative z-10 flex items-center justify-center h-full px-4">
         <article className="flex flex-col items-center text-center gap-2 sm:gap-4">
-          <h2 className="text-[var(--color-head)] sm:text-3xl md:text-4xl lg:text-6xl font-bold drop-shadow-xl">
+          <h2 className="text-[var(--color-head)]  drop-shadow-xl">
             {title}
           </h2>
 

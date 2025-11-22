@@ -61,8 +61,8 @@ const BestProducts: React.FC = () => {
             Best Products
           </h2>
 
-          <p className="mt-2 text-sm md:text-base text-body/70">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+          <p className="mt-2 text-sm md:text-base tracking-wide">
+           Best products from dry basket choose for you.
           </p>
           {/* Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8 py-6">
@@ -72,7 +72,7 @@ const BestProducts: React.FC = () => {
               className={`${
                 section === "kaju"
                   ? "bg-first border-first text-white shadow-md shadow-body/30"
-                  : "bg-head/10 border-head text-body"
+                  : "bg-body border-head text-head"
               } border-2 text-sm sm:text-base px-4 sm:px-6 py-2 tracking-wide 
               hover:bg-head hover:border-head hover:text-body transition-all duration-300`}
               onClick={getDriedFruits}
@@ -85,7 +85,7 @@ const BestProducts: React.FC = () => {
               className={`${
                 section === "almonds"
                   ? "bg-first border-first text-white shadow-md shadow-body/30"
-                  : "bg-head/10 border-head text-body"
+                  : "bg-body border-head text-head"
               } border-2 text-sm sm:text-base px-4 sm:px-6 py-2 tracking-wide 
               hover:bg-head hover:border-head hover:text-body transition-all duration-300`}
               onClick={getSpicyMasala}

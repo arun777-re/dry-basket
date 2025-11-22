@@ -95,7 +95,7 @@ const Navbar = () => {
                       <li key={item}>
                         <Link
                           href={href}
-                          className="text-sm font-roboto  hover:text-first transition"
+                          className="text-sm font-roboto  hover:text-head transition"
                         >
                           {item}
                         </Link>
@@ -137,7 +137,7 @@ const Navbar = () => {
                       <li key={item}>
                         <Link
                           href={href}
-                          className="block text-sm font-roboto text-text hover:text-first transition"
+                          className="block text-sm font-roboto  hover:text-head transition"
                           onClick={() => setMobileOpen(false)}
                         >
                           {item}

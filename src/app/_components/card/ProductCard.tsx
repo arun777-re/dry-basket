@@ -116,17 +116,19 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   return (
-  <Card
+<Card
   ref={activeRef}
   onMouseEnter={() => setActive(true)}
   onMouseLeave={() => setActive(false)}
-  className="
+  className={`
     w-full h-130 sm:h-84 relative px-2 
-    bg-white/95 shadow-sm rounded-lg 
+    bg-body/95 shadow-sm rounded-lg 
     border border-border
     transition-all duration-300
-  "
+    ${active ? "scale-105 shadow-lg" : "scale-100"}
+  `}
 >
+
   <span className="border-left"></span>
   <span className="border-bottom"></span>
 
@@ -135,9 +137,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
     {/* Discount Badge */}
     {variants[0]?.discount! > 0 &&
       new Date(variants?.[0]?.discountExpiry!).getTime() > Date.now() && (
-        <span className="absolute top-2 left-0 bg-first/80 text-white px-2 py-1 text-xs rounded">
-          {variants[0].discount!}% OFF
-        </span>
+      <span className="absolute top-2 left-0 bg-first/90 text-white px-2 py-1 text-xs rounded shadow-md">
+  {variants[0].discount!}% OFF
+</span>
+
     )}
 
     {/* Product Image + Hover Controls */}
@@ -152,51 +155,52 @@ const ProductCard: React.FC<ProductCardProps> = ({
         `}
       >
         {/* ADD TO CART BUTTON */}
-        <div
-          onClick={handleAddItem}
-          className="
-            w-10 h-10 rounded-full bg-white shadow
-            flex items-center justify-center cursor-pointer
-            hover:bg-first transition-all duration-300
-          "
-        >
-          <IoMdCart size={20} className="text-head hover:text-white" />
-        </div>
+     <div
+  onClick={handleAddItem}
+  className="
+    w-10 h-10 rounded-full bg-body shadow-md
+    flex items-center justify-center cursor-pointer
+    hover:bg-first hover:scale-110 hover:shadow-lg transition-all duration-300
+  "
+>
+  <IoMdCart size={20} className="text-head hover:text-white transition-colors duration-300" />
+</div>
 
-        {/* WISHLIST BUTTON */}
-        <div
-          onClick={handleAddToWishList}
-          className="
-            w-10 h-10 rounded-full bg-white shadow
-            flex items-center justify-center cursor-pointer
-            hover:bg-first transition-all duration-300
-          "
-        >
-          <CiHeart size={20} className="text-head hover:text-white" />
-        </div>
+<div
+  onClick={handleAddToWishList}
+  className="
+    w-10 h-10 rounded-full bg-body shadow-md
+    flex items-center justify-center cursor-pointer
+    hover:bg-first hover:scale-110 hover:shadow-lg transition-all duration-300
+  "
+>
+  <CiHeart size={20} className="text-head hover:text-white transition-colors duration-300" />
+</div>
+
       </div>
     </div>
 
     {/* Product Info */}
-    <figcaption className="flex flex-col items-center justify-center gap-4">
+    <figcaption className="flex flex-col items-center justify-center gap-2">
 
       {/* Product Name */}
-      <Link
-        href={`/product/${slug}`}
-        className="
-          text-lg font-semibold tracking-wide text-first 
-          hover:text-prdct transition-all duration-300 
-          font-rice text-center
-        "
-      >
-        {productName}
-      </Link>
+  <Link
+  href={`/product/${slug}`}
+  className="
+    text-lg font-semibold tracking-wide text-first font-rice text-center
+    hover:text-prdct hover:underline decoration-2 underline-offset-2 transition-all duration-300
+  "
+>
+  {productName}
+</Link>
+
 
       {/* Pricing */}
       <div className="flex items-center justify-between gap-4.5">
-        <p className="font-extrabold text-sm text-body">
-          Rs {variants[0].priceAfterDiscount}
-        </p>
+       <p className="font-extrabold text-sm hover:scale-105 transition-transform duration-300">
+  Rs {variants[0].priceAfterDiscount}
+</p>
+
 
         {variants[0]?.discount! > 0 &&
           new Date(variants?.[0]?.discountExpiry!).getTime() > Date.now() && (

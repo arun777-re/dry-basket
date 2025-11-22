@@ -63,7 +63,7 @@ const Footer = () => {
     <div className="flex flex-col gap-4">
       <h5 className="text-head/90 text-lg font-semibold tracking-wide">About DryBasket</h5>
 
-      <p className="text-sm text-head/60 leading-relaxed">
+      <p className="text-sm text-text/80 leading-relaxed">
         At DryBasket, we bring you the finest quality dry fruits sourced
         directly from trusted farms. Freshness, purity, and premium taste — 
         delivered to your doorstep.
@@ -87,7 +87,7 @@ const Footer = () => {
             <li key={idx}>
               <Link
                 href={link.href}
-                className="text-sm text-head/60 hover:text-first flex items-center gap-2 transition-all duration-300"
+                className="text-sm text-text/70 hover:text-first flex items-center gap-2 transition-all duration-300"
               >
                 <PiGreaterThanBold className="text-xs" /> {link.label}
               </Link>
@@ -101,7 +101,7 @@ const Footer = () => {
     <div className="flex flex-col gap-4">
       <h5 className="text-head/90 text-lg font-semibold tracking-wide">Contact Us</h5>
 
-      <ul className="flex flex-col gap-3 text-sm text-head/60">
+      <ul className="flex flex-col gap-3 text-sm text-text/70">
         <li className="flex items-center gap-2"><FaHome size={16} /> 21-B, Model Town, Sonipat</li>
         <li className="flex items-center gap-2"><FaPhone size={16} /> +91 98765 43210</li>
         <li className="flex items-center gap-2"><GoClock size={16} /> Mon–Sat: 9AM - 7PM</li>
@@ -123,11 +123,11 @@ const Footer = () => {
   {/* Bottom */}
   <div className="border-t border-border/40 pt-4 flex flex-col md:flex-row justify-between items-center px-6 md:px-12 gap-4">
     
-    <p className="text-head/50 text-sm text-center md:text-left">
+    <p className="text-text/50 text-sm text-center md:text-left">
       © 2025 S.R. Tech Solutions. All Rights Reserved.
     </p>
 
-    <div className="flex gap-5 items-center text-head/70">
+    <div className="flex gap-5 items-center text-text/70">
       <FaLinkedin className="hover:text-first transition-colors duration-300" size={20} />
       <FaFacebook className="hover:text-first transition-colors duration-300" size={20} />
       <FaInstagram className="hover:text-first transition-colors duration-300" size={20} />
@@ -136,6 +136,7 @@ const Footer = () => {
 
   </div>
 </footer>
+
 
 
   );
