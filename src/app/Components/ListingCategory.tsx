@@ -20,7 +20,7 @@ interface CategoryProps {
 
 const containerVariants = {
   hidden: { opacity: 0, y: 12 },
-  show: { opacity: 1, y: 0, transition: { staggerChildren: 0.06, ease: "easeOut" } },
+  show: { opacity: 1, y: 0, transition: { staggerChildren: 0.06, ease: "easeOut" as const } },
 };
 
 const cardHover = {
