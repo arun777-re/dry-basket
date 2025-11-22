@@ -133,13 +133,6 @@ body {
   --color-prdct: #1f6f6f;         /* product dark tone accent secondary*/
 }
 
-
-
-
-
-
-
-
 @layer base {
   * {
     @apply border-border outline-ring/50;

@@ -2,7 +2,6 @@
 import React from "react";
 import Banner from "./Components/Banner";
 import BestProducts from "./Components/BestProducts";
-import BgFixed from "./Components/BgFixed";
 import Blog from "./Components/Blog";
 import Footer from "./Components/Footer";
 import ListingCategory from "./Components/ListingCategory";
