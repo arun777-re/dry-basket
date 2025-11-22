@@ -126,11 +126,12 @@ body {
   --font-cursive:"Pacifico","cursive";
 
   /* ---- Modern TEAL palette ---- */
-  --color-first: #329999;         /* primary  buttons + highlights*/ 
-  --color-body: #0f1214;          /* dark bg body text*/
-  --color-head: #5ed1d1;          /* heading - lighter teal headings + button bg*/
-  --color-border: #3cbebe;        /* border - slightly bright borders*/
-  --color-prdct: #1f6f6f;         /* product dark tone accent secondary*/
+  --color-first: #00bfa6;         /* primary  buttons + highlights*/ 
+  --color-body: #ffffff;          /* dark bg body text*/
+  --color-head: #007d7d;          /* heading - lighter teal headings + button bg*/
+  --color-border: #e0f7f7;        /* border - slightly bright borders*/
+  --color-prdct: #26a69a;    
+  --color-text:#1f1f1f     /* product dark tone accent secondary*/
 }
 
 @layer base {
@@ -139,29 +140,31 @@ body {
   }
 
   body {
-    @apply bg-body text-first;
+    @apply bg-body text-text font-roboto;
   }
 
   h1, h2, h3, h4, h5 {
-    color: var(--color-first);
+    color: var(--color-head);
     font-family: var(--font-rice);
+    margin-top:0;
+    margin-bottom:0.5rem;
   }
 
   /* ---- HEADINGS ---- */
   h1 {
-    @apply text-4xl md:text-5xl font-semibold tracking-tight mb-4;
+    @apply text-4xl md:text-5xl font-semibold tracking-tight ;
   }
 
   h2 {
-    @apply text-3xl md:text-4xl font-semibold tracking-tight mb-3;
+    @apply text-3xl md:text-4xl font-semibold tracking-tight ;
   }
 
   h3 {
-    @apply text-2xl md:text-3xl font-semibold tracking-tight mb-2;
+    @apply text-2xl md:text-3xl font-semibold tracking-tight ;
   }
 
   h4 {
-    @apply text-xl md:text-2xl font-semibold tracking-tight mb-2;
+    @apply text-xl md:text-2xl font-semibold tracking-tight ;
   }
 
   h5 {
@@ -170,7 +173,15 @@ body {
 
   /* ---- PARAGRAPH ---- */
   p {
-    @apply text-[15px] text-body leading-relaxed font-normal;
+    @apply text-[15px] text-text leading-relaxed font-normal font-roboto;
+  }
+
+  a {
+    @apply text-first no-underline;
+  }
+
+  small {
+    @apply text-sm text-text;
   }
 }
 

@@ -48,7 +48,7 @@ const Navbar = () => {
       {/* SITE TITLE */}
       <h1
         data-aos="fade-down"
-        className="text-center relative py-6 z-50 text-[color:var(--color-head)]"
+        className="text-center relative py-6 z-50"
       >
         Dry Basket
       </h1>
@@ -73,7 +73,7 @@ const Navbar = () => {
             {/* Hamburger */}
             <div className="flex items-center gap-4">
               <button
-                className="md:hidden text-2xl text-[color:var(--color-head)]"
+                className="md:hidden text-2xl text-head"
                 onClick={() => setMobileOpen((prev) => !prev)}
                 aria-label="Toggle Menu"
               >
@@ -95,7 +95,7 @@ const Navbar = () => {
                       <li key={item}>
                         <Link
                           href={href}
-                          className="text-sm font-roboto text-[color:var(--color-body)] hover:text-[color:var(--color-first)] transition"
+                          className="text-sm font-roboto  hover:text-first transition"
                         >
                           {item}
                         </Link>
@@ -107,9 +107,9 @@ const Navbar = () => {
             </div>
 
             {/* Icons */}
-            <div className="flex gap-4 items-center text-[color:var(--color-head)]">
+            <div className="flex gap-4 items-center text-head">
               <IoSearchOutline
-                className="text-2xl cursor-pointer hover:text-[color:var(--color-first)]"
+                className="text-2xl cursor-pointer hover:text-first"
                 onClick={() => setSearch((prev) => !prev)}
               />
 
@@ -117,14 +117,14 @@ const Navbar = () => {
 
               <FaUser
                 onClick={handleLoginAndUserDashBoard}
-                className="text-xl cursor-pointer hover:text-[color:var(--color-first)]"
+                className="text-xl cursor-pointer hover:text-first"
               />
             </div>
           </div>
 
           {/* Mobile Menu */}
           {mobileOpen && (
-            <div className="md:hidden bg-[color:var(--color-background)]/95 px-6 pb-4 border-t border-[color:var(--color-border)]">
+            <div className="md:hidden bg-[color:var(--color-background)]/95 px-6 pb-4 border-t border-border">
               <ul className="flex flex-col gap-4 mt-2">
                 {["Home", "Shop", "About", "Contact", "Faq", "Blogs"].map(
                   (item) => {
@@ -137,7 +137,7 @@ const Navbar = () => {
                       <li key={item}>
                         <Link
                           href={href}
-                          className="block text-sm font-roboto text-[color:var(--color-body)] hover:text-[color:var(--color-first)] transition"
+                          className="block text-sm font-roboto text-text hover:text-first transition"
                           onClick={() => setMobileOpen(false)}
                         >
                           {item}
