@@ -10,7 +10,11 @@ import AllBlogs from '../Components/AllBlogs';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
 
-const Banner = dynamic(() => import('../Components/Banner'),{ssr:true});
+const Banner = dynamic(() => import('../Components/Banner'), {
+  ssr: false,           
+  loading: () => <Spinner />, 
+});
+
 
 export default async function AllBlogsPage({
   searchParams,
