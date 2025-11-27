@@ -4,16 +4,11 @@ import React, { Suspense } from 'react'
  import {  PaginatedProductResponse } from '@/types/response';
 import { BlogsIncomingDTO } from '@/types/blog';
 import { ROUTES } from '@/constants/routes';
-import dynamic from 'next/dynamic';
 import Spinner from '../_components/Spinner';
 import AllBlogs from '../Components/AllBlogs';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
-
-const Banner = dynamic(() => import('../Components/Banner'), {
-  ssr: false,           
-  loading: () => <Spinner />, 
-});
+import BannnerWrapper from '../_components/BannnerWrapper';
 
 
 export default async function AllBlogsPage({
@@ -48,7 +43,7 @@ export default async function AllBlogsPage({
   return (
     <>
       <Navbar />
-      <Banner />
+      <BannnerWrapper />
       <Suspense fallback={<Spinner/>}>
       <AllBlogs page={safePage} data={data}/>
       </Suspense>
