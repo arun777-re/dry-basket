@@ -1,8 +1,6 @@
 'use client'
 import React from 'react';
-
 import Autoplay from "embla-carousel-autoplay";
-import { EmblaOptionsType } from "embla-carousel";
 import DummyComponent from "../_components/DummyComponent";
 import ProductCard from "./card/ProductCard";
 import { ProductIncomingDTO } from '@/types/product';
@@ -39,7 +37,8 @@ const ProductCarousel: React.FC<DataProps> = ({ product }) => {
     : [];
 
   return (
-     <div className="w-full px-4 md:px-16 h-auto ">
+ 
+      <div className="w-full px-4 md:px-16 h-auto ">
         <div className="embla w-full relative overflow-hidden" ref={emblaRef} >
           <div className="embla__container flex gap-4 ml-2 sm:ml-0 sm:px-4 rounded-lg py-10  ">
             {validProductData.map((project, index) => (
@@ -54,7 +53,7 @@ const ProductCarousel: React.FC<DataProps> = ({ product }) => {
                  
                 "
               >
-                <ProductCard {...project}  />
+                <ProductCard productId={project._id} {...project} key={project._id} />
               </div>
             ))}
           </div>

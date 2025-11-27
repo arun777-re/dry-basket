@@ -47,12 +47,11 @@ const BestProducts: React.FC = () => {
   };
 
   const productData = (products && products.data) ?? [];
-  console.log("Best Products Data:", productData);
 
   return (
     <section className="w-full relative min-h-screen h-auto mx-auto overflow-hidden bg-body/5">
       <div className="relative w-full flex flex-col items-center justify-center 
-      px-4  py-10 sm:py-16">
+      px-4 md:px-20 lg:px-30 py-10 sm:py-16">
 
         {/* Header */}
         <header className="w-full max-w-xl flex flex-col items-center text-center">
