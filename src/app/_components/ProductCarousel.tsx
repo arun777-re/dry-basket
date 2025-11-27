@@ -38,7 +38,7 @@ const ProductCarousel: React.FC<DataProps> = ({ product }) => {
 
   return (
  
-      <div className="w-full px-4 md:px-16 h-auto ">
+      <div className="w-full relative px-4 md:px-16 h-auto ">
         <div className="embla w-full relative overflow-hidden" ref={emblaRef} >
           <div className="embla__container flex gap-4 ml-2 sm:ml-0 sm:px-4 rounded-lg py-10  ">
             {validProductData.map((project, index) => (
@@ -48,8 +48,10 @@ const ProductCarousel: React.FC<DataProps> = ({ product }) => {
                   embla__slide
                   shrink-0
                   basis-full 
-                  md:basis-1/2 
-                  lg:basis-1/3 
+                  sm:basis-1/2 
+                  md:basis-1/3 
+                  lg:basis-1/4 
+                  xl:basis-1/5
                  
                 "
               >
@@ -64,14 +66,14 @@ const ProductCarousel: React.FC<DataProps> = ({ product }) => {
           {/* Buttons */}
           <button
             onClick={scrollPrev}
-            className=" bg-accent/20 p-2 rounded-full cursor-pointer w-10 h-10 hover:bg-accent/40 transition-colors duration-300"
+            className=" bg-first/20 p-2 rounded-full cursor-pointer w-10 h-10 hover:bg-first/40 transition-colors duration-300"
           >
             ‹
           </button>
 
           <button
             onClick={scrollNext}
-            className="bg-accent/20 p-2 rounded-full cursor-pointer w-10 h-10 hover:bg-accent/40 transition-colors duration-300"
+            className="bg-first/20 p-2 rounded-full cursor-pointer w-10 h-10 hover:bg-first/40 transition-colors duration-300"
           >
             ›
           </button>

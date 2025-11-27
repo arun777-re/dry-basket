@@ -25,7 +25,7 @@ const AllBlogs = ({page,data}:{page:number,data:PaginatedProductResponse<BlogsIn
     [];
 
   return (
-    <section className="w-[100vw] relative min-h-screen  py-10 ">
+    <section className="w-[100vw] relative min-h-screen bg-[#1f6f6f10] py-10 ">
       <div className="relative flex flex-col md:flex-row items-start justify-between gap-8 px-4 md:px-10 lg:px-20 ">
         {/* Main Content */}
         <main className="flex-1 flex flex-col items-center justify-center w-full h-auto md:w-[70%] relative">

@@ -110,7 +110,7 @@ const Banner: React.FC<BannerProps> = ({ heading }) => {
         <div className="relative w-full h-[50vh] sm:h-[50vh] md:h-[55vh] lg:h-[70vh]">
           <div className="relative w-full h-full bg-black/60">
             <Image
-              src="/images/banner-001.jpg"
+              src="/images/banner-001.webp"
               alt="banner-image"
               fill
               priority
