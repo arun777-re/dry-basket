@@ -6,7 +6,6 @@ import Footer from "../Components/Footer";
 
 import MapComponent from "../Components/MapComponent";
 import Contact from "../_components/Contact";
-import ContactForm from "../_components/form/ContactForm";
 
 const ContactPage = () => {
   return (
@@ -19,11 +18,6 @@ const ContactPage = () => {
         {/* Map */}
         <div className="w-full lg:w-1/2">
           <MapComponent />
-        </div>
-
-        {/* Contact Form */}
-        <div className="w-full lg:w-1/2 flex items-center">
-          <ContactForm />
         </div>
       </section>
 

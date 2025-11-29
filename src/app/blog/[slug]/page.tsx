@@ -101,17 +101,17 @@ const CompleteBlog = () => {
                 <div className="flex flex-wrap items-center gap-4 pt-3 text-sm">
                   <article className="flex gap-1 items-center">
                     <SlCalender size={14} className="text-head" />
-                    <p className="text-text/96">
+                    <p className="text-text/90">
                       {singleBlog.data && new Date(singleBlog.data.createdAt).toLocaleDateString()}
                     </p>
                   </article>
                   <article className="flex gap-1 items-center">
                     <LiaComments size={18} className="text-head" />
-                    <p className="text-text/96">6 Comments</p>
+                    <p className="text-text/90">6 Comments</p>
                   </article>
                   <article className="flex gap-1 items-center">
                     <FaRegUserCircle size={16} className="text-head" />
-                    <p className="text-text/96">{singleBlog.data?.authorName}</p>
+                    <p className="text-text/90">{singleBlog.data?.authorName}</p>
                   </article>
                 </div>
 
