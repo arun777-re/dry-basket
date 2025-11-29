@@ -29,94 +29,85 @@ const BlogCard: React.FC<BlogsIncomingDTO> = ({
       : description;
 
   return (
-    <motion.div
-      className="relative w-full h-auto lg:h-60"
-      initial="rest"
-      whileHover={!shouldReduceMotion ? "hover" : "rest"}
-      animate="rest"
-    >
-      <Card
-        className="
-          relative w-full h-full 
-          
-          rounded-lg 
-          text-white shadow-sm
-        "
-      >
-        <div className="w-full h-full flex flex-col lg:flex-row items-center gap-6 relative">
+<motion.div
+  className="relative w-full h-auto lg:h-64"
+  initial="rest"
+  whileHover={!shouldReduceMotion ? "hover" : "rest"}
+  animate="rest"
+>
+  <Card
+    className="
+      relative w-full h-full overflow-hidden
+      bg-[#0b0f12]/60 backdrop-blur-md
+      border border-white/10 rounded-xl shadow-xl
+      hover:border-first hover:shadow-first/20 transition-all
+    "
+  >
+    <div className="w-full h-full flex flex-col lg:flex-row items-center gap-6 relative p-4">
 
-          {/* Image Section */}
-          <div className="relative h-full w-full lg:w-[40%] z-20">
-            <div className="w-full h-60 lg:h-full relative rounded-md overflow-hidden border-2 border-border ">
-              <Image
-                src={blogImage || "/images/card1.jpg"}
-                alt={`Blog cover image for ${title}`}
-                fill
-                loading="lazy"
-                sizes="100%"
-                className="object-cover"
-              />
-            </div>
+      {/* Image Section */}
+      <div className="relative h-56 lg:h-full w-full lg:w-[40%] rounded-lg overflow-hidden">
+        <Image
+          src={blogImage || '/images/card1.jpg'}
+          alt={title}
+          fill
+          loading="lazy"
+          sizes="100%"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+        />
 
-            {/* Hover Overlay */}
-            <motion.div
-              className="absolute top-0 left-0 w-full h-full bg-black/20"
-              variants={{
-                rest: { opacity: 0 },
-                hover: {
-                  opacity: 0.25,
-                  transition: { duration: 0.3, ease: "easeInOut" },
-                },
-              }}
-            />
+        <motion.div
+          className="absolute inset-0 bg-black/30"
+          variants={{
+            rest: { opacity: 0 },
+            hover: { opacity: 1, transition: { duration: 0.3 } },
+          }}
+        />
+      </div>
+
+      {/* Text */}
+      <div className="h-full w-full lg:w-[60%] flex flex-col justify-center gap-4">
+        <h5
+          onClick={handleClick}
+          className="mb-0 text-xl font-semibold text-white hover:text-first transition-all cursor-pointer"
+        >
+          {displayTitle}
+        </h5>
+
+        <div className="flex items-center gap-4 text-sm text-gray-300">
+          <div className="flex items-center gap-2">
+            <FaRegUserCircle className="text-first" />
+            <span>{authorName}</span>
           </div>
 
-          {/* Text Section */}
-          <div className="relative h-full w-full lg:w-[60%] flex flex-col items-start justify-center gap-4 bg-body px-4 rounded-lg border-2
-          border-border">
+          <span className="w-[1px] h-4 bg-gray-600"></span>
 
-            <h5 className="mb-0 text-head hover:text-first transition-all cursor-pointer">
-              {displayTitle}
-            </h5>
-
-            <div className="relative flex items-center justify-between w-full sm:w-[60%]">
-
-              {/* Author */}
-              <article className="flex gap-1 items-center">
-                <FaRegUserCircle size={20} className="text-head" />
-                <p className="text-base text-head">By&nbsp;{authorName}</p>
-              </article>
-
-              <div className="h-4 w-[1px] bg-border"></div>
-
-              {/* Date */}
-              <article className="flex gap-1 items-center">
-                <SlCalender size={20} className="text-head" />
-                <p className="text-base text-head">
-                  {new Date(createdAt).toLocaleDateString()}
-                </p>
-              </article>
-            </div>
-
-            <p className="text-sm text-white/80">{displayDescription}</p>
-
-            <Button
-              onClick={handleClick}
-              className="
-                bg-transparent 
-                border-2 border-head 
-                rounded-full px-7 py-6
-                text-head tracking-wide
-                hover:border-first hover:bg-first hover:text-body
-                transition-all duration-500 ease-in-out cursor-pointer
-              "
-            >
-              Read More
-            </Button>
+          <div className="flex items-center gap-2">
+            <SlCalender className="text-first" />
+            <span>{new Date(createdAt).toLocaleDateString()}</span>
           </div>
         </div>
-      </Card>
-    </motion.div>
+
+        <p className="text-gray-400 leading-relaxed text-sm">
+          {displayDescription}
+        </p>
+
+        <Button
+          onClick={handleClick}
+          className="
+            bg-first/20 border border-first text-first
+            rounded-full px-8 py-5 tracking-wide font-medium
+            hover:bg-first hover:text-white hover:shadow-first/40
+            transition-all duration-300
+          "
+        >
+          Read More
+        </Button>
+      </div>
+    </div>
+  </Card>
+</motion.div>
+
   );
 };
 

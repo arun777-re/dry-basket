@@ -108,7 +108,7 @@ const Banner: React.FC<BannerProps> = ({ heading }) => {
         } w-full relative mx-auto -mt-32`}
       >
         <div className="relative w-full h-[50vh] sm:h-[50vh] md:h-[55vh] lg:h-[70vh]">
-          <div className="relative w-full h-full bg-black/60">
+          <div className="relative w-full h-full bg-black/20">
             <Image
               src="/images/banner-001.webp"
               alt="banner-image"

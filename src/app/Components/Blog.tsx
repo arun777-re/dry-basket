@@ -75,7 +75,7 @@ const Blog = () => {
         {/* Header */}
         <header className="relative w-full sm:max-w-md flex flex-col items-center justify-center text-center">
           <h2 className="text-3xl font-semibold text-head">Blog Post</h2>
-          <p className="text-body mt-2">
+          <p className="text-text mt-2">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit.
           </p>
         </header>

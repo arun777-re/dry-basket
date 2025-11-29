@@ -45,19 +45,20 @@ const footerData = [
   },
 ];
 
-const Footer = () => {
+const Footer = ({bgcolor}:{bgcolor?:string}) => {
 
 
   return (
-<footer className="relative w-full bg-body text-head/80 flex flex-col gap-16 pt-20 pb-6">
+<footer className={`relative w-full ${bgcolor ? '' : 'bg-[#1f6f6f10]'} flex flex-col gap-16 pt-20 pb-6`}
+style={bgcolor ? {backgroundColor:bgcolor} : undefined}
+>
 
   {/* Top Footer */}
   <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 px-6 md:px-12">
 
     {/* About */}
     <div className="flex flex-col gap-4">
-      <h5 className="text-head/90 text-lg font-semibold tracking-wide">About DryBasket</h5>
-
+      <h5 className="text-head text-lg font-semibold tracking-wide">About DryBasket</h5>
       <p className="text-sm text-text/80 leading-relaxed">
         At DryBasket, we bring you the finest quality dry fruits sourced
         directly from trusted farms. Freshness, purity, and premium taste — 
@@ -66,7 +67,7 @@ const Footer = () => {
 
       <Link 
         href="/about"
-        className="text-border hover:text-first transition-all duration-300 mt-2"
+        className="text-first/80 hover:text-first transition-all duration-300 mt-2"
       >
         Read More →
       </Link>
@@ -75,7 +76,7 @@ const Footer = () => {
     {/* Dynamic Columns */}
     {footerData.map((section, i) => (
       <div key={i} className="flex flex-col gap-4">
-        <h5 className="text-head/90 text-lg font-semibold tracking-wide">{section.title}</h5>
+        <h5 className="text-head text-lg font-semibold tracking-wide">{section.title}</h5>
 
         <ul className="flex flex-col gap-3">
           {section.links.map((link, idx) => (
@@ -94,7 +95,7 @@ const Footer = () => {
 
     {/* Contact */}
     <div className="flex flex-col gap-4">
-      <h5 className="text-head/90 text-lg font-semibold tracking-wide">Contact Us</h5>
+      <h5 className="text-head text-lg font-semibold tracking-wide">Contact Us</h5>
 
       <ul className="flex flex-col gap-3 text-sm text-text/70">
         <li className="flex items-center gap-2"><FaHome size={16} /> 21-B, Model Town, Sonipat</li>
@@ -118,7 +119,7 @@ const Footer = () => {
   {/* Bottom */}
   <div className="border-t border-border/40 pt-4 flex flex-col md:flex-row justify-between items-center px-6 md:px-12 gap-4">
     
-    <p className="text-text/50 text-sm text-center md:text-left">
+    <p className="text-text/60 text-sm text-center md:text-left">
       © 2025 S.R. Tech Solutions. All Rights Reserved.
     </p>
 
