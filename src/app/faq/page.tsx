@@ -23,11 +23,7 @@ const FaqPage = () => {
             <p className="text-gray-600 text-sm sm:text-base">
               A lot more questions.
             </p>
-            <div className="flex gap-2 items-center">
-              <FaStar size={18} className="text-first" />
-              <FaStar size={25} className="text-body" />
-              <FaStar size={18} className="text-first" />
-            </div>
+        
           </header>
 
           {/* FAQ Cards */}
