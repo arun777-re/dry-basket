@@ -10,11 +10,7 @@ const Testim = () => {
           <header className="text-center flex flex-col items-center gap-2">
             <h2 className="text-2xl sm:text-3xl font-bold">Our Client Words</h2>
             <p className="text-gray-600 text-sm sm:text-base">Lorem ipsum, dolor sit amet consectetur adipisicing</p>
-            <div className="flex gap-2 items-center">
-              <FaStar size={18} className="text-first" />
-              <FaStar size={25} className="text-body" />
-              <FaStar size={18} className="text-first" />
-            </div>
+       
           </header>
 
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -37,7 +33,7 @@ const Testim = () => {
                     className="rounded-full border border-first object-cover"
                   />
                   <p className="text-sm sm:text-base">
-                    <span className="font-semibold text-body">{item.name}</span> - {item.designation}
+                    <span className="font-semibold text-text/90">{item.name}</span> - {item.designation}
                   </p>
                 </div>
               </div>

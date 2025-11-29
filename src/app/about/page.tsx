@@ -7,7 +7,6 @@ import Image from "next/image";
 import { FaStar } from "react-icons/fa";
 import Team from "../Components/Team";
 import Process from "../Components/Process";
-import { testimData } from "@/data/testimData";
 import Testim from "../Components/Testim";
 
 const AboutPage: React.FC = () => {
@@ -52,11 +51,7 @@ const AboutPage: React.FC = () => {
           <header className="text-center flex flex-col items-center gap-2">
             <h2 className="text-2xl sm:text-3xl font-bold">A unique blended taste</h2>
             <p className="text-gray-600 text-sm sm:text-base">Lorem ipsum, dolor sit amet consectetur adipisicing with height.</p>
-            <div className="flex gap-2 items-center">
-              <FaStar size={18} className="text-first" />
-              <FaStar size={25} className="text-body" />
-              <FaStar size={18} className="text-first" />
-            </div>
+         
           </header>
 
           {/* Image + Text Pairs */}

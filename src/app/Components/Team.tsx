@@ -11,11 +11,6 @@ const Team = () => {
         <header className="flex flex-col items-center text-center gap-4">
           <h2 className="text-2xl sm:text-3xl font-bold">Our Team</h2>
           <p className="text-gray-600 text-sm sm:text-base">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-          <div className="flex gap-2 items-center p-2">
-            <FaStar size={18} className="text-first " />
-            <FaStar size={25} className="text-body" />
-            <FaStar size={18} className="text-first " />
-          </div>
         </header>
 
         {/* Team Cards */}
