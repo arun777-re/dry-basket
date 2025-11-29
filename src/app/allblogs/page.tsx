@@ -15,7 +15,7 @@ export default async function AllBlogsPage({
   searchParams,
 }: any) {
   const params = await searchParams;
-      const rawPage = searchParams?.page;
+      const rawPage = params?.page;
   const page = Array.isArray(rawPage) ? Number(rawPage[0]) : Number(rawPage) || 1;
   const safePage =  isNaN(page) || page < 1 ? 1 : page;
   const limit = 10;

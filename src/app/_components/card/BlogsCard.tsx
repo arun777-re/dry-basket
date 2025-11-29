@@ -15,9 +15,9 @@ const BlogsCard: React.FC<BlogsIncomingDTO> = ({
 }) => {
   return (
     <div
-      className="relative mx-auto w-full md:w-1/2 transition-transform duration-300 hover:scale-105"
+      className="relative mx-auto w-full md:w-[48%] transition-transform duration-300 hover:scale-102"
     >
-      <Card className="flex flex-col h-full rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-500">
+      <Card className="flex flex-col h-full rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-500">
         {/* Image */}
         <div className="relative w-full h-44 sm:h-48 md:h-56 lg:h-60">
           <Image
@@ -36,23 +36,23 @@ const BlogsCard: React.FC<BlogsIncomingDTO> = ({
 
         {/* Content */}
         <article className="flex flex-col items-start gap-2 p-4 sm:p-5 text-left">
-          <h5 className="text-lg sm:text-xl font-normal text-gray-800 line-clamp-2">
+          <h5 className="text-lg sm:text-xl font-semibold text-head line-clamp-2">
             {title ?? ""}
           </h5>
           {heading && (
-            <span className="text-sm sm:text-base font-normal text-gray-600 line-clamp-1">
+            <span className="text-sm sm:text-base font-normal text-head/90 line-clamp-1">
               {heading}
             </span>
           )}
-          <p className="text-sm sm:text-base text-gray-500 line-clamp-3">
+          <p className="text-sm sm:text-base text-text/90 line-clamp-3">
             {description}
           </p>
           <div className="flex items-center justify-between w-full mt-3">
-            <span className="text-xs sm:text-sm text-gray-400">By {authorName}</span>
+            <span className="text-xs sm:text-sm text-text/80">By {authorName}</span>
             <Link
               href={(`/blog/${slug}`)}
-              className="bg-transparent border-2 border-primary rounded-full px-4 sm:px-5 py-2 sm:py-3 cursor-pointer
-                text-primary font-medium tracking-wide hover:bg-primary hover:text-white transition-all duration-500 ease-in-out"
+              className="bg-transparent border-2 border-first rounded-full px-4 sm:px-5 py-2 sm:py-3 cursor-pointer
+                text-primary font-medium tracking-wide hover:bg-first hover:text-white transition-all duration-500 ease-in-out"
             >
               Read More
             </Link>
