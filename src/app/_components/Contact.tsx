@@ -37,11 +37,7 @@ const Contact = () => {
       <header className="text-center max-w-md flex flex-col items-center justify-center">
         <h2>Contact Us</h2>
         <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-        <div className="flex gap-2 items-center p-2">
-          <FaStar size={18} className="text-first " />
-          <FaStar size={25} className="text-body" />
-          <FaStar size={18} className="text-first " />
-        </div>
+     
       </header>
 
       <div className="w-full flex flex-row flex-wrap sm:flex-nowrap gap-6 justify-items-center">
