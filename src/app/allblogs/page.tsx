@@ -1,5 +1,5 @@
 // SSG + ISR Page Component
-
+export const dynamic = "force-static";
 import React, { Suspense } from 'react'
  import {  PaginatedProductResponse } from '@/types/response';
 import { BlogsIncomingDTO } from '@/types/blog';
@@ -14,7 +14,7 @@ import BannnerWrapper from '../_components/BannnerWrapper';
 export default async function AllBlogsPage({
   searchParams,
 }: any) {
-  const params = await searchParams;
+  const params = searchParams;
       const rawPage = params?.page;
   const page = Array.isArray(rawPage) ? Number(rawPage[0]) : Number(rawPage) || 1;
   const safePage =  isNaN(page) || page < 1 ? 1 : page;
