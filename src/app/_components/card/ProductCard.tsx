@@ -128,9 +128,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
       className={`
     w-full h-130 sm:h-84 relative px-2 
     bg-body/50 shadow-sm rounded-lg 
-    border border-border
-    transition-all duration-300
-    ${active ? "scale-105 shadow-lg" : "scale-100"}
+    border border-first/30
+    transition-all duration-300 scale-100
+    md:${active ? "scale-105 shadow-md" : "scale-100"}
   `}
     >
       <span className="border-left"></span>
