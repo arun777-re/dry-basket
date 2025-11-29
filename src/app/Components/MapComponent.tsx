@@ -3,7 +3,7 @@ import React from "react";
 const MapComponent = () => {
   return (
     <div className="w-full">
-      <div className="relative w-full h-[320px] sm:h-[350px] md:h-[450px] lg:h-[520px] ">
+      <div className="relative w-full h-[360px] sm:h-[350px] md:h-[450px] lg:h-[520px] ">
         <iframe
           src="https://www.google.com/maps?q=28.996645,77.030818&z=15&output=embed"
           allowFullScreen
