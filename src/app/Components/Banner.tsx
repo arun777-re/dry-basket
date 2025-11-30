@@ -26,6 +26,7 @@ interface BannerProps {
 const Banner: React.FC<BannerProps> = ({ heading }) => {
   const path = usePathname();
   const isHome = path === "/";
+  const isMounted = React.useRef<boolean>(false);
 
   const [banners, setBanners] = React.useState<BannerIncomingDTO[]>([
     defaultBannerState,
@@ -34,11 +35,19 @@ const Banner: React.FC<BannerProps> = ({ heading }) => {
   const query: PaginationQuery = { page: 1, limit: 7 };
 
   React.useEffect(() => {
+    if(!isHome) return;
+    const isMountedFlag = isMounted.current;
+    if (isMountedFlag) return;
+    isMounted.current = true;
+
     (async () => {
-      const res = await GET_ALL_BANNER(query);
+     const res = await GET_ALL_BANNER(query);
       res && setBanners(res);
     })();
-  }, [GET_ALL_BANNER]);
+    return () => {
+      isMounted.current = false;
+    }
+  }, []);
 
   const autoplay = React.useMemo(
     () =>

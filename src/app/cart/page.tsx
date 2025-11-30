@@ -5,42 +5,38 @@ import Banner from "../Components/Banner";
 import Footer from "../Components/Footer";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store/store";
-import {
-  selectCartTotal,
-} from "@/redux/slices/cartSlice";
+import { selectCartTotal } from "@/redux/slices/cartSlice";
 import DrawerCard from "../_components/card/DrawerCard";
 import Button from "../_components/Button";
 import { useRouter } from "next/navigation";
-import {  PopulatedCartItemDTO, PopulatedIncomingCartDTO } from "@/types/cart";
+import { PopulatedCartItemDTO, PopulatedIncomingCartDTO } from "@/types/cart";
 import { ROUTES } from "@/constants/routes";
 import cartHook from "@/hooks/cartHook";
 
 const CompleteCartPage: React.FC = () => {
-
   const router = useRouter();
 
   //  getting if user is logged in or not
   const user = useSelector((state: RootState) => state.user.user.success);
-const {handleCartItems} = cartHook();
+  const { handleCartItems } = cartHook();
   // here we use two aspects one is if user is not logged in then guest cart otherwise actual cart
   React.useEffect(() => {
     let race = true;
-     handleCartItems()
-    return ()=>{
+    handleCartItems();
+    return () => {
       race = false;
-    }
+    };
   }, [user]);
 
-  const guestCart:PopulatedIncomingCartDTO | null = useSelector((state: RootState) => state.usercart.cart.data);
+  const guestCart: PopulatedIncomingCartDTO | null = useSelector(
+    (state: RootState) => state.usercart.cart.data
+  );
 
   // guest user cart items total
   const guestCartItemsTotal = useSelector(selectCartTotal);
 
   // get total of cart using useSelector
   const total = user ? guestCart?.finalTotal : guestCartItemsTotal;
-
-
- 
 
   // // function for checkout
   // const handleCheckout = () => {
@@ -63,7 +59,6 @@ const {handleCartItems} = cartHook();
   //     router.push(ROUTES.CHECKOUT);
   //   }
   // };
-
 
   return (
     <div className="relative w-full min-h-screen">
@@ -105,8 +100,10 @@ const {handleCartItems} = cartHook();
               ) : (
                 <p>Your cart is empty.</p>
               )}
-              <Button className="self-start border-1 border-head hover:border-first
-               hover:bg-first hover:text-white transition-all duration-500 ease-in-out">
+              <Button
+                className="self-start border-1 border-head hover:border-first
+               hover:bg-first hover:text-white transition-all duration-500 ease-in-out"
+              >
                 <span onClick={() => router.push(`${ROUTES.ALL_PRODUCTS}`)}>
                   Continue Shopping
                 </span>
