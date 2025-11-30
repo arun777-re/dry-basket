@@ -35,15 +35,16 @@ export function CartDrawer() {
   const { handleCartItems } = cartHook();
   const totalPrice = useSelector(selectCartTotal);
 
-  const finalCartItems = async () => {
-    await handleCartItems();
-  };
+  React.useEffect(()=>{
+    handleCartItems();
+  },[])
+
+ 
   return (
   <Drawer direction="right">
   <DrawerTrigger asChild>
     <div 
       className="relative cursor-pointer text-head hover:text-first transition-all"
-      onClick={finalCartItems}
     >
       <MdAddShoppingCart className="text-2xl" />
 

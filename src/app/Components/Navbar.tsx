@@ -50,7 +50,7 @@ const Navbar = () => {
   return (
     <div className="w-full flex flex-col items-center justify-center">
       {/* SITE TITLE */}
-      <h1 data-aos="fade-down" className="text-center relative  my-4 z-50">
+      <h1 data-aos="fade-down" className="text-center relative text-first  my-4 z-50">
         Dry Basket
       </h1>
 

@@ -16,10 +16,10 @@ const HeroBanner = ({ heading }: { heading: string }) => {
         />
 
         {/* No heavy backdrop-blur — kills performance */}
-        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-          <h1 className="text-[var(--color-head)] font-semibold drop-shadow-xl px-4 text-center">
+        <div className="absolute  inset-0 bg-black/40 flex items-center justify-center">
+          <h2 className="text-first/76 font-semibold drop-shadow-xl px-4 text-center top-96 absolute">
             {heading}
-          </h1>
+          </h2>
         </div>
       </div>
     </section>
