@@ -9,7 +9,7 @@ import { PaginatedProductResponse } from '@/types/response';
 const AllBlogs = ({page,data}:{page:number,data:PaginatedProductResponse<BlogsIncomingDTO>}) => {
 
   // handle no blogs case
-  if (!data || !Array.isArray(data.data)) {
+  if (!data || !Array.isArray(data.data)){
     return <div className="text-center py-20 text-gray-500">No Blogs Available</div>;
   }
 
