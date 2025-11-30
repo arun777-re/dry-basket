@@ -1,14 +1,12 @@
 // SSG + ISR Page Component
 export const dynamic = "force-static";
-import React, { Suspense } from 'react'
  import {  PaginatedProductResponse } from '@/types/response';
 import { BlogsIncomingDTO } from '@/types/blog';
 import { ROUTES } from '@/constants/routes';
-import Spinner from '../_components/Spinner';
 import AllBlogs from '../Components/AllBlogs';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
-import BannnerWrapper from '../_components/BannnerWrapper';
+import Banner from '../Components/Banner';
 
 
 export default async function AllBlogsPage({
@@ -44,10 +42,8 @@ export default async function AllBlogsPage({
   return (
     <>
       <Navbar />
-      <BannnerWrapper />
-      <Suspense fallback={<Spinner/>}>
+      <Banner heading='Blogs' />
       <AllBlogs page={safePage} data={data}/>
-      </Suspense>
       <Footer />
     </>
   );
