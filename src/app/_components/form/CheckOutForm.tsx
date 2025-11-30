@@ -20,6 +20,8 @@ import { OrderIncomingReqDTO } from "@/types/order";
 import { useRouter } from "next/navigation";
 import { VerifyPaymentDTO } from "@/redux/services/api/order";
 import cartHook from "@/hooks/cartHook";
+import { UserPropsIncoming } from "@/types/user";
+import { ROUTES } from "@/constants/routes";
 
 const CheckOutForm = () => {
   const router = useRouter();
@@ -64,7 +66,11 @@ const CheckOutForm = () => {
   const userCart = useSelector(
     (state: RootState) => state.usercart.cart.data
   ) as CartIncomingDTO | null;
+  const user = useSelector(
+    (state: RootState) => state.user.user
+  ) as IncomingAPIResponseFormat<UserPropsIncoming>;
 
+  const isAuthenticated = user && user.success && user.status === 200;
   const cartTotalWeight = useSelector(cartTotalItemsWeight);
   const cartTotalAmount = useSelector(selectCartTotal);
 
@@ -105,9 +111,16 @@ const CheckOutForm = () => {
     values: typeof initialValues,
     { setSubmitting }: any
   ) => {
-    if (!userCart || !userCart._id || !userCart.items) {
-      toast.error("Cart ID missing. Please add items to cart.");
+    if(!isAuthenticated){
+      toast.error("You need to be logged in to place an order.");
       setSubmitting(false);
+      router.push(`${ROUTES.LOGIN}`);
+      return;
+    }
+    if ( !userCart || !userCart._id || !userCart.items) {
+      toast.error("Your cart is empty.Please add items to cart");
+      setSubmitting(false);
+      router.push(`${`${ROUTES.CART}`}`);
       return;
     }
 
