@@ -1,6 +1,4 @@
-import { Card } from "@radix-ui/themes";
 import Image from "next/image";
-import React from "react";
 import { BlogsIncomingDTO } from "@/types/blog";
 import Link from "next/link";
 
@@ -17,7 +15,7 @@ const BlogsCard: React.FC<BlogsIncomingDTO> = ({
     <div
       className="relative mx-auto w-full md:w-[48%] transition-transform duration-300 hover:scale-102"
     >
-      <Card className="flex flex-col h-full rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-500">
+      <div className="flex flex-col h-full rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-500">
         {/* Image */}
         <div className="relative w-full h-44 sm:h-48 md:h-56 lg:h-60">
           <Image
@@ -25,7 +23,8 @@ const BlogsCard: React.FC<BlogsIncomingDTO> = ({
             alt={title ?? "blog-image"}
             fill
             loading="lazy"
-            className="object-fill object-center"
+            sizes="(max-width:768px) 100vw, 50vw"
+            className="object-fill"
           />
           <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/50 to-transparent p-2">
             <span className="text-xs sm:text-sm text-white font-medium">
@@ -58,7 +57,7 @@ const BlogsCard: React.FC<BlogsIncomingDTO> = ({
             </Link>
           </div>
         </article>
-      </Card>
+      </div>
     </div>
   );
 };
