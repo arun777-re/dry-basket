@@ -1,10 +1,10 @@
 'use client'
 import React from 'react'
-import Banner from '../Components/Banner'
 import Navbar from '../Components/Navbar'
 import Footer from '../Components/Footer'
 import ShopProducts from '../Components/ShopProducts'
 import { usePathname } from 'next/navigation'
+import HeroBanner from '../Components/HeroBanner'
 
 const AllProducts = () => {
 
@@ -13,7 +13,7 @@ const AllProducts = () => {
   return (
     <>
       <Navbar/>
-      <Banner heading={"Shop"}/>
+      <HeroBanner heading={"Shop"}/>
       <ShopProducts/>
       <Footer/>
     </>

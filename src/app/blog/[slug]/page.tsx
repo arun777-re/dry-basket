@@ -1,6 +1,5 @@
 "use client";
 
-import Banner from "@/app/Components/Banner";
 import Navbar from "@/app/Components/Navbar";
 import Image from "next/image";
 import Head from "next/head";
@@ -11,6 +10,7 @@ import { LiaComments } from "react-icons/lia";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useParams } from "next/navigation";
 import useBlogHook from "@/hooks/blogHook";
+import HeroBanner from "@/app/Components/HeroBanner";
 
 // Lazy load Footer for performance
 const Footer = dynamic(() => import("@/app/Components/Footer"), { ssr: false });
@@ -65,7 +65,7 @@ const CompleteBlog = () => {
       </Head>
 
       <Navbar />
-      <Banner heading="Blog" />
+      <HeroBanner heading="Blog" />
 
       <section className="w-full h-auto relative">
         <div className="w-full relative px-4 sm:px-8 md:px-16 lg:px-32 xl:px-52 py-10 md:py-20">

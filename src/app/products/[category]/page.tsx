@@ -1,5 +1,4 @@
 'use client'
-import Banner from '@/app/Components/Banner'
 import Category from '@/app/Components/Category'
 import Footer from '@/app/Components/Footer'
 import Navbar from '@/app/Components/Navbar'
@@ -9,6 +8,7 @@ import PremiumProduct from '@/app/Components/PremiumProduct'
 import { ProductIncomingDTO } from '@/types/product'
 import { useFetchCategoryProducts } from '@/hooks/fetchCategoryProduct'
 import Head from 'next/head'
+import HeroBanner from '@/app/Components/HeroBanner'
 
 const ProductByCategory = () => {
   const [products, setProducts] = useState<ProductIncomingDTO[]>([])
@@ -63,7 +63,7 @@ const ProductByCategory = () => {
 
       <Navbar />
       <div className="w-full">
-        <Banner heading={pathname.startsWith("/") ? pathname.slice(1) : pathname} />
+        <HeroBanner heading={pathname.startsWith("/") ? pathname.slice(1) : pathname} />
       </div>
 
       <div className="w-full px-2 sm:px-4 md:px-8">

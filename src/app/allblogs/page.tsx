@@ -6,7 +6,7 @@ import { ROUTES } from '@/constants/routes';
 import AllBlogs from '../Components/AllBlogs';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
-import Banner from '../Components/Banner';
+import HeroBanner from '../Components/HeroBanner';
 
 
 export default async function AllBlogsPage({
@@ -42,7 +42,7 @@ export default async function AllBlogsPage({
   return (
     <>
       <Navbar />
-      <Banner heading='Blogs' />
+      <HeroBanner heading='Blogs' />
       <AllBlogs page={safePage} data={data}/>
       <Footer />
     </>

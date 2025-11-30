@@ -1,11 +1,10 @@
 'use client';
 import React from 'react';
 import Navbar from '../Components/Navbar';
-import Banner from '../Components/Banner';
 import Footer from '../Components/Footer';
-import { FaStar } from 'react-icons/fa';
 import { Card } from '@radix-ui/themes';
 import { faqData } from '@/data/faqData';
+import HeroBanner from '../Components/HeroBanner';
 
 const FaqPage = () => {
   const [active, setActive] = React.useState<number | null>(null);
@@ -13,7 +12,7 @@ const FaqPage = () => {
   return (
     <div className="w-full h-auto overflow-x-hidden">
       <Navbar />
-      <Banner heading="FAQ" />
+      <HeroBanner heading="FAQ" />
 
       <section className="max-w-screen-xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-col items-center gap-8">

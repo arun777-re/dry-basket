@@ -1,19 +1,18 @@
 'use client';
 import React from "react";
 import Navbar from "../Components/Navbar";
-import Banner from "../Components/Banner";
 import Footer from "../Components/Footer";
 import Image from "next/image";
-import { FaStar } from "react-icons/fa";
 import Team from "../Components/Team";
 import Process from "../Components/Process";
 import Testim from "../Components/Testim";
+import HeroBanner from "../Components/HeroBanner";
 
 const AboutPage: React.FC = () => {
   return (
     <div className="w-full h-auto overflow-x-hidden">
       <Navbar />
-      <Banner heading="About US" />
+      <HeroBanner heading="About US" />
 
       {/* Hero Section */}
       <section className="w-full relative px-4 sm:px-6 lg:px-8 py-12">

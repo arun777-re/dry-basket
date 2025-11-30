@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import Navbar from "../Components/Navbar";
-import Banner from "../Components/Banner";
 import Footer from "../Components/Footer";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store/store";
@@ -12,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { PopulatedCartItemDTO, PopulatedIncomingCartDTO } from "@/types/cart";
 import { ROUTES } from "@/constants/routes";
 import cartHook from "@/hooks/cartHook";
+import HeroBanner from "../Components/HeroBanner";
 
 const CompleteCartPage: React.FC = () => {
   const router = useRouter();
@@ -63,7 +63,7 @@ const CompleteCartPage: React.FC = () => {
   return (
     <div className="relative w-full min-h-screen">
       <Navbar />
-      <Banner heading="Cart" />
+      <HeroBanner heading="Cart" />
 
       <section className="w-full mx-auto relative">
         <div

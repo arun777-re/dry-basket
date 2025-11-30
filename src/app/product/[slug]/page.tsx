@@ -1,5 +1,4 @@
 "use client";
-import Banner from "@/app/Components/Banner";
 import Footer from "@/app/Components/Footer";
 import Navbar from "@/app/Components/Navbar";
 import React, { useEffect, useState } from "react";
@@ -15,6 +14,7 @@ import ProductInformation from "@/app/_components/ProductInformation";
 import { singleProductState } from "@/redux/services/helpers/productresponse";
 import useInteractionHook from "@/hooks/interactionHook";
 import Head from "next/head"; // 👈 for CSR SEO
+import HeroBanner from "@/app/Components/HeroBanner";
 
 const ProductPage: React.FC = () => {
   const { slug } = useParams();
@@ -131,7 +131,7 @@ const ProductPage: React.FC = () => {
 
       <div className="max-w-screen w-full mx-auto relative overflow-hidden">
         <Navbar />
-        <Banner heading={product?.productName || "Product"} />
+        <HeroBanner heading={product?.productName || "Product"} />
         <section className="w-full relative h-auto">
           <div className="w-full h-auto relative flex flex-col items-start justify-center px-4 sm:px-6 md:px-12 lg:px-20 xl:px-28 py-10 md:py-16">
             <ProductDescription
