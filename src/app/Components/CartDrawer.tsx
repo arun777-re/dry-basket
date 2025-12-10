@@ -35,6 +35,7 @@ export function CartDrawer() {
   const { handleCartItems } = cartHook();
   const totalPrice = useSelector(selectCartTotal);
 
+  // fetch cart items on mount
   React.useEffect(()=>{
     handleCartItems();
   },[])

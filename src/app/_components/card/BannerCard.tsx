@@ -32,7 +32,7 @@ const BannerCard: React.FC<BannerCardProps> = ({
       </div>
 
       <div className="relative z-10 flex items-center justify-center h-full px-4">
-        <article className="relative flex flex-col items-center text-center gap-2 sm:gap-4 top-56">
+        <article className="relative flex flex-col items-center text-center gap-2 sm:gap-4 top-48">
           <h2 className="text-first/76 drop-shadow-xl">{title}</h2>
 
           {description && (
