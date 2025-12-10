@@ -1,5 +1,6 @@
 // SSG + ISR Page Component
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
+export const revalidate = 10;
  import {  PaginatedProductResponse } from '@/types/response';
 import { BlogsIncomingDTO } from '@/types/blog';
 import { ROUTES } from '@/constants/routes';
